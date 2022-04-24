@@ -60,4 +60,3 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
         productToAdd.LastModifiedBy = productToAdd.CreatedBy;
     }
 }
-

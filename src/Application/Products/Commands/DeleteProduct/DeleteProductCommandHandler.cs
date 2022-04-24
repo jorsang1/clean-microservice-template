@@ -27,4 +27,3 @@ public class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductComm
     }
 
 }
-

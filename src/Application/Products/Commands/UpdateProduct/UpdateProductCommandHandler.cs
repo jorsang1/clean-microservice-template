@@ -58,4 +58,3 @@ public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand,
         productToAdd.LastModifiedBy = Guid.Empty.ToString();
     }
 }
-

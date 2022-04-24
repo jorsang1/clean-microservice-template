@@ -19,4 +19,3 @@ public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductDt
         return result.Adapt<ProductDto>();
     }
 }
-

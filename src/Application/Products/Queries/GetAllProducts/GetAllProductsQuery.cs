@@ -7,4 +7,3 @@ public class GetAllProductsQuery : IRequest<List<ProductListItemDto>>
 { 
     public Guid UserId { get; set; }
 };
-

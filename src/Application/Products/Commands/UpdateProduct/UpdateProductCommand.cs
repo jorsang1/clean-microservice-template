@@ -12,4 +12,3 @@ public class UpdateProductCommand : IRequest<ProductDto>
 
     public Guid UserId { get; set; }
 };
-
