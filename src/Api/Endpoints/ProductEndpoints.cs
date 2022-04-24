@@ -87,5 +87,4 @@ public class ProductEndpoints
             return Results.NotFound();
         }
     }
-
 }

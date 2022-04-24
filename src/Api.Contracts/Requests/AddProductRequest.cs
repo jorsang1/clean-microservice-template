@@ -14,5 +14,4 @@ public class AddProductRequest
         Title = title;
         Description = description;
     }
-
 }

@@ -6,6 +6,7 @@ namespace Application.Products.Commands.DeleteProduct;
 public class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCommand>
 {
     private IProductRepository _productRepository;
+
     public DeleteProductCommandHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
@@ -25,5 +26,4 @@ public class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductComm
             throw new KeyNotFoundException("The product to delete doesn't exists.");
         }
     }
-
 }

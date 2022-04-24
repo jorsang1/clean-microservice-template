@@ -8,6 +8,7 @@ namespace Application.Products.Queries.GetAllProducts;
 public class GetProductQueryHandler : IRequestHandler<GetAllProductsQuery, List<ProductListItemDto>>
 {
     private IProductRepository _productRepository;
+
     public GetProductQueryHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;

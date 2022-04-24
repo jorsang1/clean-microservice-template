@@ -47,5 +47,4 @@ public class ProductRepository : IProductRepository
     {
         Products.Remove(product.Adapt<Product>());
     }
-
 }

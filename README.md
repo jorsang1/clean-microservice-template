@@ -34,7 +34,6 @@ There is this option from MS [Announcing dotnet monitor in .NET 6](https://devbl
 ### DDD
 The template is prepared to do **D**omain **D**riven **Design** by providing a 'Domain' layer ready to host you aggregate roots, value names, and so on in an structured way.
 
-
 ### CQRS
 The template is also ready to separate your **Queries** and **Commands** in the application layer.   
 I know CQRS can be taken further but this at least could be a starter for the microservice you are creating.   
@@ -73,10 +72,8 @@ That's the same convention as in the Jason Clean Architecture template, but in t
 ### Build Solution
 * Build => Build Solution
 
-
 ### Run Tests
 * Test => Windows => Test Explorer => Run All
-
 
 ### Run Tests with Command Prompt/Windows PowerShell
 * Open Folder in File Explorer

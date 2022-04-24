@@ -14,5 +14,4 @@ public class UpdateProductRequest
         Title = title;
         Description = description;
     }
-
 }

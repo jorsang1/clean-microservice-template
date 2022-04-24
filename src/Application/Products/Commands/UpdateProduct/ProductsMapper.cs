@@ -1,6 +1,7 @@
 ﻿using Application.Products.DTOs;
 
 namespace Application.Products.Commands.UpdateProduct;
+
 internal static class ProductsMapper
 {
     public static Domain.Entities.Product.Product MapToEntity(this UpdateProductCommand dto)

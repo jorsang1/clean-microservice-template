@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.Product;
 
 namespace Application.Common.Interfaces;
+
 public interface IProductRepository
 {
     Task<Product> Create(Product product);

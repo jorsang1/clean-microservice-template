@@ -13,6 +13,7 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
     private IDateTime _dateService;
     private IStockClient _stockClient;
     private ILogger<AddProductCommandHandler> _logger;
+
     public AddProductCommandHandler(IProductRepository productRepository, IDateTime dateService, IStockClient stockClient, ILogger<AddProductCommandHandler> logger)
     {
         _productRepository = productRepository;
