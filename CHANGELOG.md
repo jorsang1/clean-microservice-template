@@ -14,6 +14,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en), and th
 -->
 
 ## UNRELEASED
-## 0.1
 ### Added
 - Initial version of the template.

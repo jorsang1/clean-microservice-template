@@ -87,7 +87,7 @@ public class ProductEndpoints
             await mediator.Send(command, cancellationToken);
             return Results.NoContent();
         }
-        catch (KeyNotFoundException notFoundException)
+        catch (KeyNotFoundException)
         {
             return Results.NotFound();
         }

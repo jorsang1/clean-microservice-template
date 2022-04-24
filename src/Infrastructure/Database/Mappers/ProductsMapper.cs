@@ -4,7 +4,7 @@ internal static class ProductsMapper
 {
     public static Domain.Entities.Product.Product? MapToEntity(this Database.Models.Product dto)
     {
-        if (dto == null)
+        if (dto is null)
             return null;
 
         return new Domain.Entities.Product.Product
