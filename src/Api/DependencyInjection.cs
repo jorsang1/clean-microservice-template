@@ -1,5 +1,4 @@
 ﻿using Api.Endpoints;
-using Microsoft.AspNetCore.HttpLogging;
 
 namespace Api;
 

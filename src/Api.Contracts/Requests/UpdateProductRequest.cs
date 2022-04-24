@@ -1,5 +1,3 @@
-﻿using System;
-
 ﻿namespace Api.Contracts.Requests;
 
 public class UpdateProductRequest

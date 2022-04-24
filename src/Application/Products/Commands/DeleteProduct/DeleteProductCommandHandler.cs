@@ -1,8 +1,5 @@
-﻿using MediatR;
-using Application.Common.Interfaces;
-using Application.Products.DTOs;
-using Application.Common.Exceptions;
-using Mapster;
+﻿using Application.Common.Interfaces;
+using MediatR;
 
 namespace Application.Products.Commands.DeleteProduct;
 

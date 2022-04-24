@@ -1,5 +1,3 @@
-﻿using System;
-
 ﻿namespace Api.Contracts.Responses;
 
 public class ProductResponse
