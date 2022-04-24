@@ -4,5 +4,5 @@ namespace Infrastructure.Database.Services;
 
 public class DateTimeService : IDateTime
 {
-    public DateTime Now => DateTime.Now;
+    public DateTimeOffset Now => DateTimeOffset.UtcNow;
 }
