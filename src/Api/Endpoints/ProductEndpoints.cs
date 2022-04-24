@@ -14,10 +14,6 @@ namespace Api.Endpoints;
 
 public class ProductEndpoints
 {
-    public void DefineServices(IServiceCollection services)
-    {
-    }
-
     public void DefineEndpoints(WebApplication app)
     {
         app.MapGet("/products", GetAllProducts)

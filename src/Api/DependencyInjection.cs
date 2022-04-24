@@ -8,8 +8,8 @@ public static class DependencyInjection
     private static readonly SwaggerEndpoints swaggerEndpoints = new SwaggerEndpoints();
     public static IServiceCollection AddApi(this IServiceCollection services)
     {
-        swaggerEndpoints.DefineServices(services);
-        productEndpoints.DefineServices(services);
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
 
         //services.AddHttpLogging(httpLogging =>
         //{
