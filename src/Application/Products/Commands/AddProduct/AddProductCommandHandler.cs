@@ -25,32 +25,26 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
     public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
         var productToAdd = request.MapToEntity();
+        var validationResult = productToAdd.Validate();
+
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors.Adapt<List<ValidationError>>());
+        }
+
         AddAuditableInformation(productToAdd);
+        var product = await _productRepository.Create(productToAdd);
 
-        if (productToAdd.IsValid())
+        try
         {
-            var result = await _productRepository.Create(productToAdd);
-
-            try
-            {
-                await _stockClient.UpdateStock(result.Id, 1);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating the stock for the product {Id}", result.Id);
-                result.AddError(
-                    "somecode",
-                    "Product added but stock hasn't been updated.",
-                    "Please update the stock later manually using the stocks endpoint. More info on: link to documentation"
-                    );
-            }
-
-            return result.MapToDto();
+            await _stockClient.UpdateStock(product.Id, 1);
         }
-        else
+        catch (Exception ex)
         {
-            throw new ValidationException(productToAdd.Errors.Adapt<List<ValidationError>>());
+            _logger.LogError(ex, "Error updating the stock for the product {Id}", product.Id);
         }
+
+        return product.MapToDto();
     }
 
     private void AddAuditableInformation(Domain.Entities.Product.Product productToAdd)

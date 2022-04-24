@@ -3,7 +3,7 @@ using Domain.Entities.Product.ValueObjects;
 
 namespace Domain.Entities.Product;
 
-public class Product : AuditableEntity
+public class Product : AuditableEntity, IValidatable
 {
     public Guid Id { get; init; }
     public string Sku { get; init; }
@@ -11,27 +11,30 @@ public class Product : AuditableEntity
     public string Description { get; init; }
     public decimal Price { get; init; }
 
-    protected override void Validate()
+    public ValidationResult Validate()
     {
+        var validationResult = new ValidationResult();
+
         if (Id == Guid.Empty)
         {
-            AddError("", "Product Id can't be empty", "");
+            validationResult.AddError("", "ID cannot be empty", "");
         }
-        if (!Title.IsValid())
-        {
-            AddErrors(Title.Errors);
-        }
+
+        validationResult.AddErrorsFrom(Title);
+
         if (String.IsNullOrEmpty(Sku))
         {
-            AddError("", "Product Sku can't be empty", "");
+            validationResult.AddError("", "SKU cannot be empty", "");
         }
         if (String.IsNullOrEmpty(Description))
         {
-            AddError("", "Product Description can't be empty", "");
+            validationResult.AddError("", "Description cannot be empty", "");
         }
         if (Price < 0)
         {
-            AddError("", "Price can't be negative", "");
+            validationResult.AddError("", "Price can't be negative", "");
         }
+
+        return validationResult;
     }
 }
