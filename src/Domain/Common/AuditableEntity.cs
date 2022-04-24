@@ -2,8 +2,8 @@
 
 public abstract class AuditableEntity
 {
-    public DateTime Created { get; set; }
+    public DateTimeOffset CreatedOn { get; set; }
     public string? CreatedBy { get; set; }
-    public DateTime? LastModified { get; set; }
+    public DateTimeOffset? LastModifiedOn { get; set; }
     public string? LastModifiedBy { get; set; }
 }

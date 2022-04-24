@@ -49,9 +49,9 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
 
     private void AddAuditableInformation(Domain.Entities.Product.Product productToAdd)
     {
-        productToAdd.Created = _dateService.Now;
+        productToAdd.CreatedOn = _dateService.Now;
         productToAdd.CreatedBy = Guid.NewGuid().ToString(); //TODO: Add identity service.
-        productToAdd.LastModified = productToAdd.Created;
+        productToAdd.LastModifiedOn = productToAdd.CreatedOn;
         productToAdd.LastModifiedBy = productToAdd.CreatedBy;
     }
 }

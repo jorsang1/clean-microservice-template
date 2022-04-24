@@ -34,7 +34,7 @@ public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand,
         if (product is null)
             return null;
 
-        productToUpdate.Created = product.Created;
+        productToUpdate.CreatedOn = product.CreatedOn;
         productToUpdate.CreatedBy = product.CreatedBy;
         UpdateAuditableInformation(productToUpdate);
 
@@ -54,7 +54,7 @@ public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
     private void UpdateAuditableInformation(Domain.Entities.Product.Product productToAdd)
     {
-        productToAdd.LastModified = _dateService.Now;
+        productToAdd.LastModifiedOn = _dateService.Now;
         productToAdd.LastModifiedBy = Guid.Empty.ToString();
     }
 }

@@ -14,9 +14,9 @@ internal static class ProductsMapper
             Title = new Domain.Entities.Product.ValueObjects.ProjectTitle(dto.Title),
             Description = dto.Description,
             Price = dto.Price,
-            Created = dto.CreationDate,
+            CreatedOn = dto.CreationDate,
             CreatedBy = dto.CreationBy,
-            LastModified = dto.LastUpdate,
+            LastModifiedOn = dto.LastUpdate,
             LastModifiedBy = dto.LastUpdateBy,
         };
     }
