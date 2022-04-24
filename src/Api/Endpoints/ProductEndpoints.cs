@@ -20,15 +20,20 @@ public class ProductEndpoints
 
     public void DefineEndpoints(WebApplication app)
     {
-        app.MapGet("/products", GetAllProducts).WithName("GetAllProducts");
+        app.MapGet("/products", GetAllProducts)
+            .WithName("GetAllProducts");
 
-        app.MapGet("/products/{id}", GetProduct).WithName("GetProduct");
+        app.MapGet("/products/{id}", GetProduct)
+            .WithName("GetProduct");
 
-        app.MapPost("/products", AddProduct).WithName("AddProduct");
+        app.MapPost("/products", AddProduct)
+            .WithName("AddProduct");
 
-        app.MapPut("/products", UpdateProduct).WithName("UpdateProduct");
+        app.MapPut("/products", UpdateProduct)
+            .WithName("UpdateProduct");
 
-        app.MapDelete("/products/{id}", DeleteProduct).WithName("DeleteProduct");
+        app.MapDelete("/products/{id}", DeleteProduct)
+            .WithName("DeleteProduct");
     }
 
     private async Task<IResult> GetAllProducts(IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
