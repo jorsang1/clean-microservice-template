@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Clients.StockClient.Configuration;
+﻿namespace CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Configuration;
 
 public class StockClientConfiguration
 {

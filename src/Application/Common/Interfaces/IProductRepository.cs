@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Product;
+﻿using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
 
-namespace Application.Common.Interfaces;
+namespace CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 
 public interface IProductRepository
 {

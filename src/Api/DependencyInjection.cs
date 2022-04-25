@@ -1,6 +1,6 @@
-﻿using Api.Endpoints;
+﻿using CleanCompanyName.DDDMicroservice.Api.Endpoints;
 
-namespace Api;
+namespace CleanCompanyName.DDDMicroservice.Api;
 
 public static class DependencyInjection
 {

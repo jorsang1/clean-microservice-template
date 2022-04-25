@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Application.Common.Interfaces;
-using Infrastructure.Database.Repositories;
-using Infrastructure.Database.Services;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Services;
 using Mapster;
-using Infrastructure.Clients.StockClient;
-using Infrastructure.Clients.StockClient.Configuration;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Configuration;
 
-namespace Infrastructure;
+namespace CleanCompanyName.DDDMicroservice.Infrastructure;
 
 public static class DependencyInjection
 {

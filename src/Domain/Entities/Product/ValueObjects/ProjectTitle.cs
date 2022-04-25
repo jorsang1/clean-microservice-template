@@ -1,6 +1,6 @@
-﻿using Domain.Common;
+﻿using CleanCompanyName.DDDMicroservice.Domain.Common;
 
-namespace Domain.Entities.Product.ValueObjects
+namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Product.ValueObjects
 {
     public class ProjectTitle : ValueObject
     {

@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Mapster;
-using Application.Common.Interfaces;
-using Application.Products.DTOs;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 
-namespace Application.Products.Queries.GetProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
 
 public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductDto>
 {

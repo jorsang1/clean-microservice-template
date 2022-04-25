@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using Application.Common.Interfaces;
-using Application.Products.DTOs;
-using Application.Common.Exceptions;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 using Mapster;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Products.Commands.UpdateProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
 public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {

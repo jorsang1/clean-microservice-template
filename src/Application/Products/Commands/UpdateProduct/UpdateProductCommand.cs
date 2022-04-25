@@ -1,7 +1,7 @@
-﻿using Application.Products.DTOs;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 using MediatR;
 
-namespace Application.Products.Commands.UpdateProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
 public class UpdateProductCommand : IRequest<ProductDto>
 {

@@ -1,4 +1,4 @@
-﻿namespace Application.Common.Exceptions;
+﻿namespace CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 
 public struct ValidationError
 {

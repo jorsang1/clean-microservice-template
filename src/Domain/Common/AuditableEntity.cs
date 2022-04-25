@@ -1,4 +1,4 @@
-﻿namespace Domain.Common;
+﻿namespace CleanCompanyName.DDDMicroservice.Domain.Common;
 
 public abstract class AuditableEntity
 {

@@ -1,4 +1,4 @@
-﻿namespace Api.Contracts.Requests;
+﻿namespace CleanCompanyName.DDDMicroservice.Api.Contracts.Requests;
 
 public class UpdateProductRequest
 {

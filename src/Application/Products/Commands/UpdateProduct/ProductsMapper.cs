@@ -1,6 +1,6 @@
-﻿using Application.Products.DTOs;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 
-namespace Application.Products.Commands.UpdateProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
 internal static class ProductsMapper
 {

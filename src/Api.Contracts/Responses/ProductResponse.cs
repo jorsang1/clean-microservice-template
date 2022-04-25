@@ -1,4 +1,4 @@
-﻿namespace Api.Contracts.Responses;
+﻿namespace CleanCompanyName.DDDMicroservice.Api.Contracts.Responses;
 
 public class ProductResponse
 {

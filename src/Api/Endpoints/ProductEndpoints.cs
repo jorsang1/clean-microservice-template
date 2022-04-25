@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Mapster;
-using Application.Common.Exceptions;
-using Application.Products.Queries.GetAllProducts;
-using Application.Products.Commands.AddProduct;
-using Application.Products.Commands.UpdateProduct;
-using Application.Products.Commands.DeleteProduct;
-using Application.Products.Queries.GetProduct;
-using Api.Contracts.Responses;
-using Api.Contracts.Requests;
+using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
+using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
+using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
+using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
+using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
+using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
+using CleanCompanyName.DDDMicroservice.Api.Contracts.Responses;
+using CleanCompanyName.DDDMicroservice.Api.Contracts.Requests;
 
-namespace Api.Endpoints;
+namespace CleanCompanyName.DDDMicroservice.Api.Endpoints;
 
 public class ProductEndpoints
 {
