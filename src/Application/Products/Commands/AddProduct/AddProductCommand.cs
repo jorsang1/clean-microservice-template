@@ -1,7 +1,6 @@
-﻿using Application.Products.DTOs;
-using MediatR;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 
-namespace Application.Products.Commands.AddProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 
 public class AddProductCommand : IRequest<ProductDto>
 {
@@ -9,7 +8,5 @@ public class AddProductCommand : IRequest<ProductDto>
     public string Sku { get; set; }
     public string Title { get; set; }
     public string? Description { get; set; }
-
     public Guid UserId { get; set; }
-};
-
+}

@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Application.Common.Interfaces;
-using Application.Products.DTOs;
-using Application.Common.Exceptions;
+﻿using Microsoft.Extensions.Logging;
 using Mapster;
-using Microsoft.Extensions.Logging;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 
-namespace Application.Products.Commands.UpdateProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
 public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {
@@ -22,40 +21,39 @@ public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand,
     public async Task<ProductDto?> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var productToUpdate = request.MapToEntity();
+        var validationResult = productToUpdate.Validate();
+
+        if (validationResult.IsValid!)
+        {
+            throw new ValidationException(validationResult.Errors.Adapt<List<ValidationError>>());
+        }
+
+        var product = await _productRepository.GetById(productToUpdate.Id);
+
+        if (product is null)
+            return null;
+
+        productToUpdate.CreatedOn = product.CreatedOn;
+        productToUpdate.CreatedBy = product.CreatedBy;
         UpdateAuditableInformation(productToUpdate);
 
-        if (productToUpdate.IsValid())
+        try
         {
-            var product = await _productRepository.GetById(productToUpdate.Id);
-            if (product == null) return null;
-
-            productToUpdate.Created = product.Created;
-            productToUpdate.CreatedBy = product.CreatedBy;
-            
-            try
-            {
-                await _productRepository.Update(productToUpdate);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Problem updating the stock of the product on the stock service for the product {Id}, {Title}.", request.Id, request.Title);
-            }
-            
-
-            return productToUpdate.MapToDto();
-            //Shall we maybe query the DB to make sure the operation is done??
-            //return Task.FromResult(_productRepository.GetById(productToUpdate.Id).MapToDto());
+            await _productRepository.Update(productToUpdate);
         }
-        else
+        catch (Exception ex)
         {
-            throw new ValidationException(productToUpdate.Errors.Adapt<List<ValidationError>>());
+            _logger.LogError(ex, "Problem updating the stock of the product on the stock service for the product {Id}, {Title}.", request.Id, request.Title);
         }
+
+        return productToUpdate.MapToDto();
+        //Shall we maybe query the DB to make sure the operation is done??
+        //return Task.FromResult(_productRepository.GetById(productToUpdate.Id).MapToDto());
     }
 
     private void UpdateAuditableInformation(Domain.Entities.Product.Product productToAdd)
     {
-        productToAdd.LastModified = _dateService.Now;
+        productToAdd.LastModifiedOn = _dateService.Now;
         productToAdd.LastModifiedBy = Guid.Empty.ToString();
     }
 }
-

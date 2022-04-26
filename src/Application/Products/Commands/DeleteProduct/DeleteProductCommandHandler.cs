@@ -1,14 +1,11 @@
-﻿using MediatR;
-using Application.Common.Interfaces;
-using Application.Products.DTOs;
-using Application.Common.Exceptions;
-using Mapster;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 
-namespace Application.Products.Commands.DeleteProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 
 public class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCommand>
 {
     private IProductRepository _productRepository;
+
     public DeleteProductCommandHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
@@ -28,6 +25,4 @@ public class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductComm
             throw new KeyNotFoundException("The product to delete doesn't exists.");
         }
     }
-
 }
-

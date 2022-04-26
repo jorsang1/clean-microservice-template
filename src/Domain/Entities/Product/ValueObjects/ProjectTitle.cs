@@ -1,6 +1,6 @@
-﻿using Domain.Common;
+﻿using CleanCompanyName.DDDMicroservice.Domain.Common;
 
-namespace Domain.Entities.Product.ValueObjects
+namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Product.ValueObjects
 {
     public class ProjectTitle : ValueObject
     {
@@ -32,17 +32,21 @@ namespace Domain.Entities.Product.ValueObjects
             yield return Value;
         }
 
-        protected override void Validate()
+        public override ValidationResult Validate()
         {
+            var validationResult = new ValidationResult();
+
             if (string.IsNullOrEmpty(Value))
             {
-                AddError("", $"Project title can not be null or empty.", "");
+                validationResult.AddError("", $"Project title can not be null or empty.", "");
             }
 
             if (Value.Length < MinLength || Value.Length > MaxLength)
             {
-                AddError("", $"Project title should be between {MinLength} and {MaxLength} characters length.", "");
+                validationResult.AddError("", $"Project title should be between {MinLength} and {MaxLength} characters length.", "");
             }
+
+            return validationResult;
         }
     }
 }

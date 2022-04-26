@@ -1,6 +1,6 @@
-﻿namespace Application.Common.Interfaces;
+﻿namespace CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 
 public interface IDateTime
 {
-    DateTime Now { get; }
+    DateTimeOffset Now { get; }
 }

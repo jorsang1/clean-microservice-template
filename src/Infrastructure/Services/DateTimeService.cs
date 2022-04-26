@@ -1,8 +1,8 @@
-﻿using Application.Common.Interfaces;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 
-namespace Infrastructure.Database.Services;
+namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Services;
 
 public class DateTimeService : IDateTime
 {
-    public DateTime Now => DateTime.Now;
+    public DateTimeOffset Now => DateTimeOffset.UtcNow;
 }

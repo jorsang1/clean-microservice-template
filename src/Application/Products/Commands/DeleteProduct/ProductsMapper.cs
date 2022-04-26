@@ -1,6 +1,7 @@
-﻿using Application.Products.DTOs;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 
-namespace Application.Products.Commands.DeleteProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
+
 internal static class ProductsMapper
 {
     public static ProductDto MapToDto(this Domain.Entities.Product.Product product)

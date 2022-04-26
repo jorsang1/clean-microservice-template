@@ -1,4 +1,4 @@
-﻿namespace Application.Common.Interfaces;
+﻿namespace CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 
 public interface IStockClient
 {

@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Application.Common.Interfaces;
-using Application.Products.DTOs;
-using Application.Common.Exceptions;
+﻿using Microsoft.Extensions.Logging;
 using Mapster;
-using Microsoft.Extensions.Logging;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 
-namespace Application.Products.Commands.AddProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 
 public class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
 {
@@ -13,6 +12,7 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
     private IDateTime _dateService;
     private IStockClient _stockClient;
     private ILogger<AddProductCommandHandler> _logger;
+
     public AddProductCommandHandler(IProductRepository productRepository, IDateTime dateService, IStockClient stockClient, ILogger<AddProductCommandHandler> logger)
     {
         _productRepository = productRepository;
@@ -24,40 +24,33 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
     public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
         var productToAdd = request.MapToEntity();
+        var validationResult = productToAdd.Validate();
+
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors.Adapt<List<ValidationError>>());
+        }
+
         AddAuditableInformation(productToAdd);
+        var product = await _productRepository.Create(productToAdd);
 
-        if (productToAdd.IsValid())
+        try
         {
-            var result = await _productRepository.Create(productToAdd);
-
-            try
-            {
-                await _stockClient.UpdateStock(result.Id, 1);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating the stock for the product {Id}", result.Id);
-                result.AddError(
-                    "somecode",
-                    "Product added but stock hasn't been updated.",
-                    "Please update the stock later manually using the stocks endpoint. More info on: link to documentation"
-                    );
-            }
-
-            return result.MapToDto();
+            await _stockClient.UpdateStock(product.Id, 1);
         }
-        else
+        catch (Exception ex)
         {
-            throw new ValidationException(productToAdd.Errors.Adapt<List<ValidationError>>());
+            _logger.LogError(ex, "Error updating the stock for the product {Id}", product.Id);
         }
+
+        return product.MapToDto();
     }
 
     private void AddAuditableInformation(Domain.Entities.Product.Product productToAdd)
     {
-        productToAdd.Created = _dateService.Now;
+        productToAdd.CreatedOn = _dateService.Now;
         productToAdd.CreatedBy = Guid.NewGuid().ToString(); //TODO: Add identity service.
-        productToAdd.LastModified = productToAdd.Created;
+        productToAdd.LastModifiedOn = productToAdd.CreatedOn;
         productToAdd.LastModifiedBy = productToAdd.CreatedBy;
     }
 }
-

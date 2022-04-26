@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
 
-namespace Application;
+namespace CleanCompanyName.DDDMicroservice.Application;
 
 public static class DependencyInjection
 {

@@ -1,13 +1,13 @@
-﻿using MediatR;
-using Mapster;
-using Application.Common.Interfaces;
-using Application.Products.DTOs;
+﻿using Mapster;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 
-namespace Application.Products.Queries.GetProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
 
 public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductDto>
 {
     private IProductRepository _productRepository;
+
     public GetProductQueryHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
@@ -19,4 +19,3 @@ public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductDt
         return result.Adapt<ProductDto>();
     }
 }
-

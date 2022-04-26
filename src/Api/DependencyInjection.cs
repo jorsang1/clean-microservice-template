@@ -1,7 +1,6 @@
-﻿using Api.Endpoints;
-using Microsoft.AspNetCore.HttpLogging;
+﻿using CleanCompanyName.DDDMicroservice.Api.Endpoints;
 
-namespace Api;
+namespace CleanCompanyName.DDDMicroservice.Api;
 
 public static class DependencyInjection
 {
@@ -9,8 +8,8 @@ public static class DependencyInjection
     private static readonly SwaggerEndpoints swaggerEndpoints = new SwaggerEndpoints();
     public static IServiceCollection AddApi(this IServiceCollection services)
     {
-        swaggerEndpoints.DefineServices(services);
-        productEndpoints.DefineServices(services);
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
 
         //services.AddHttpLogging(httpLogging =>
         //{

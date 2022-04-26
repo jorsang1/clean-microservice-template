@@ -1,9 +1,9 @@
-﻿using Application.Common.Interfaces;
-using Infrastructure.Database.Mappers;
-using Infrastructure.Database.Models;
-using Mapster;
+﻿using Mapster;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Mappers;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
 
-namespace Infrastructure.Database.Repositories;
+namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
 
 public class ProductRepository : IProductRepository
 {
@@ -47,5 +47,4 @@ public class ProductRepository : IProductRepository
     {
         Products.Remove(product.Adapt<Product>());
     }
-
 }

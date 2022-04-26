@@ -1,9 +1,12 @@
-﻿namespace Infrastructure.Database.Mappers;
+﻿namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Mappers;
+
 internal static class ProductsMapper
 {
     public static Domain.Entities.Product.Product? MapToEntity(this Database.Models.Product dto)
     {
-        if (dto == null) return null;
+        if (dto is null)
+            return null;
+
         return new Domain.Entities.Product.Product
         {
             Id = dto.Id,
@@ -11,9 +14,9 @@ internal static class ProductsMapper
             Title = new Domain.Entities.Product.ValueObjects.ProjectTitle(dto.Title),
             Description = dto.Description,
             Price = dto.Price,
-            Created = dto.CreationDate,
+            CreatedOn = dto.CreationDate,
             CreatedBy = dto.CreationBy,
-            LastModified = dto.LastUpdate,
+            LastModifiedOn = dto.LastUpdate,
             LastModifiedBy = dto.LastUpdateBy,
         };
     }
