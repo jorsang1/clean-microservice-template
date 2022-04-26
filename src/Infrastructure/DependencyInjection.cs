@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Mapster;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Services;
-using Mapster;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Configuration;
 

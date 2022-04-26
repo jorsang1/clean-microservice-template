@@ -1,7 +1,7 @@
-﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿using Mapster;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Mappers;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
-using Mapster;
 
 namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
 
