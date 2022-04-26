@@ -1,7 +1,7 @@
-﻿using Domain.Common;
-using Domain.Entities.Product.ValueObjects;
+﻿using CleanCompanyName.DDDMicroservice.Domain.Common;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Product.ValueObjects;
 
-namespace Domain.Entities.Product;
+namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
 
 public class Product : AuditableEntity, IValidatable
 {

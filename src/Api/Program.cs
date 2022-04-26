@@ -1,6 +1,6 @@
-using Api;
-using Application;
-using Infrastructure;
+using CleanCompanyName.DDDMicroservice.Api;
+using CleanCompanyName.DDDMicroservice.Application;
+using CleanCompanyName.DDDMicroservice.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

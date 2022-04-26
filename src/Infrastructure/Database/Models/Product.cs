@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Database.Models;
+﻿namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
 
 public record Product(
     Guid Id,

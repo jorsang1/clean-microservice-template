@@ -1,7 +1,6 @@
-﻿using Application.Common.Interfaces;
-using MediatR;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 
-namespace Application.Products.Commands.DeleteProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 
 public class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCommand>
 {

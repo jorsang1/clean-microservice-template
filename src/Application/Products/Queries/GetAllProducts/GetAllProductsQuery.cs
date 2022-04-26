@@ -1,7 +1,6 @@
-﻿using MediatR;
-using Application.Products.DTOs;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 
-namespace Application.Products.Queries.GetAllProducts;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 
 public class GetAllProductsQuery : IRequest<List<ProductListItemDto>> 
 { 

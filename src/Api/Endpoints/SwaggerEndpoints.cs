@@ -1,4 +1,4 @@
-﻿namespace Api.Endpoints;
+﻿namespace CleanCompanyName.DDDMicroservice.Api.Endpoints;
 
 public class SwaggerEndpoints
 {

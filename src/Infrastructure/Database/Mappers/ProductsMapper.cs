@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Database.Mappers;
+﻿namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Mappers;
 
 internal static class ProductsMapper
 {

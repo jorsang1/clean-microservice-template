@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Application.Common.Interfaces;
-using Application.Products.DTOs;
-using Application.Common.Exceptions;
+﻿using Microsoft.Extensions.Logging;
 using Mapster;
-using Microsoft.Extensions.Logging;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 
-namespace Application.Products.Commands.AddProduct;
+namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 
 public class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
 {

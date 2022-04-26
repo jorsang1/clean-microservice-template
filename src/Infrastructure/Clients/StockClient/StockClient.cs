@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
-using Application.Common.Interfaces;
-using Infrastructure.Clients.StockClient.Configuration;
-using Infrastructure.Clients.StockClient.Models;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Configuration;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Models;
 
-namespace Infrastructure.Clients.StockClient;
+namespace CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient;
 
 
 public class StockClient : IStockClient

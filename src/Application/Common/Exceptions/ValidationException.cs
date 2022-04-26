@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Application.Common.Exceptions;
+namespace CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 
 public class ValidationException : Exception
 {
