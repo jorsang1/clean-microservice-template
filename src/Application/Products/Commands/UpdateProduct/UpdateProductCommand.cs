@@ -1,5 +1,4 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
-using MediatR;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 

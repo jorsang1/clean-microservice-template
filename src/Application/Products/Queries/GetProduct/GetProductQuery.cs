@@ -1,5 +1,4 @@
-﻿using MediatR;
-using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
 

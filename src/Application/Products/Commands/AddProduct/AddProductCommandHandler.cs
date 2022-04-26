@@ -1,9 +1,8 @@
-﻿using MediatR;
+﻿using Microsoft.Extensions.Logging;
+using Mapster;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
-using Mapster;
-using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 

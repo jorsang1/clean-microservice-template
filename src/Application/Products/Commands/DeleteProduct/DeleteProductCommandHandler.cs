@@ -1,5 +1,4 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
-using MediatR;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 

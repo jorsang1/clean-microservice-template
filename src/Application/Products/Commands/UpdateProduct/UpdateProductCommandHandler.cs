@@ -1,5 +1,4 @@
-﻿using MediatR;
-using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
 using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 using Mapster;

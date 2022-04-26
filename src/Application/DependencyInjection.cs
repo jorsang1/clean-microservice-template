@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
 
 namespace CleanCompanyName.DDDMicroservice.Application;
 
