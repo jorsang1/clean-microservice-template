@@ -53,7 +53,7 @@ Unit testing is done using Fluent Assertions.
 
 ### Notification pattern
 We try to avoid exception driven development therefore we apply in our own way the notification pattern proposed by [Martin Fowler](https://martinfowler.com/articles/replaceThrowWithNotification.html).  
-Basically, what we do is to handle validations on the domain level and append the errors to the entity as they extend the `ValidableEntity`.   
+Basically, what we do is to handle validations on the domain level and append the errors to the entity as they implement the `IValidatable` interface.   
 Then, the Application layer is the one responsible to check the validation and throw a custom `ValidationException` with the errors.   
 Then on the upper layer, the API, catches the exception and gets the errors and return the object with all the errors that occured.   
 
