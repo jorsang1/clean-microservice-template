@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
-using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 

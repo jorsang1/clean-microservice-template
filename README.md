@@ -20,6 +20,11 @@ Only the database layer is implemented using an in memory repository.
 ## TODO
 
 - ADR decisions should be reachable from the solution explorer... how?
+- Add unit testing
+  > And maybe even some functional or integration tests.
+  > This video about [clean testing](https://www.youtube.com/watch?v=hV43fiHYBb4) can inspirational.
+- Add identity handling
+  > Even though it could be unnecessary for some microservices it's a very common problem that is nice to have it solved, and the one who don't need it can easily remove it. (or it could even be parametrizable)
 - Shall we add `ID` value object for entities?
   > https://andrewlock.net/using-strongly-typed-entity-ids-to-avoid-primitive-obsession-part-1/
 - We give up with mapster for Value objects. Moved to a custom mapper. See method GetAll from repository.
@@ -29,8 +34,16 @@ Only the database layer is implemented using an in memory repository.
 - Nullability of types must not be ignored, warnings should be errors
 This will cause more code, more conditionals and more verbosity, but the prize is null safety everywhere. Also, `!` operator shall be forbidden. We must either go all in or let's not at all.
 - Records instead of classes where useful and applicable
+- Replace value objects class for `record struct` so we can remove the custom logic.
 - Global usings where useful
 - Hermetisation (everything `private` instead of `public` by default)
+- Improve dockerfile offered by adding some security advices
+- Add logging.
+  > Scoped logging, propose the right places on where and what to log (Request filters, mediator behaviors, etc)
+- Behavior pipelines for exception handling, maybe?
+- Add more examples for Value objects
+- Ubiquitous language. Generate dictionary from comments on the Domain layer
+- More explanations on the readme or other docs
 
 
 ## Features

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json.schemastore.org/template",
-  "author": "Jordi Sanchez",
+  "author": "Jordi Sánchez García",
   "classifications": [ "API", "Microservice", "DDD", "CleanArchitecture", "CQRS" ],
   "identity": "Jorsang1.CleanMicroserviceAPITemplate.CSharp",
   "shortName": "cleandddapi",

@@ -22,11 +22,11 @@ public class Product : AuditableEntity, IValidatable
 
         validationResult.AddErrorsFrom(Title);
 
-        if (String.IsNullOrEmpty(Sku))
+        if (string.IsNullOrEmpty(Sku))
         {
             validationResult.AddError("", "SKU cannot be empty", "");
         }
-        if (String.IsNullOrEmpty(Description))
+        if (string.IsNullOrEmpty(Description))
         {
             validationResult.AddError("", "Description cannot be empty", "");
         }

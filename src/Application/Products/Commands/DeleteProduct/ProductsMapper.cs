@@ -1,4 +1,4 @@
-﻿using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 

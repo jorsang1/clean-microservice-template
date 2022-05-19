@@ -1,17 +1,18 @@
 ﻿using Microsoft.Extensions.Logging;
 using Mapster;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
-using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
 public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {
-    private IProductRepository _productRepository;
-    private IDateTime _dateService;
-    private ILogger _logger;
-    public DeleteProductCommandHandler(IProductRepository productRepository, IDateTime dateService, ILogger logger)
+    private readonly IProductRepository _productRepository;
+    private readonly IDateTime _dateService;
+    private readonly ILogger _logger;
+
+    public DeleteProductCommandHandler(IProductRepository productRepository, IDateTime dateService, ILogger<DeleteProductCommandHandler> logger)
     {
         _productRepository = productRepository;
         _dateService = dateService;
@@ -54,6 +55,6 @@ public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand,
     private void UpdateAuditableInformation(Domain.Entities.Product.Product productToAdd)
     {
         productToAdd.LastModifiedOn = _dateService.Now;
-        productToAdd.LastModifiedBy = Guid.Empty.ToString();
+        productToAdd.LastModifiedBy = Guid.Empty;
     }
 }

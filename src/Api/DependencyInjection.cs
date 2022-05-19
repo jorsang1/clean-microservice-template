@@ -4,8 +4,9 @@ namespace CleanCompanyName.DDDMicroservice.Api;
 
 public static class DependencyInjection
 {
-    private static readonly ProductEndpoints productEndpoints = new ProductEndpoints();
-    private static readonly SwaggerEndpoints swaggerEndpoints = new SwaggerEndpoints();
+    private static readonly ProductEndpoints ProductEndpoints = new();
+    private static readonly SwaggerEndpoints SwaggerEndpoints = new();
+
     public static IServiceCollection AddApi(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
@@ -22,8 +23,8 @@ public static class DependencyInjection
 
     public static WebApplication UseApi(this WebApplication app)
     {
-        swaggerEndpoints.DefineEndpoints(app);
-        productEndpoints.DefineEndpoints(app);
+        SwaggerEndpoints.DefineEndpoints(app);
+        ProductEndpoints.DefineEndpoints(app);
 
         app.UseHttpLogging();
 

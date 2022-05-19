@@ -9,7 +9,7 @@ public class ProductRepository : IProductRepository
 {
     private readonly static List<Product> Products = new()
     {
-        new Product(Guid.NewGuid(), "SKU code", "Title", "Prod description", 23.5M, DateTime.Now, "admin", DateTime.Now, "admin")
+        new Product(Guid.NewGuid(), "SKU code", "Title", "Prod description", 23.5M, DateTime.Now, Guid.NewGuid(), DateTime.Now, Guid.NewGuid())
     };
 
     public ProductRepository()

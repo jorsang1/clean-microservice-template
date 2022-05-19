@@ -7,6 +7,6 @@ public record Product(
     string Description,
     decimal Price,
     DateTime CreationDate,
-    string? CreationBy,
+    Guid? CreationBy,
     DateTime LastUpdate,
-    string? LastUpdateBy);
+    Guid? LastUpdateBy);

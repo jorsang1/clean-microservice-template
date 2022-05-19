@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Mapster;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
-using CleanCompanyName.DDDMicroservice.Application.Products.DTOs;
+using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
@@ -49,7 +49,7 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
     private void AddAuditableInformation(Domain.Entities.Product.Product productToAdd)
     {
         productToAdd.CreatedOn = _dateService.Now;
-        productToAdd.CreatedBy = Guid.NewGuid().ToString(); //TODO: Add identity service.
+        productToAdd.CreatedBy = Guid.NewGuid(); //TODO: Add identity service.
         productToAdd.LastModifiedOn = productToAdd.CreatedOn;
         productToAdd.LastModifiedBy = productToAdd.CreatedBy;
     }
