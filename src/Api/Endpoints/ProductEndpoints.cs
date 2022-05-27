@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MediatR;
-using Mapster;
-using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
-using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
-using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
+﻿using CleanCompanyName.DDDMicroservice.Api.Contracts.Requests;
 using CleanCompanyName.DDDMicroservice.Api.Contracts.Responses;
-using CleanCompanyName.DDDMicroservice.Api.Contracts.Requests;
+using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
+using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
+using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
+using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
+using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
+using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
+using Mapster;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanCompanyName.DDDMicroservice.Api.Endpoints;
 
@@ -45,7 +45,7 @@ public class ProductEndpoints
         return product is not null ? Results.Ok(product.Adapt<ProductResponse>()) : Results.NotFound();
     }
 
-    private async Task<IResult> AddProduct([FromBody] AddProductRequest request, IMediator mediator, CancellationToken cancellationToken)
+    private async Task<IResult> AddProduct([FromBody] AddProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
     {
         var command = request.Adapt<AddProductCommand>();
 
@@ -56,11 +56,12 @@ public class ProductEndpoints
         }
         catch (ValidationException validationException)
         {
+            logger.LogInformation( "{ErrorMessage} {Errors}", validationException.Message, validationException.Errors);
             return Results.BadRequest(validationException.Errors);
         }
     }
 
-    private async Task<IResult> UpdateProduct([FromBody] UpdateProductRequest request, IMediator mediator, CancellationToken cancellationToken)
+    private async Task<IResult> UpdateProduct([FromBody] UpdateProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
     {
         var command = request.Adapt<UpdateProductCommand>();
 
@@ -71,6 +72,7 @@ public class ProductEndpoints
         }
         catch (ValidationException validationException)
         {
+            logger.LogInformation("{ErrorMessage} {Errors}", validationException.Message, validationException.Errors);
             return Results.BadRequest(validationException.Errors);
         }
     }

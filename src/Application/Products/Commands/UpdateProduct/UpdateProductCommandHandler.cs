@@ -1,32 +1,37 @@
-﻿using Microsoft.Extensions.Logging;
-using Mapster;
-using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
-using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
+using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
+using FluentValidation;
+using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
-public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {
     private readonly IProductRepository _productRepository;
     private readonly IDateTime _dateService;
     private readonly ILogger _logger;
+    private readonly IValidator<Product> _validator;
 
-    public DeleteProductCommandHandler(IProductRepository productRepository, IDateTime dateService, ILogger<DeleteProductCommandHandler> logger)
+    public UpdateProductCommandHandler(IProductRepository productRepository, IDateTime dateService, ILogger<UpdateProductCommandHandler> logger,
+        IValidator<Product> validator)
     {
         _productRepository = productRepository;
         _dateService = dateService;
         _logger = logger;
+        _validator = validator;
     }
 
     public async Task<ProductDto?> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var productToUpdate = request.MapToEntity();
-        var validationResult = productToUpdate.Validate();
 
-        if (validationResult.IsValid!)
+        var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
+
+        if (!validationResult.IsValid)
         {
-            throw new ValidationException(validationResult.Errors.Adapt<List<ValidationError>>());
+            throw new Common.Exceptions.ValidationException(validationResult.Errors.MapToValidationErrors());
         }
 
         var product = await _productRepository.GetById(productToUpdate.Id);

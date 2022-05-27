@@ -1,7 +1,7 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Domain.Common;
 
 // Learn more: https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/implement-value-objects
-public abstract class ValueObject : IValidatable
+public abstract class ValueObject
 {
     protected static bool EqualOperator(ValueObject left, ValueObject right)
     {
@@ -37,6 +37,4 @@ public abstract class ValueObject : IValidatable
             .Select(x => x != null ? x.GetHashCode() : 0)
             .Aggregate((x, y) => x ^ y);
     }
-
-    public abstract ValidationResult Validate();
 }
