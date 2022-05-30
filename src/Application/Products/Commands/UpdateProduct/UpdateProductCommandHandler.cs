@@ -1,5 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
+using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
 using FluentValidation;
@@ -31,7 +32,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         if (!validationResult.IsValid)
         {
-            throw new Common.Exceptions.ValidationException(validationResult.Errors.MapToValidationErrors());
+            throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
         }
 
         var product = await _productRepository.GetById(productToUpdate.Id);
@@ -57,7 +58,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         //return Task.FromResult(_productRepository.GetById(productToUpdate.Id).MapToDto());
     }
 
-    private void UpdateAuditableInformation(Domain.Entities.Product.Product productToAdd)
+    private void UpdateAuditableInformation(Product productToAdd)
     {
         productToAdd.LastModifiedOn = _dateService.Now;
         productToAdd.LastModifiedBy = Guid.Empty;

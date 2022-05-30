@@ -1,11 +1,11 @@
 ﻿using CleanCompanyName.DDDMicroservice.Api.Contracts.Requests;
 using CleanCompanyName.DDDMicroservice.Api.Contracts.Responses;
-using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
+using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +54,7 @@ public class ProductEndpoints
             var product = await mediator.Send(command, cancellationToken);
             return Results.Ok(product.Adapt<ProductResponse>());
         }
-        catch (ValidationException validationException)
+        catch (DomainValidationException validationException)
         {
             logger.LogInformation( "{ErrorMessage} {Errors}", validationException.Message, validationException.Errors);
             return Results.BadRequest(validationException.Errors);
@@ -70,7 +70,7 @@ public class ProductEndpoints
             var product = await mediator.Send(command, cancellationToken);
             return product is not null ? Results.Ok(product.Adapt<ProductResponse>()) : Results.NotFound();
         }
-        catch (ValidationException validationException)
+        catch (DomainValidationException validationException)
         {
             logger.LogInformation("{ErrorMessage} {Errors}", validationException.Message, validationException.Errors);
             return Results.BadRequest(validationException.Errors);

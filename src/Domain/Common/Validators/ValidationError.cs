@@ -1,6 +1,6 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 
-public record ValidationError(
+public record struct ValidationError(
     string Code,
     string Message,
     string? Hint);

@@ -1,12 +1,12 @@
 ﻿using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 
-namespace CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
+namespace CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 
-public class ValidationException : Exception
+public class DomainValidationException : Exception
 {
     public IEnumerable<ValidationError> Errors { get; }
 
-    public ValidationException(IEnumerable<ValidationError> errors)
+    public DomainValidationException(IEnumerable<ValidationError> errors)
         : base("Some problems has been found during validation process:")
     {
         Errors = errors;

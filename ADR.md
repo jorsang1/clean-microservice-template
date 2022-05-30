@@ -1,10 +1,10 @@
 # ADR (Architecture Decisions Record)
 
-You can find the ADR log index for this project on: [ADR index](src/docs/decisions/index.md)
+You can find the ADR log index for this project on: [ADR index](docs/decisions/index.md)
 
 ## Usage
 
-You can add or update the decissions documented on `src/docs/decisions` and the regenerate the index.md via an npm tool. 
+You can add or update the decissions documented on `docs/decisions` and the regenerate the index.md via an npm tool. 
 Use the file `template.md` as a starting point for creating new decision records.   
 Check out the `index.md` for instructions about how to regenerate the index or just do an `npm -i` on the `src` folder.   
 

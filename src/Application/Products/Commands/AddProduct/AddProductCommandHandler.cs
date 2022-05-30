@@ -1,5 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
+using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
 using FluentValidation;
@@ -33,7 +34,7 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
 
         if (!validationResult.IsValid)
         {
-            throw new Common.Exceptions.ValidationException(validationResult.Errors.MapToValidationErrors());
+            throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
         }
 
         AddAuditableInformation(productToAdd);
@@ -51,7 +52,7 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
         return product.MapToDto();
     }
 
-    private void AddAuditableInformation(Domain.Entities.Product.Product productToAdd)
+    private void AddAuditableInformation(Product productToAdd)
     {
         productToAdd.CreatedOn = _dateService.Now;
         productToAdd.CreatedBy = Guid.NewGuid(); //TODO: Add identity service.
