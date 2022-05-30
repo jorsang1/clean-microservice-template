@@ -1,5 +1,4 @@
-﻿using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Product.ValueObjects;
 
@@ -14,7 +13,7 @@ public class ProjectTitleValidator : AbstractValidator<ProjectTitle>
             .NotEmpty()
                 .WithErrorCode("Project_Title_NotEmpty")
             .MinimumLength(MinLength)
-                .WithErrorCode("Project_Title_MinumumLength")
+                .WithErrorCode("Project_Title_MinimumLength")
             .MaximumLength(MaxLength)
                 .WithErrorCode("Project_Title_MaximumLength");
     }
