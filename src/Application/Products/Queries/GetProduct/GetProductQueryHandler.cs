@@ -16,6 +16,7 @@ public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductDt
     public async Task<ProductDto> Handle(GetProductQuery request, CancellationToken cancellationToken)
     {
         var result = await _productRepository.GetById(request.ProductId);
+        if (result!.Id == Guid.Empty) return null;
         return result.Adapt<ProductDto>();
     }
 }

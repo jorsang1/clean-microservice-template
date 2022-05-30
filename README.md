@@ -44,6 +44,8 @@ This will cause more code, more conditionals and more verbosity, but the prize i
 - Add more examples for Value objects
 - Ubiquitous language. Generate dictionary from comments on the Domain layer
 - More explanations on the readme or other docs
+- Validations
+ > Flow validations, errors on permission, or system/network errors like HTTP communication issues should be validated in application/web layer.
 
 
 ## Features
@@ -60,6 +62,9 @@ Uses mapster as the default mapper but you can allways write your own or use ano
 
 ### MediatR
 The controllers uses mediator in order to call the application layer.
+
+### FluentValidation
+The domain validation is done using FuentValidation.
 
 ### Fluent Assertions
 Unit testing is done using Fluent Assertions.

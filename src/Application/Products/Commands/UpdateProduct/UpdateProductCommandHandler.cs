@@ -1,37 +1,47 @@
-﻿using Microsoft.Extensions.Logging;
-using Mapster;
-using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
-using CleanCompanyName.DDDMicroservice.Application.Common.Exceptions;
+using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
+using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
+using FluentValidation;
+using Mapster;
+using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
-public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {
     private readonly IProductRepository _productRepository;
     private readonly IDateTime _dateService;
     private readonly ILogger _logger;
+    private readonly IValidator<Product> _validator;
 
-    public DeleteProductCommandHandler(IProductRepository productRepository, IDateTime dateService, ILogger<DeleteProductCommandHandler> logger)
+    public UpdateProductCommandHandler(
+        IProductRepository productRepository,
+        IDateTime dateService,
+        ILogger<UpdateProductCommandHandler> logger,
+        IValidator<Product> validator)
     {
         _productRepository = productRepository;
         _dateService = dateService;
         _logger = logger;
+        _validator = validator;
     }
 
     public async Task<ProductDto?> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var productToUpdate = request.MapToEntity();
-        var validationResult = productToUpdate.Validate();
+        var productToUpdate = request.Adapt<Product>();
 
-        if (validationResult.IsValid!)
+        var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
+
+        if (!validationResult.IsValid)
         {
-            throw new ValidationException(validationResult.Errors.Adapt<List<ValidationError>>());
+            throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
         }
 
         var product = await _productRepository.GetById(productToUpdate.Id);
 
-        if (product is null)
+        if (product is null || product.Id == Guid.Empty)
             return null;
 
         productToUpdate.CreatedOn = product.CreatedOn;
@@ -47,12 +57,12 @@ public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand,
             _logger.LogError(ex, "Problem updating the stock of the product on the stock service for the product {Id}, {Title}.", request.Id, request.Title);
         }
 
-        return productToUpdate.MapToDto();
+        return productToUpdate.Adapt<ProductDto>();
         //Shall we maybe query the DB to make sure the operation is done??
         //return Task.FromResult(_productRepository.GetById(productToUpdate.Id).MapToDto());
     }
 
-    private void UpdateAuditableInformation(Domain.Entities.Product.Product productToAdd)
+    private void UpdateAuditableInformation(Product productToAdd)
     {
         productToAdd.LastModifiedOn = _dateService.Now;
         productToAdd.LastModifiedBy = Guid.Empty;
