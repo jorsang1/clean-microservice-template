@@ -12,10 +12,10 @@ public class ProjectTitleValidator : AbstractValidator<ProjectTitle>
     {
         RuleFor(projectTitle => projectTitle.Value)
             .NotEmpty()
-                .WithErrorCode("Title_NotEmpty")
+                .WithErrorCode("Project_Title_NotEmpty")
             .MinimumLength(MinLength)
-                .WithAutomaticErrorCode(this)
+                .WithErrorCode("Project_Title_MinumumLength")
             .MaximumLength(MaxLength)
-                .WithErrorCode("Title_MaximumLength");
+                .WithErrorCode("Project_Title_MaximumLength");
     }
 }
