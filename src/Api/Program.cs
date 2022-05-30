@@ -24,9 +24,7 @@ builder.Services.Configure<JsonOptions>(options =>
 });
 
 
-
 var app = builder.Build();
-
 
 app.Logger.LogInformation("Starting CleanMicroserviceTemplate...");
 

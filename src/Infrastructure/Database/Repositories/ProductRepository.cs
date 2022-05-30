@@ -4,16 +4,12 @@ using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
 
 namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
 
-public class ProductRepository : IProductRepository
+internal class ProductRepository : IProductRepository
 {
     private readonly static List<Product> Products = new()
     {
         new Product(Guid.NewGuid(), "SKU code", "The title", "Prod description", 23.5M, DateTime.Now, Guid.NewGuid(), DateTime.Now, Guid.NewGuid())
     };
-
-    public ProductRepository()
-    {
-    }
 
     public async Task<Domain.Entities.Product.Product> GetById(Guid id)
     {
@@ -28,7 +24,7 @@ public class ProductRepository : IProductRepository
     public async Task<Domain.Entities.Product.Product> Create(Domain.Entities.Product.Product product)
     {
         Products.Add(product.Adapt<Product>());
-        return Products.Last().Adapt<Domain.Entities.Product.Product>();//.MapToEntity();
+        return Products.Last().Adapt<Domain.Entities.Product.Product>();
     }
 
     public async Task Update(Domain.Entities.Product.Product product)

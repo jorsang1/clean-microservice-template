@@ -2,7 +2,6 @@
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
-using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanCompanyName.DDDMicroservice.Application;

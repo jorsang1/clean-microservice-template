@@ -1,6 +1,6 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Api.Endpoints;
 
-public class SwaggerEndpoints
+internal class SwaggerEndpoints
 {
     public void DefineEndpoints(WebApplication app)
     {

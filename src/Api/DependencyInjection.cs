@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Api;
 
-public static class DependencyInjection
+internal static class DependencyInjection
 {
     private static readonly ProductEndpoints ProductEndpoints = new();
     private static readonly SwaggerEndpoints SwaggerEndpoints = new();

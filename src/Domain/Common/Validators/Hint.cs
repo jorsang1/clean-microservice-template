@@ -1,6 +1,6 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 
-public record struct Hint
+internal record struct Hint
 (
     string? Message
 );

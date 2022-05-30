@@ -6,12 +6,15 @@ using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Models
 namespace CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient;
 
 
-public class StockClient : IStockClient
+internal class StockClient : IStockClient
 {
     private readonly static HttpClient HttpClient = new();
 
     public StockClient(StockClientConfiguration configuration)
     {
+        if (string.IsNullOrEmpty(configuration.BaseUrl))
+            throw new ArgumentNullException(nameof(configuration.BaseUrl), "Base url for the stock client not provided in the configuration.");
+
         HttpClient.BaseAddress = new Uri(configuration.BaseUrl);
         HttpClient.DefaultRequestHeaders.Add("Authorization", "PrivateKey " + configuration.Secret);
     }

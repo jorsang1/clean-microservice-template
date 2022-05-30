@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Services;
 
-public class DateTimeService : IDateTime
+internal class DateTimeService : IDateTime
 {
     public DateTimeOffset Now => DateTimeOffset.UtcNow;
 }

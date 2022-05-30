@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
-public class UpdateProductCommand : IRequest<ProductDto>
+public record struct UpdateProductCommand : IRequest<ProductDto?>
 {
     public Guid Id { get; set; }
     public string Sku { get; set; }

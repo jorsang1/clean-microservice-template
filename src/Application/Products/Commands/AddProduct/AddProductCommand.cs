@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 
-public class AddProductCommand : IRequest<ProductDto>
+public record struct AddProductCommand : IRequest<ProductDto>
 {
     public Guid Id { get; set; }
     public string Sku { get; set; }

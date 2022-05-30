@@ -4,12 +4,11 @@ using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
 using FluentValidation;
-using Mapster;
 using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
+internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {
     private readonly IProductRepository _productRepository;
     private readonly IDateTime _dateService;

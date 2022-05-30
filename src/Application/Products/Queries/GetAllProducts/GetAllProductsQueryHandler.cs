@@ -1,12 +1,11 @@
-﻿using Mapster;
-using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 
-public class GetProductQueryHandler : IRequestHandler<GetAllProductsQuery, List<ProductListItemDto>>
+internal class GetProductQueryHandler : IRequestHandler<GetAllProductsQuery, List<ProductListItemDto>>
 {
-    private IProductRepository _productRepository;
+    private readonly IProductRepository _productRepository;
 
     public GetProductQueryHandler(IProductRepository productRepository)
     {

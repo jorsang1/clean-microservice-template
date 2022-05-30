@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 
-public class GetAllProductsQuery : IRequest<List<ProductListItemDto>> 
+public record struct GetAllProductsQuery : IRequest<List<ProductListItemDto>> 
 { 
     public Guid UserId { get; set; }
 }

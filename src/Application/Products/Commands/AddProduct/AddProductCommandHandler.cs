@@ -4,12 +4,11 @@ using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
 using FluentValidation;
-using Mapster;
 using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 
-public class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
+internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
 {
     private readonly IProductRepository _productRepository;
     private readonly IDateTime _dateService;

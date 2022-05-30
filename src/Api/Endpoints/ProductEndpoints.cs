@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleanCompanyName.DDDMicroservice.Api.Endpoints;
 
-public class ProductEndpoints
+internal class ProductEndpoints
 {
     public void DefineEndpoints(WebApplication app)
     {

@@ -1,6 +1,4 @@
-﻿//using CleanExample.Application.Common.Models;
-
-namespace CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿namespace CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 
 public interface IIdentityService
 {

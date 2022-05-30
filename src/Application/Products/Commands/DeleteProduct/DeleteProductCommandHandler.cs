@@ -2,9 +2,9 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 
-public class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCommand>
+internal class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCommand>
 {
-    private IProductRepository _productRepository;
+    private readonly IProductRepository _productRepository;
 
     public DeleteProductCommandHandler(IProductRepository productRepository)
     {

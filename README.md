@@ -27,22 +27,17 @@ Only the database layer is implemented using an in memory repository.
   > Even though it could be unnecessary for some microservices it's a very common problem that is nice to have it solved, and the one who don't need it can easily remove it. (or it could even be parametrizable)
 - Shall we add `ID` value object for entities?
   > https://andrewlock.net/using-strongly-typed-entity-ids-to-avoid-primitive-obsession-part-1/
-- We give up with mapster for Value objects. Moved to a custom mapper. See method GetAll from repository.
 - What about the metrics? 
   > AppMetrics doesn't seem to be updated for .NET 6.    
   > There is this option from MS [Announcing dotnet monitor in .NET 6](https://devblogs.microsoft.com/dotnet/announcing-dotnet-monitor-in-net-6/)   
-- Nullability of types must not be ignored, warnings should be errors
-This will cause more code, more conditionals and more verbosity, but the prize is null safety everywhere. Also, `!` operator shall be forbidden. We must either go all in or let's not at all.
-- Records instead of classes where useful and applicable
-- Replace value objects class for `record struct` so we can remove the custom logic.
-- Global usings where useful
-- Hermetisation (everything `private` instead of `public` by default)
 - Improve dockerfile offered by adding some security advices
 - Add logging.
   > Scoped logging, propose the right places on where and what to log (Request filters, mediator behaviors, etc)
 - Behavior pipelines for exception handling, maybe?
 - Add more examples for Value objects
-- Ubiquitous language. Generate dictionary from comments on the Domain layer
+- Ubiquitous language. 
+  > Based on [this article](https://blog.ndepend.com/checking-ddd-ubiquitous-language-with-ndepend/), they idea could be to have a dictionary of terms and actions defined and then use those keys to check the entities, properties and methods on the domain layer on a unit test so we make sure we have a definition and our code follows what is understandable in the bounded context.  
+  Continuing on this idea the terms with descriptions could be also available via endpoint so it can be queried or published or whatever.
 - More explanations on the readme or other docs
 - Validations
  > Flow validations, errors on permission, or system/network errors like HTTP communication issues should be validated in application/web layer.
