@@ -36,7 +36,7 @@ public class ProductEndpoints
     {
         logger.LogInformation("Getting all products. (Just an example on how to log inside a 'controller' if you need it)");
         var products = await mediator.Send(new GetAllProductsQuery(), cancellationToken);
-        return Results.Ok(products.Adapt<List<ProductResponse>>());
+        return Results.Ok(products.Adapt<List<ProductListItemResponse>>());
     }
 
     private async Task<IResult> GetProduct(Guid id, IMediator mediator, CancellationToken cancellationToken)

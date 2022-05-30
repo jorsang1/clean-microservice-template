@@ -1,3 +1,3 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 
-public record ProductListItemDto(Guid Id, string Sku, string Title);
+public record ProductListItemDto(Guid Id, string Title);

@@ -9,7 +9,7 @@ public class ProjectTitleValidator : AbstractValidator<ProjectTitle>
 
     public ProjectTitleValidator()
     {
-        RuleFor(projectTitle => projectTitle.Value)
+        RuleFor(projectTitle => projectTitle.Title)
             .NotEmpty()
                 .WithErrorCode("Project_Title_NotEmpty")
             .MinimumLength(MinLength)

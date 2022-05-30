@@ -6,6 +6,7 @@ using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Services;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Configuration;
+using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
 
 namespace CleanCompanyName.DDDMicroservice.Infrastructure;
 
@@ -19,6 +20,7 @@ public static class DependencyInjection
             => new StockClient(
                     configuration.GetSection("StockClientConfiguration").Get<StockClientConfiguration>()
                 ));
+
         AddMappingConfigs();
 
         return services;
@@ -26,7 +28,12 @@ public static class DependencyInjection
 
     public static void AddMappingConfigs() 
     {
-        //var config = TypeAdapterConfig<Database.Models.Product, Domain.Entities.Product.Product>.NewConfig().MapToConstructor(true).Map<>
-        TypeAdapterConfig<string, Domain.Entities.Product.ValueObjects.ProjectTitle>.NewConfig().MapToConstructor(true);
+        TypeAdapterConfig<Domain.Entities.Product.Product, Product>.NewConfig()
+            .Map(dest => dest.Title,
+                src => src.Title.Title);
+
+        TypeAdapterConfig<Product, Domain.Entities.Product.Product>.NewConfig()
+            .Map(dest => dest.Title,
+                src => new Domain.Entities.Product.ValueObjects.ProjectTitle(src.Title));
     }
 }

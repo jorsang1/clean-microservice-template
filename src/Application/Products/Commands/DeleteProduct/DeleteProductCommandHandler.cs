@@ -15,7 +15,7 @@ public class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductComm
     {
         var product = await _productRepository.GetById(request.Id);
 
-        if (product is not null)
+        if (product is not null && product.Id != Guid.Empty)
         {
             await _productRepository.Delete(product);
         }
