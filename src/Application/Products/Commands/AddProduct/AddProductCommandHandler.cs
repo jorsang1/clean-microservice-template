@@ -16,7 +16,11 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
     private readonly ILogger<AddProductCommandHandler> _logger;
     private readonly IValidator<Product> _validator;
 
-    public AddProductCommandHandler(IProductRepository productRepository, IDateTime dateService, IStockClient stockClient, ILogger<AddProductCommandHandler> logger,
+    public AddProductCommandHandler(
+        IProductRepository productRepository,
+        IDateTime dateService,
+        IStockClient stockClient,
+        ILogger<AddProductCommandHandler> logger,
         IValidator<Product> validator)
     {
         _productRepository = productRepository;

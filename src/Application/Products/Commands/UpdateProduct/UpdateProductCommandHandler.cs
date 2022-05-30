@@ -15,7 +15,10 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
     private readonly ILogger _logger;
     private readonly IValidator<Product> _validator;
 
-    public UpdateProductCommandHandler(IProductRepository productRepository, IDateTime dateService, ILogger<UpdateProductCommandHandler> logger,
+    public UpdateProductCommandHandler(
+        IProductRepository productRepository,
+        IDateTime dateService,
+        ILogger<UpdateProductCommandHandler> logger,
         IValidator<Product> validator)
     {
         _productRepository = productRepository;
