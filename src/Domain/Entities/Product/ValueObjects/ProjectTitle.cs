@@ -2,7 +2,8 @@
 
 namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Product.ValueObjects;
 
-public class ProjectTitle : ValueObject
+public record struct ProjectTitle(string Title);
+/*public class ProjectTitle : ValueObject
 {
     public string Value { get; }
 
@@ -15,4 +16,4 @@ public class ProjectTitle : ValueObject
     {
         yield return Value;
     }
-}
+}*/

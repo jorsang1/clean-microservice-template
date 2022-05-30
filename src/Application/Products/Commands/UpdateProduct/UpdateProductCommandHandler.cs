@@ -4,6 +4,7 @@ using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
 using FluentValidation;
+using Mapster;
 using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
@@ -29,7 +30,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
     public async Task<ProductDto?> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var productToUpdate = request.MapToEntity();
+        var productToUpdate = request.Adapt<Product>();
 
         var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
 
@@ -40,7 +41,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         var product = await _productRepository.GetById(productToUpdate.Id);
 
-        if (product is null)
+        if (product is null || product.Id == Guid.Empty)
             return null;
 
         productToUpdate.CreatedOn = product.CreatedOn;
@@ -56,7 +57,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             _logger.LogError(ex, "Problem updating the stock of the product on the stock service for the product {Id}, {Title}.", request.Id, request.Title);
         }
 
-        return productToUpdate.MapToDto();
+        return productToUpdate.Adapt<ProductDto>();
         //Shall we maybe query the DB to make sure the operation is done??
         //return Task.FromResult(_productRepository.GetById(productToUpdate.Id).MapToDto());
     }

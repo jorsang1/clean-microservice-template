@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
-using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Mappers;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
 
 namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
@@ -9,7 +8,7 @@ public class ProductRepository : IProductRepository
 {
     private readonly static List<Product> Products = new()
     {
-        new Product(Guid.NewGuid(), "SKU code", "Title", "Prod description", 23.5M, DateTime.Now, Guid.NewGuid(), DateTime.Now, Guid.NewGuid())
+        new Product(Guid.NewGuid(), "SKU code", "The title", "Prod description", 23.5M, DateTime.Now, Guid.NewGuid(), DateTime.Now, Guid.NewGuid())
     };
 
     public ProductRepository()
@@ -18,23 +17,18 @@ public class ProductRepository : IProductRepository
 
     public async Task<Domain.Entities.Product.Product> GetById(Guid id)
     {
-        return Products.FirstOrDefault(p => p.Id == id)!.MapToEntity();//.Adapt<Domain.Entities.Product.Product>();
+        return Products.FirstOrDefault(p => p.Id == id)!.Adapt<Domain.Entities.Product.Product>();
     }
 
     public async Task<List<Domain.Entities.Product.Product>> GetAll()
     {
-        //var config = new TypeAdapterConfig();
-        //config.NewConfig<Database.Models.Product, Domain.Entities.Product.Product>()
-        //    .Map(d => d.Title, s => new Domain.Entities.Product.ValueObjects.ProjectTitle(s.Title));
-
-        //return Products.Select(p => p.Adapt<Domain.Entities.Product.Product>(config)).ToList();
-        return Products.Select(p => p.MapToEntity()).ToList();
+        return Products.Select(p => p.Adapt<Domain.Entities.Product.Product>()).ToList();
     }
 
     public async Task<Domain.Entities.Product.Product> Create(Domain.Entities.Product.Product product)
     {
         Products.Add(product.Adapt<Product>());
-        return Products.Last().MapToEntity();
+        return Products.Last().Adapt<Domain.Entities.Product.Product>();//.MapToEntity();
     }
 
     public async Task Update(Domain.Entities.Product.Product product)
@@ -45,6 +39,6 @@ public class ProductRepository : IProductRepository
 
     public async Task Delete(Domain.Entities.Product.Product product)
     {
-        Products.Remove(product.Adapt<Product>());
+        Products.Remove(Products.First(p => p.Id == product.Id));
     }
 }

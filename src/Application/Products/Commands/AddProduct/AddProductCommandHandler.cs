@@ -4,6 +4,7 @@ using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
 using FluentValidation;
+using Mapster;
 using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
@@ -32,7 +33,7 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
 
     public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
-        var productToAdd = request.MapToEntity();
+        var productToAdd = request.Adapt<Product>();
 
         var validationResult = await _validator.ValidateAsync(productToAdd, cancellationToken);
 
@@ -53,7 +54,7 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
             _logger.LogError(ex, "Error updating the stock for the product {Id}", product.Id);
         }
 
-        return product.MapToDto();
+        return product.Adapt<ProductDto>();
     }
 
     private void AddAuditableInformation(Product productToAdd)

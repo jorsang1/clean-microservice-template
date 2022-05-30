@@ -1,12 +1,12 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
 
-public record Product(
+public record struct Product(
     Guid Id,
     string Sku,
     string Title,
     string Description,
     decimal Price,
-    DateTime CreationDate,
-    Guid? CreationBy,
-    DateTime LastUpdate,
-    Guid? LastUpdateBy);
+    DateTimeOffset CreatedOn,
+    Guid? CreatedBy,
+    DateTimeOffset LastModifiedOn,
+    Guid? LastModifiedBy);
