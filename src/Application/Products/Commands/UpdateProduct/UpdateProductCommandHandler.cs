@@ -2,7 +2,7 @@
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
@@ -34,9 +34,7 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
         var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
 
         if (!validationResult.IsValid)
-        {
             throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
-        }
 
         var product = await _productRepository.GetById(productToUpdate.Id);
 

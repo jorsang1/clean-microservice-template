@@ -2,7 +2,7 @@
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
@@ -10,10 +10,10 @@ namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProd
 
 internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
 {
-    private readonly IProductRepository _productRepository;
     private readonly IDateTime _dateService;
+    private readonly ILogger _logger;
+    private readonly IProductRepository _productRepository;
     private readonly IStockClient _stockClient;
-    private readonly ILogger<AddProductCommandHandler> _logger;
     private readonly IValidator<Product> _validator;
 
     public AddProductCommandHandler(
@@ -37,9 +37,7 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
         var validationResult = await _validator.ValidateAsync(productToAdd, cancellationToken);
 
         if (!validationResult.IsValid)
-        {
             throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
-        }
 
         AddAuditableInformation(productToAdd);
         var product = await _productRepository.Create(productToAdd);

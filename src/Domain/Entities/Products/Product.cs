@@ -1,7 +1,7 @@
 ﻿using CleanCompanyName.DDDMicroservice.Domain.Common;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Product.ValueObjects;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 
-namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Product;
+namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 
 public class Product : AuditableEntity
 {
