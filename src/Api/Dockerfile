@@ -7,16 +7,17 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["CleanMicroserviceTemplate.csproj", "."]
-RUN dotnet restore "./CleanMicroserviceTemplate.csproj"
+RUN ls -la
+COPY ["Api/Api.csproj", "."]
+RUN dotnet restore "./Api.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "CleanMicroserviceTemplate.csproj" -c Release -o /app/build
+RUN dotnet build "Api/Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "CleanMicroserviceTemplate.csproj" -c Release -o /app/publish
+RUN dotnet publish "Api/Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CleanMicroserviceTemplate.dll"]
+ENTRYPOINT ["dotnet", "Api.dll"]
