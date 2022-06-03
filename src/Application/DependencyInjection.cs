@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CleanCompanyName.DDDMicroservice.Application.Pipelines;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
@@ -10,7 +11,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddMediatR(Assembly.GetExecutingAssembly())
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionEnrichingPipelineBehaviour<,>));
 
         AddMappingConfigs();
 
