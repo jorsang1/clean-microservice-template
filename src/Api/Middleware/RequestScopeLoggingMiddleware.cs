@@ -21,8 +21,13 @@ public class RequestScopeLoggingMiddleware
         using var _ = _logger.BeginScope(scope);
         _logger.LogInformation("⟶ URL {scope} has started", scope);
 
-        await _next(context);
-
-        _logger.LogInformation("⟵ URL {scope} has finished in {actionDuration}", scope, stopwatch.Elapsed);
+        try
+        {
+            await _next(context);
+        }
+        finally
+        {
+            _logger.LogInformation("⟵ URL {scope} has finished in {actionDuration}", scope, stopwatch.Elapsed);
+        }
     }
 }
