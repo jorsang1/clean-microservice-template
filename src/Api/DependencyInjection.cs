@@ -1,4 +1,5 @@
 ﻿using CleanCompanyName.DDDMicroservice.Api.Endpoints;
+using CleanCompanyName.DDDMicroservice.Api.Middleware;
 
 namespace CleanCompanyName.DDDMicroservice.Api;
 
@@ -12,11 +13,10 @@ internal static class DependencyInjection
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
-        //services.AddHttpLogging(httpLogging =>
-        //{
-        //    httpLogging.LoggingFields = HttpLoggingFields.All;
-        //    httpLogging.MediaTypeOptions.AddText("application/javascript");
-        //});
+        services.AddHttpLogging(httpLogging =>
+        {
+            httpLogging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
+        });
 
         return services;
     }
@@ -27,6 +27,7 @@ internal static class DependencyInjection
         ProductEndpoints.DefineEndpoints(app);
 
         app.UseHttpLogging();
+        app.UseMiddleware<RequestScopeLoggingMiddleware>();
 
         return app;
     }
