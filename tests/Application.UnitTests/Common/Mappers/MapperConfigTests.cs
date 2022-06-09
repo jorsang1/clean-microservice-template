@@ -7,9 +7,9 @@ using FluentAssertions;
 using Mapster;
 using Xunit;
 
-namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Mappings;
+namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Common.Mappers;
 
-public class ProductMapperTests : IClassFixture<DependencyInjectionFixture>
+public class MapperConfigTests: IClassFixture<MapperConfigSetup>
 {
     private const string TestTitle = "some title";
 

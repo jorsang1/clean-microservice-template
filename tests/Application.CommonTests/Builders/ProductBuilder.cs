@@ -31,12 +31,4 @@ public static class ProductBuilder
             Sku = "sku",
         };
     }
-
-    public static IEnumerable<ValidationError> GetValidationErrors()
-    {
-        return new List<ValidationError>
-        {
-            new("Product_Error", "You are getting error", "Try it again!")
-        };
-    }
 }

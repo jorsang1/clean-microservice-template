@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
+﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 using FluentAssertions;
@@ -10,38 +7,34 @@ using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.IntegrationTests.Products.Commands;
 
-using static Testing;
-
-public class DeleteProductTests : IClassFixture<Testing>
+public class DeleteProductTests : TestBase
 {
+    public DeleteProductTests(Testing testing)
+        : base(testing)
+    {
+    }
+
     [Fact]
     public async Task WHEN_not_providing_valid_Id_THEN_throws_not_found_exception()
     {
         var command = new DeleteProductCommand { Id = Guid.Empty };
 
-        await FluentActions.Invoking(() =>
-            SendAsync(command)).Should().ThrowAsync<KeyNotFoundException>();
+        await FluentActions.Invoking(() => SendAsync(command))
+            .Should()
+            .ThrowAsync<KeyNotFoundException>();
     }
 
     [Fact]
     public async Task WHEN_providing_valid_id_THEN_product_is_deleted()
     {
-        var productCreated =
-            await SendAsync
-            (
-                ProductBuilder.GetProduct().Adapt<AddProductCommand>()
-            );
+        var addProductCommand = ProductBuilder.GetProduct().Adapt<AddProductCommand>();
+        var productCreated = await SendAsync(addProductCommand);
 
-        await SendAsync
-        (
-            new DeleteProductCommand
-            {
-                Id = productCreated.Id
-            }
-        );
+        var deleteProductCommand = new DeleteProductCommand { Id = productCreated.Id };
+        await SendAsync(deleteProductCommand);
 
         var result = await GetById(productCreated.Id);
-        
+
         result.Should().BeNull();
     }
 }

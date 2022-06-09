@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
+using CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.ExposedHandlers;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentAssertions;
@@ -74,5 +75,61 @@ public class UpdateProductTests : ProductTestBase
 
         productDto!.Sku.Should().Be(command.Sku);
         productDto.Title.Should().Be(command.Title);
+    }
+
+    [Fact]
+    public async Task WHEN_product_is_not_found_THEN_product_is_not_returned()
+    {
+        var product = ProductBuilder.GetProductEmpty();
+        var command = product.Adapt<UpdateProductCommand>();
+
+        MockSetup.SetupValidationValidResponse(_validator);
+        MockSetup.SetupRepositoryGetByIdNullResponse(ProductRepository);
+
+        var requestHandler = new UpdateProductCommandHandler
+        (
+            ProductRepository.Object,
+            _dateService.Object,
+            _logger,
+            _validator.Object
+        );
+
+        var result = await requestHandler.Handle(command, CancellationToken.None);
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task WHEN_updating_product_and_getting_an_error_on_update_THEN_error_is_logged()
+    {
+        var product = ProductBuilder.GetProduct();
+        var command = product.Adapt<UpdateProductCommand>();
+
+        var mockLogger = new Mock<ILogger<UpdateProductCommandHandlerExposed>>();
+
+        MockSetup.SetupValidationValidResponse(_validator);
+        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
+        MockSetup.SetupRepositoryUpdateErrorResponse(ProductRepository);
+
+        var requestHandler = new UpdateProductCommandHandlerExposed
+        (
+            ProductRepository.Object,
+            _dateService.Object,
+            mockLogger.Object,
+            _validator.Object
+        );
+
+        var result = await requestHandler.Handle(command, CancellationToken.None);
+
+        mockLogger.Verify(l => l.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((value, _) =>
+                    value
+                        .ToString()!
+                        .Contains($"Problem updating the stock of the product on the stock service for the product {command.Id}, {command.Title}")),
+                It.IsAny<Exception>(),
+                ((Func<It.IsAnyType, Exception, string>)It.IsAny<object>())!),
+            Times.Once);
     }
 }

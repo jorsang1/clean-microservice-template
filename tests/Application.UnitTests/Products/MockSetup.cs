@@ -48,11 +48,32 @@ public class MockSetup
             .ReturnsAsync(product);
     }
 
+    public void SetupRepositoryUpdateErrorResponse(Mock<IProductRepository> productRepository)
+    {
+        productRepository
+            .Setup(repo => repo.Update(It.IsAny<Product>()))
+            .ThrowsAsync(new Exception());
+    }
+
+    public void SetupRepositoryDeleteErrorResponse(Mock<IProductRepository> productRepository)
+    {
+        productRepository
+            .Setup(repo => repo.Delete(It.IsAny<Product>()))
+            .ThrowsAsync(new Exception() );
+    }
+
     internal void SetupRepositoryGetByIdValidResponse(Mock<IProductRepository> productRepository, Product product)
     {
         productRepository
             .Setup(repo => repo.GetById(It.IsAny<Guid>()))
             .ReturnsAsync(product);
+    }
+
+    internal void SetupRepositoryGetByIdNullResponse(Mock<IProductRepository> productRepository)
+    {
+        productRepository
+            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
+            .ReturnsAsync((Product?)null);
     }
 
     internal void SetupRepositoryGetAllEmptyResponse(Mock<IProductRepository> productRepository)
@@ -67,5 +88,12 @@ public class MockSetup
         productRepository
             .Setup(repo => repo.GetAll())
             .ReturnsAsync(new List<Product> { ProductBuilder.GetProduct() });
+    }
+
+    internal void SetupStockClientErrorResponse(Mock<IStockClient> stockClient)
+    {
+        stockClient
+            .Setup(repo => repo.UpdateStock(It.IsAny<Guid>(), It.IsAny<int>()))
+            .ThrowsAsync(new HttpRequestException());
     }
 }

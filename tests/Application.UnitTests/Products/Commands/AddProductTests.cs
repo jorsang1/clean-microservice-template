@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
+using CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.ExposedHandlers;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentAssertions;
@@ -53,7 +54,7 @@ public class AddProductTests : ProductTestBase
     }
 
     [Fact]
-    public async Task WHEN_few_fields_are_filled_THEN_throws_validation_exception()
+    public async Task WHEN_only_Sku_is_filled_THEN_throws_validation_exception()
     {
         MockSetup.SetupValidationErrorResponse(_validator);
 
@@ -97,5 +98,40 @@ public class AddProductTests : ProductTestBase
         result.Should().NotBeNull();
         result!.Sku.Should().Be(command.Sku);
         result.Title.Should().Be(command.Title);
+    }
+
+    [Fact]
+    public async Task WHEN_adding_product_without_stockClient_THEN_error_is_logged()
+    {
+        var product = ProductBuilder.GetProduct();
+        var command = product.Adapt<AddProductCommand>();
+
+        var mockLogger = new Mock<ILogger<AddProductCommandHandlerExposed>>();
+
+        MockSetup.SetupValidationValidResponse(_validator);
+        MockSetup.SetupRepositoryCreateValidResponse(ProductRepository, product);
+        MockSetup.SetupStockClientErrorResponse(_stockClient);
+
+        var requestHandler = new AddProductCommandHandlerExposed
+        (
+            ProductRepository.Object,
+            _dateService.Object,
+            _stockClient.Object,
+            mockLogger.Object,
+            _validator.Object
+        );
+
+        var result = await requestHandler.Handle(command, CancellationToken.None);
+
+        mockLogger.Verify(l => l.Log(
+            LogLevel.Error,
+            It.IsAny<EventId>(),
+            It.Is<It.IsAnyType>((value, _) =>
+                value
+                    .ToString()!
+                    .Contains($"Error updating the stock for the product {result.Id}")),
+            It.IsAny<HttpRequestException>(),
+            ((Func<It.IsAnyType, Exception, string>)It.IsAny<object>())!),
+            Times.Once);
     }
 }

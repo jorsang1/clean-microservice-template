@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 
-public static class CustomValidators
+internal static class CustomValidators
 {
     public static IRuleBuilderOptions<T, TProperty> WithAutomaticErrorCode<T, TProperty>(this IRuleBuilderOptions<T, TProperty> ruleBuilder, AbstractValidator<T> validator)
     {

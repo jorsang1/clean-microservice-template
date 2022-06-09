@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
+﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using FluentAssertions;
@@ -8,10 +7,13 @@ using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.IntegrationTests.Products.Commands;
 
-using static Testing;
-
-public class AddProductTests : IClassFixture<Testing>
+public class AddProductTests : TestBase
 {
+    public AddProductTests(Testing testing)
+        : base(testing)
+    {
+    }
+
     [Fact]
     public async Task WHEN_no_fields_are_filled_THEN_throws_validation_exception()
     {
@@ -22,7 +24,7 @@ public class AddProductTests : IClassFixture<Testing>
     }
 
     [Fact]
-    public async Task WHEN_few_fields_are_filled_THEN_throws_validation_exception()
+    public async Task WHEN_only_Sku_is_filled_THEN_throws_validation_exception()
     {
         await FluentActions.Invoking(() =>
             SendAsync(ProductBuilder.GetProductWithSku().Adapt<AddProductCommand>()))

@@ -11,8 +11,7 @@ public class GetAllProductsTests : ProductTestBase
     [Fact]
     public async Task WHEN_not_existing_products_on_repository_THEN_response_is_empty()
     {
-        MockSetup
-            .SetupRepositoryGetAllEmptyResponse(ProductRepository);
+        MockSetup.SetupRepositoryGetAllEmptyResponse(ProductRepository);
 
         var requestHandler = new GetAllProductsQueryHandler(ProductRepository.Object);
 
@@ -25,8 +24,7 @@ public class GetAllProductsTests : ProductTestBase
     [Fact]
     public async Task WHEN_existing_products_on_repository_THEN_response_not_is_empty()
     {
-        MockSetup
-            .SetupRepositoryGetAllValidResponse(ProductRepository);
+        MockSetup.SetupRepositoryGetAllValidResponse(ProductRepository);
 
         var requestHandler = new GetAllProductsQueryHandler(ProductRepository.Object);
 

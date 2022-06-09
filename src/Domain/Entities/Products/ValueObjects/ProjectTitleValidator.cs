@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 
-public class ProjectTitleValidator : AbstractValidator<ProjectTitle>
+internal class ProjectTitleValidator : AbstractValidator<ProjectTitle>
 {
     private const int MinLength = 5;
     private const int MaxLength = 350;

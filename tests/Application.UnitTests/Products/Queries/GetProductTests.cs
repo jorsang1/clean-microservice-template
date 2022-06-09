@@ -16,17 +16,9 @@ public class GetProductTests : ProductTestBase
         var product = ProductBuilder.GetProductEmpty();
         var request = new GetProductQuery { ProductId = Guid.Empty };
 
-        MockSetup
-            .SetupRepositoryGetByIdValidResponse
-            (
-                ProductRepository,
-                product
-            );
+        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
 
-        var requestHandler = new GetProductQueryHandler
-        (
-            ProductRepository.Object
-        );
+        var requestHandler = new GetProductQueryHandler(ProductRepository.Object);
 
         var result = await requestHandler.Handle(request, CancellationToken.None);
 
@@ -39,17 +31,9 @@ public class GetProductTests : ProductTestBase
         var product = ProductBuilder.GetProduct();
         var request = new GetProductQuery { ProductId = product.Id };
 
-        MockSetup
-            .SetupRepositoryGetByIdValidResponse
-            (
-                ProductRepository,
-                product
-            );
+        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
 
-        var requestHandler = new GetProductQueryHandler
-        (
-            ProductRepository.Object
-        );
+        var requestHandler = new GetProductQueryHandler(ProductRepository.Object);
 
         var result = await requestHandler.Handle(request, CancellationToken.None);
 

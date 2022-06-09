@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
+﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using FluentAssertions;
 using Mapster;
@@ -7,10 +6,13 @@ using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.IntegrationTests.Products.Commands;
 
-using static Testing;
-
-public class UpdateProductTests : IClassFixture<Testing>
+public class UpdateProductTests : TestBase
 {
+    public UpdateProductTests(Testing testing)
+        : base(testing)
+    {
+    }
+
     [Fact]
     public async Task WHEN_updating_product_that_does_not_exist_on_repository_THEN_does_not_return_product()
     {

@@ -43,4 +43,14 @@ internal class ProductRepository : IProductRepository
     {
         Products.Remove(Products.First(p => p.Id == product.Id));
     }
+
+    public void Clear()
+    {
+        Products.Clear();
+    }
+
+    public async Task<int> CountAsync()
+    {
+        return Products.Count;
+    }
 }

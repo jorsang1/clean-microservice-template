@@ -1,5 +1,8 @@
 {
   "stryker-config": {
-    "project": "Application.csproj"
+    "project": "Application.csproj",
+    "ignore-mutations": [
+      "string"
+    ]
   }
 }

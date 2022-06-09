@@ -2,9 +2,9 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests;
 
-public class DependencyInjectionFixture
+public class MapperConfigSetup
 {
-    public DependencyInjectionFixture()
+    public MapperConfigSetup()
     {
         MapperConfig.AddMappingConfigs();
     }

@@ -1,14 +1,17 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
+using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.ExposedHandlers;
 
 internal class DeleteProductCommandHandlerExposed : DeleteProductCommandHandler
 {
-    public DeleteProductCommandHandlerExposed(IProductRepository productRepository)
-        : base(productRepository)
+    public DeleteProductCommandHandlerExposed(
+        IProductRepository productRepository,
+        ILogger<DeleteProductCommandHandlerExposed> logger)
+        : base(
+            productRepository,
+            logger)
     {
     }
 

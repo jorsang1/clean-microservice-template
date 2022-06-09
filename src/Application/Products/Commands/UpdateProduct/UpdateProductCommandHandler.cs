@@ -51,7 +51,7 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Problem updating the stock of the product on the stock service for the product {Id}, {Title}.", request.Id, request.Title);
+            _logger.LogError(ex, "Problem updating the stock of the product on the stock service for the product {Id}, {Title}", request.Id, request.Title);
         }
 
         return productToUpdate.Adapt<ProductDto>();

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products;
 
-public abstract class ProductTestBase : IClassFixture<DependencyInjectionFixture>
+public abstract class ProductTestBase : IClassFixture<MapperConfigSetup>
 {
     protected readonly MockSetup MockSetup;
     protected readonly Mock<IProductRepository> ProductRepository;
