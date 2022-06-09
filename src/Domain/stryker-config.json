@@ -1,0 +1,12 @@
+{
+  "stryker-config": {
+    "project": "Domain.csproj",
+    "test-projects": [
+      "../../tests/Domain.UnitTests/Domain.UnitTests.csproj"
+    ],
+    "mutate": ["!**/DependencyInjection.cs"],
+    "ignore-mutations": [
+      "string"
+    ]
+  }
+}

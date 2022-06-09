@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 using FluentAssertions;
 using Xunit;
 

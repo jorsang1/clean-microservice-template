@@ -39,10 +39,10 @@ public class AddProductTests : TestBase
 
         var productCreated = await SendAsync(command);
 
-        var result = await GetById(productCreated.Id);
+        //var result = await GetById(productCreated.Id);
 
-        result.Should().NotBeNull();
-        result!.Sku.Should().Be(command.Sku);
-        result.Title.Title.Should().Be(command.Title);
+        productCreated.Should().NotBeNull();
+        productCreated!.Sku.Should().Be(command.Sku);
+        productCreated.Title.Should().Be(command.Title);
     }
 }

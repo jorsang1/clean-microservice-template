@@ -1,9 +1,0 @@
-{
-  "stryker-config": {
-    "project": "Application.csproj",
-    "mutate": ["!**/DependencyInjection.cs"],
-    "ignore-mutations": [
-      "string"
-    ]
-  }
-}

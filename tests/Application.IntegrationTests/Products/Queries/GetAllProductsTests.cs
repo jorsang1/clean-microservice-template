@@ -8,7 +8,7 @@ namespace CleanCompanyName.DDDMicroservice.Application.IntegrationTests.Products
 public class GetAllProductsTests : TestBase
 {
     public GetAllProductsTests(Testing testing)
-    : base(testing)
+        : base(testing)
     {
     }
 

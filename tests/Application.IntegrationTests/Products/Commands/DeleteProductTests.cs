@@ -27,13 +27,13 @@ public class DeleteProductTests : TestBase
     [Fact]
     public async Task WHEN_providing_valid_id_THEN_product_is_deleted()
     {
-        var addProductCommand = ProductBuilder.GetProduct().Adapt<AddProductCommand>();
-        var productCreated = await SendAsync(addProductCommand);
+        var product = ProductBuilder.GetProduct();
+        await AddAsync(product);
 
-        var deleteProductCommand = new DeleteProductCommand { Id = productCreated.Id };
+        var deleteProductCommand = new DeleteProductCommand { Id = product.Id };
         await SendAsync(deleteProductCommand);
 
-        var result = await GetById(productCreated.Id);
+        var result = await GetById(product.Id);
 
         result.Should().BeNull();
     }

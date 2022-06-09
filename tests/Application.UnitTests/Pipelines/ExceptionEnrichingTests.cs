@@ -3,7 +3,6 @@ using CleanCompanyName.DDDMicroservice.Application.Pipelines;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 using FluentAssertions;
-using FluentAssertions.Specialized;
 using Mapster;
 using MediatR;
 using Moq;

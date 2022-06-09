@@ -6,8 +6,8 @@ using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.IntegrationTests;
 
-// [Collection("Sequential")]
-public class TestBase : IClassFixture<Testing>
+ [Collection("Sequential")]
+public abstract class TestBase : IClassFixture<Testing>
 {
     private readonly IServiceScopeFactory _scopeFactory;
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
+﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 using CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.ExposedHandlers;
 using FluentAssertions;
