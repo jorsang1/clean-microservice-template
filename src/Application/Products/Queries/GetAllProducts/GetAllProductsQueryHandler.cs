@@ -3,11 +3,11 @@ using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 
-internal class GetProductQueryHandler : IRequestHandler<GetAllProductsQuery, List<ProductListItemDto>>
+internal class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, List<ProductListItemDto>>
 {
     private readonly IProductRepository _productRepository;
 
-    public GetProductQueryHandler(IProductRepository productRepository)
+    public GetAllProductsQueryHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
     }

@@ -4,7 +4,7 @@ namespace CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 
 internal static class CustomValidators
 {
-    internal static IRuleBuilderOptions<T, TProperty> WithAutomaticErrorCode<T, TProperty>(this IRuleBuilderOptions<T, TProperty> ruleBuilder, AbstractValidator<T> validator)
+    public static IRuleBuilderOptions<T, TProperty> WithAutomaticErrorCode<T, TProperty>(this IRuleBuilderOptions<T, TProperty> ruleBuilder, AbstractValidator<T> validator)
     {
         var memberTypeName = typeof(T).Name;
 
@@ -25,7 +25,7 @@ internal static class CustomValidators
         return ruleBuilder.WithErrorCode($"{memberTypeName}_{propertyName}_{validationType}");
     }
 
-    internal static IRuleBuilderOptions<T, TProperty> WithHint<T, TProperty>(this IRuleBuilderOptions<T, TProperty> ruleBuilder, string hint)
+    public static IRuleBuilderOptions<T, TProperty> WithHint<T, TProperty>(this IRuleBuilderOptions<T, TProperty> ruleBuilder, string hint)
     {
         return ruleBuilder.WithState(t => new Hint(hint));
     }

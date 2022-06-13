@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 
-namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Product.ValueObjects;
+namespace CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 
 internal class ProjectTitleValidator : AbstractValidator<ProjectTitle>
 {
-    public const int MinLength = 5;
-    public const int MaxLength = 350;
+    private const int MinLength = 5;
+    private const int MaxLength = 350;
 
     public ProjectTitleValidator()
     {

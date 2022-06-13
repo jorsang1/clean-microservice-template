@@ -16,24 +16,11 @@ public static class DependencyInjection
     {
         services.AddSingleton<IDateTime, DateTimeService>();
         services.AddSingleton<IProductRepository, ProductRepository>();
-        services.AddSingleton<IStockClient>(provider 
+        services.AddSingleton<IStockClient>(provider
             => new StockClient(
                     configuration.GetSection("StockClientConfiguration").Get<StockClientConfiguration>()
                 ));
 
-        AddMappingConfigs();
-
         return services;
-    }
-
-    public static void AddMappingConfigs() 
-    {
-        TypeAdapterConfig<Domain.Entities.Product.Product, Product>.NewConfig()
-            .Map(dest => dest.Title,
-                src => src.Title.Title);
-
-        TypeAdapterConfig<Product, Domain.Entities.Product.Product>.NewConfig()
-            .Map(dest => dest.Title,
-                src => new Domain.Entities.Product.ValueObjects.ProjectTitle(src.Title));
     }
 }

@@ -1,0 +1,30 @@
+<Project>
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+        <AssemblyName>CleanCompanyName.DDDMicroservice.$(MSBuildProjectName)</AssemblyName>
+        <RootNamespace>$(AssemblyName)</RootNamespace>
+        <ProduceReferenceAssembly>false</ProduceReferenceAssembly> <!-- This is for fix a strange behavior of Stryker-->
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(AssemblyName).UnitTests"/>
+        <InternalsVisibleTo Include="$(AssemblyName).IntegrationTests"/>
+    </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="StrykerOutput\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="StrykerOutput\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="StrykerOutput\**" />
+  </ItemGroup>
+
+</Project>

@@ -15,7 +15,10 @@ internal class GetProductQueryHandler : IRequestHandler<GetProductQuery, Product
     public async Task<ProductDto?> Handle(GetProductQuery request, CancellationToken cancellationToken)
     {
         var result = await _productRepository.GetById(request.ProductId);
-        if (result!.Id == Guid.Empty) return null;
+
+        if (result is null || result.Id == Guid.Empty)
+            return null;
+
         return result.Adapt<ProductDto>();
     }
 }
