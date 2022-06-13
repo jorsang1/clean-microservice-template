@@ -6,12 +6,20 @@ public static class MapperConfig
 {
     public static void AddMappingConfigs()
     {
-        TypeAdapterConfig<ProjectTitle, string>
+        TypeAdapterConfig<ProductTitle, string>
             .ForType()
-            .MapWith(projectTitle => projectTitle.Title);
+            .MapWith(productTitle => productTitle.Value);
 
-        TypeAdapterConfig<string, ProjectTitle>
+        TypeAdapterConfig<string, ProductTitle>
             .ForType()
-            .MapWith(title => new ProjectTitle(title));
+            .MapWith(title => new ProductTitle(title));
+
+        TypeAdapterConfig<ProductId, Guid>
+            .ForType()
+            .MapWith(productId => productId.Value);
+
+        TypeAdapterConfig<Guid, ProductId>
+            .ForType()
+            .MapWith(value => new ProductId(value));
     }
 }

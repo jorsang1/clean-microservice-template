@@ -30,10 +30,10 @@ public class DeleteProductTests : TestBase
         var product = ProductBuilder.GetProduct();
         await AddAsync(product);
 
-        var deleteProductCommand = new DeleteProductCommand { Id = product.Id };
+        var deleteProductCommand = new DeleteProductCommand { Id = product.Id.Value };
         await SendAsync(deleteProductCommand);
 
-        var result = await GetById(product.Id);
+        var result = await GetById(product.Id.Value);
 
         result.Should().BeNull();
     }

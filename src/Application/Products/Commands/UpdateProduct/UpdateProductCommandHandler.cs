@@ -36,9 +36,9 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
         if (!validationResult.IsValid)
             throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
 
-        var product = await _productRepository.GetById(productToUpdate.Id);
+        var product = await _productRepository.GetById(productToUpdate.Id.Value);
 
-        if (product is null || product.Id == Guid.Empty)
+        if (product is null || product.Id.Value == Guid.Empty)
             return null;
 
         productToUpdate.CreatedOn = product.CreatedOn;

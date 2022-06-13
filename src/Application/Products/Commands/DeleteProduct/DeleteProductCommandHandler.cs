@@ -20,7 +20,7 @@ internal class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCo
     {
         var product = await _productRepository.GetById(request.Id);
 
-        if (product is null || product.Id == Guid.Empty)
+        if (product is null || product.Id.Value == Guid.Empty)
         {
             //TODO: Switch to a EntityDoesntExistException or similar.
             throw new KeyNotFoundException("The product to delete doesn't exists.");

@@ -48,7 +48,7 @@ public class DeleteProductTests : ProductTestBase
     {
         var product = ProductBuilder.GetProduct();
 
-        var command = new DeleteProductCommand { Id = product.Id };
+        var command = new DeleteProductCommand { Id = product.Id.Value };
 
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
 
@@ -70,7 +70,7 @@ public class DeleteProductTests : ProductTestBase
     public async Task WHEN_deleting_product_and_getting_an_error_on_delete_THEN_error_is_logged()
     {
         var product = ProductBuilder.GetProduct();
-        var command = new DeleteProductCommand { Id = product.Id };
+        var command = new DeleteProductCommand { Id = product.Id.Value };
 
         var mockLogger = new Mock<ILogger<DeleteProductCommandHandlerExposed>>();
 

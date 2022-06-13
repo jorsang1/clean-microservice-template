@@ -1,4 +1,5 @@
 ﻿using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 using FluentValidation.TestHelper;
 using Xunit;
 
@@ -16,11 +17,11 @@ public class ProductValidatorTests
     [Fact]
     public void WHEN_Id_is_empty_THEN_give_an_error()
     {
-        var model = new Product { Id = Guid.Empty };
+        var model = new Product { Id = new ProductId(Guid.Empty) };
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldHaveValidationErrorFor(person => person.Id);
+            .ShouldHaveValidationErrorFor(person => person.Id.Value);
     }
 
     [Fact]
@@ -30,7 +31,7 @@ public class ProductValidatorTests
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldHaveValidationErrorFor(person => person.Sku);
+            .ShouldHaveValidationErrorFor(product => product.Sku);
     }
 
     [Fact]
@@ -40,7 +41,7 @@ public class ProductValidatorTests
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldNotHaveValidationErrorFor(person => person.Sku);
+            .ShouldNotHaveValidationErrorFor(product => product.Sku);
     }
 
     [Fact]
@@ -50,7 +51,7 @@ public class ProductValidatorTests
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldHaveValidationErrorFor(person => person.Title.Title);
+            .ShouldHaveValidationErrorFor(product => product.Title.Value);
     }
 
  [Fact]
@@ -60,7 +61,7 @@ public class ProductValidatorTests
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldHaveValidationErrorFor(person => person.Description);
+            .ShouldHaveValidationErrorFor(product => product.Description);
     }
 
     [Fact]
@@ -70,7 +71,7 @@ public class ProductValidatorTests
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldHaveValidationErrorFor(person => person.Price);
+            .ShouldHaveValidationErrorFor(product => product.Price);
     }
 
     [Fact]
@@ -80,6 +81,6 @@ public class ProductValidatorTests
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldNotHaveValidationErrorFor(person => person.Price);
+            .ShouldNotHaveValidationErrorFor(product => product.Price);
     }
 }

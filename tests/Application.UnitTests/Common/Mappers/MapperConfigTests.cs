@@ -18,7 +18,7 @@ public class MapperConfigTests: IClassFixture<MapperConfigSetup>
     {
         var source = new Product
         {
-            Title = new ProjectTitle(TestTitle)
+            Title = new ProductTitle(TestTitle)
         };
 
         var result = source.Adapt<ProductListItemDto>();
@@ -30,7 +30,7 @@ public class MapperConfigTests: IClassFixture<MapperConfigSetup>
     {
         var source = new Product
         {
-            Title = new ProjectTitle(TestTitle)
+            Title = new ProductTitle(TestTitle)
         };
 
         var result = source.Adapt<ProductDto>();
@@ -46,7 +46,7 @@ public class MapperConfigTests: IClassFixture<MapperConfigSetup>
         };
 
         var result = source.Adapt<Product>();
-        result.Title.Title.Should().Be(TestTitle);
+        result.Title.Value.Should().Be(TestTitle);
     }
 
     [Fact]
@@ -58,6 +58,6 @@ public class MapperConfigTests: IClassFixture<MapperConfigSetup>
         };
 
         var result = source.Adapt<Product>();
-        result.Title.Title.Should().Be(TestTitle);
+        result.Title.Value.Should().Be(TestTitle);
     }
 }

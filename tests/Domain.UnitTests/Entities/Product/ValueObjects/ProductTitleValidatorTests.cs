@@ -1,56 +1,54 @@
-﻿using System.Linq;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
+﻿using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 using FluentValidation.TestHelper;
 using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Domain.UnitTests.Entities.Products.ValueObjects;
 
-public class ProjectTitleValidatorTests
+public class ProductTitleValidatorTests
 {
-    private readonly ProjectTitleValidator _validator;
+    private readonly ProductTitleValidator _validator;
 
-    public ProjectTitleValidatorTests()
+    public ProductTitleValidatorTests()
     {
-        _validator = new ProjectTitleValidator();
+        _validator = new ProductTitleValidator();
     }
     
     [Fact]
     public void WHEN_Title_is_empty_THEN_give_an_error()
     {
-        var model = new ProjectTitle { Title = string.Empty };
+        var model = new ProductTitle { Value = string.Empty };
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldHaveValidationErrorFor(person => person.Title);
+            .ShouldHaveValidationErrorFor(person => person.Value);
     }
 
     [Fact]
     public void WHEN_Title_is_specified_THEN_not_give_an_error()
     {
-        var model = new ProjectTitle { Title = "some title" };
+        var model = new ProductTitle { Value = "some title" };
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldNotHaveValidationErrorFor(person => person.Title);
+            .ShouldNotHaveValidationErrorFor(person => person.Value);
     }
 
     [Fact]
     public void WHEN_Title_is_below_5_characters_THEN_give_an_error()
     {
-        var model = new ProjectTitle { Title = "some" };
+        var model = new ProductTitle { Value = "some" };
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldHaveValidationErrorFor(person => person.Title);
+            .ShouldHaveValidationErrorFor(person => person.Value);
     } 
     
     [Fact]
     public void WHEN_Title_is_above_350_characters_THEN_give_an_error()
     {
-        var model = new ProjectTitle
+        var model = new ProductTitle
         {
-            Title = string.Join
+            Value = string.Join
             (
                 "", 
                 Enumerable.Repeat("some", 2000000)
@@ -59,6 +57,6 @@ public class ProjectTitleValidatorTests
         var result = _validator.TestValidate(model);
 
         result
-            .ShouldHaveValidationErrorFor(person => person.Title);
+            .ShouldHaveValidationErrorFor(person => person.Value);
     }
 }

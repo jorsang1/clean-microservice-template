@@ -26,7 +26,7 @@ public class GetProductTests : ProductTestBase
     public async Task WHEN_providing_valid_id_THEN_product_is_found()
     {
         var product = ProductBuilder.GetProduct();
-        var request = new GetProductQuery { ProductId = product.Id };
+        var request = new GetProductQuery { ProductId = product.Id.Value };
 
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
 
