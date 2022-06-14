@@ -21,6 +21,11 @@
       "type": "parameter",
       "defaultValue": "YourProductName",
       "replaces": "DDDMicroservice"
+    },
+    "productDockerImageName": {
+      "type": "parameter",
+      "defaultValue": "your-clean-api",
+      "replaces": "clean-api-template"
     }
   },
   "preferNameDirectory": true
