@@ -16,7 +16,7 @@ internal class GetProductQueryHandler : IRequestHandler<GetProductQuery, Product
     {
         var result = await _productRepository.GetById(request.ProductId);
 
-        if (result is null || result.Id == Guid.Empty)
+        if (result is null || result.Id.Value == Guid.Empty)
             return null;
 
         return result.Adapt<ProductDto>();

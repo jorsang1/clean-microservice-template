@@ -8,7 +8,7 @@ internal class ProductValidator : AbstractValidator<Product>
 {
     public ProductValidator()
     {
-        RuleFor(product => product.Id)
+        RuleFor(product => product.Id.Value)
             .NotEmpty();
 
         RuleFor(product => product.Sku)
@@ -17,7 +17,7 @@ internal class ProductValidator : AbstractValidator<Product>
                 .WithHint("You can find information about the SKU pattern at www.skupattern.org");
 
         RuleFor(product => product.Title)
-            .SetValidator(new ProjectTitleValidator());
+            .SetValidator(new ProductTitleValidator());
 
         RuleFor(product => product.Description)
             .NotEmpty()

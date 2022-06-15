@@ -44,11 +44,11 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
 
         try
         {
-            await _stockClient.UpdateStock(product.Id, 1);
+            await _stockClient.UpdateStock(product.Id.Value, 1);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating the stock for the product {Id}", product.Id);
+            _logger.LogError(ex, "Error updating the stock for the product {Id}", product.Id.Value);
         }
 
         return product.Adapt<ProductDto>();

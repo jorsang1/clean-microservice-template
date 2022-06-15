@@ -35,13 +35,13 @@ internal class ProductRepository : IProductRepository
 
     public async Task Update(Domain.Entities.Products.Product product)
     {
-        Products.Remove(Products.First(p => p.Id == product.Id));
+        Products.Remove(Products.First(p => p.Id == product.Id.Value));
         Products.Add(product.Adapt<Product>());
     }
 
     public async Task Delete(Domain.Entities.Products.Product product)
     {
-        Products.Remove(Products.First(p => p.Id == product.Id));
+        Products.Remove(Products.First(p => p.Id == product.Id.Value));
     }
 
     public void Clear()

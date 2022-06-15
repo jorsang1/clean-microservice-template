@@ -16,7 +16,6 @@
 
     <ItemGroup>
         <Folder Include="Common\" />
-        <Folder Include="Entities\Product\ValueObjects\" />
     </ItemGroup>
 
     <ItemGroup>

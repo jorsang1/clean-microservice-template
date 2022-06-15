@@ -42,6 +42,6 @@ public class UpdateProductTests : TestBase
 
         result.Should().NotBeNull();
         result!.Sku.Should().Be(productUpdatedValue.Sku);
-        result.Title.Title.Should().Be(productUpdatedValue.Title);
+        result.Title.Value.Should().Be(productUpdatedValue.Title);
     }
 }

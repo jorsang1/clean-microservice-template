@@ -16,9 +16,9 @@ public static class ProductBuilder
     {
         return new Product
         {
-            Id = Guid.NewGuid(),
+            Id = new ProductId(Guid.NewGuid()),
             Sku = "sku",
-            Title = new ProjectTitle("title"),
+            Title = new ProductTitle("title"),
             Description = "Description",
             Price = 5
         };
