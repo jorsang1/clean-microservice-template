@@ -1,8 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 using FluentAssertions;
-using Mapster;
 using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.IntegrationTests.Products.Commands;
@@ -27,7 +25,11 @@ public class DeleteProductTests : TestBase
     [Fact]
     public async Task WHEN_providing_valid_id_THEN_product_is_deleted()
     {
-        var product = ProductBuilder.GetProduct();
+        var product = ProductBuilder
+            .Init()
+            .WithAllData()
+            .Get();
+
         await AddAsync(product);
 
         var deleteProductCommand = new DeleteProductCommand { Id = product.Id.Value };

@@ -2,6 +2,7 @@
 using CleanCompanyName.DDDMicroservice.Application.Pipelines;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentAssertions;
 using Mapster;
 using MediatR;
@@ -12,11 +13,16 @@ namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Pipelines;
 
 public class ExceptionEnrichingTests
 {
+    private readonly Product _product =
+        ProductBuilder
+        .Init()
+        .WithAllData()
+        .Get();
+
     [Fact]
     public async Task WHEN_handling_error_THEN_ActionName_data_should_be_filled()
     {
-        var product = ProductBuilder.GetProduct();
-        var command = product.Adapt<AddProductCommand>();
+        var command = _product.Adapt<AddProductCommand>();
 
         var mockRequestHandlerDelegate = new Mock<RequestHandlerDelegate<ProductDto>>();
 
@@ -26,7 +32,7 @@ public class ExceptionEnrichingTests
 
         var requestHandler = new ExceptionEnrichingPipelineBehaviour<AddProductCommand, ProductDto>();
 
-        await FluentActions.Invoking(()  =>
+        await FluentActions.Invoking(() =>
                 requestHandler.Handle(
                     command,
                     CancellationToken.None,
@@ -39,9 +45,8 @@ public class ExceptionEnrichingTests
     [Fact]
     public async Task WHEN_no_error_happens_THEN_no_exception_should_be_thrown()
     {
-        var product = ProductBuilder.GetProduct();
-        var command = product.Adapt<AddProductCommand>();
-        var productDto = product.Adapt<ProductDto>();
+        var command = _product.Adapt<AddProductCommand>();
+        var productDto = _product.Adapt<ProductDto>();
 
         var mockRequestHandlerDelegate = new Mock<RequestHandlerDelegate<ProductDto>>();
 

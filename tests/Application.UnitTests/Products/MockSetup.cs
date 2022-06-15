@@ -83,7 +83,13 @@ public class MockSetup
     {
         productRepository
             .Setup(repo => repo.GetAll())
-            .ReturnsAsync(new List<Product> { ProductBuilder.GetProduct() });
+            .ReturnsAsync(new List<Product>
+            {
+                ProductBuilder
+                .Init()
+                .WithAllData()
+                .Get()
+            });
     }
 
     internal void SetupStockClientErrorResponse(Mock<IStockClient> stockClient)

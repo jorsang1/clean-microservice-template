@@ -10,7 +10,12 @@ public class GetProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_not_providing_valid_Id_THEN_product_is_not_found()
     {
-        var product = ProductBuilder.GetProductEmpty();
+        var product =
+            ProductBuilder
+            .Init()
+            .WithoutData()
+            .Get();
+
         var request = new GetProductQuery { ProductId = Guid.Empty };
 
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
@@ -25,7 +30,12 @@ public class GetProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_providing_valid_id_THEN_product_is_found()
     {
-        var product = ProductBuilder.GetProduct();
+        var product =
+            ProductBuilder
+            .Init()
+            .WithAllData()
+            .Get();
+
         var request = new GetProductQuery { ProductId = product.Id.Value };
 
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);

@@ -18,7 +18,11 @@ public class AddProductTests : TestBase
     public async Task WHEN_no_fields_are_filled_THEN_throws_validation_exception()
     {
         await FluentActions.Invoking(() =>
-            SendAsync(ProductBuilder.GetProductEmpty().Adapt<AddProductCommand>()))
+            SendAsync(ProductBuilder
+                .Init()
+                .WithoutData()
+                .Get()
+                .Adapt<AddProductCommand>()))
             .Should()
             .ThrowAsync<DomainValidationException>();
     }
@@ -27,7 +31,12 @@ public class AddProductTests : TestBase
     public async Task WHEN_only_Sku_is_filled_THEN_throws_validation_exception()
     {
         await FluentActions.Invoking(() =>
-            SendAsync(ProductBuilder.GetProductWithSku().Adapt<AddProductCommand>()))
+            SendAsync(
+                ProductBuilder
+                .Init()
+                .WithSku("sku")
+                .Get()
+                .Adapt<AddProductCommand>()))
             .Should()
             .ThrowAsync<DomainValidationException>();
     }
@@ -35,7 +44,11 @@ public class AddProductTests : TestBase
     [Fact]
     public async Task WHEN_all_fields_are_filled_THEN_product_is_created()
     {
-        var command = ProductBuilder.GetProduct().Adapt<AddProductCommand>();
+        var command = ProductBuilder
+            .Init()
+            .WithAllData()
+            .Get()
+            .Adapt<AddProductCommand>();
 
         var productCreated = await SendAsync(command);
 

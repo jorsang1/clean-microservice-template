@@ -18,7 +18,10 @@ public class GetAllProductsTests : TestBase
     public async Task WHEN_existing_products_on_repository_THEN_response_not_is_empty(int productsToAdd)
     {
         var currentProducts = await CountAsync();
-        var product = ProductBuilder.GetProduct();
+        var product = ProductBuilder
+            .Init()
+            .WithAllData()
+            .Get();
 
         for (var i = 0; i < productsToAdd; i++)
             await AddAsync(product);

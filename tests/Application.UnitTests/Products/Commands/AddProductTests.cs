@@ -21,6 +21,12 @@ public class AddProductTests : ProductTestBase
     private readonly Mock<IStockClient> _stockClient;
     private readonly Mock<IValidator<Product>> _validator;
 
+    private readonly Product _productAllData =
+        ProductBuilder
+            .Init()
+            .WithAllData()
+            .Get();
+
     public AddProductTests()
     {
         _dateService = new Mock<IDateTime>();
@@ -45,7 +51,12 @@ public class AddProductTests : ProductTestBase
 
         await FluentActions
             .Invoking(() =>
-                requestHandler.Handle(ProductBuilder.GetProductEmpty().Adapt<AddProductCommand>(),
+                requestHandler.Handle(
+                    ProductBuilder
+                        .Init()
+                        .WithoutData()
+                        .Get()
+                        .Adapt<AddProductCommand>(),
                     CancellationToken.None))
             .Should()
             .ThrowAsync<DomainValidationException>();
@@ -67,7 +78,12 @@ public class AddProductTests : ProductTestBase
 
         await FluentActions
             .Invoking(() =>
-                requestHandler.Handle(ProductBuilder.GetProductWithSku().Adapt<AddProductCommand>(),
+                requestHandler.Handle(
+                    ProductBuilder
+                        .Init()
+                        .WithSku("sku")
+                        .Get()
+                        .Adapt<AddProductCommand>(),
                     CancellationToken.None))
             .Should()
             .ThrowAsync<DomainValidationException>();
@@ -76,11 +92,10 @@ public class AddProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_all_fields_are_filled_THEN_product_is_created()
     {
-        var product = ProductBuilder.GetProduct();
-        var command = product.Adapt<AddProductCommand>();
+        var command = _productAllData.Adapt<AddProductCommand>();
 
         MockSetup.SetupValidationValidResponse(_validator);
-        MockSetup.SetupRepositoryCreateValidResponse(ProductRepository, product);
+        MockSetup.SetupRepositoryCreateValidResponse(ProductRepository, _productAllData);
 
         var requestHandler = new AddProductCommandHandler
         (
@@ -94,20 +109,19 @@ public class AddProductTests : ProductTestBase
         var result = await requestHandler.Handle(command, CancellationToken.None);
 
         result.Should().NotBeNull();
-        result!.Sku.Should().Be(command.Sku);
+        result.Sku.Should().Be(command.Sku);
         result.Title.Should().Be(command.Title);
     }
 
     [Fact]
     public async Task WHEN_adding_product_without_stockClient_THEN_error_is_logged()
     {
-        var product = ProductBuilder.GetProduct();
-        var command = product.Adapt<AddProductCommand>();
+        var command = _productAllData.Adapt<AddProductCommand>();
 
         var mockLogger = new Mock<ILogger<AddProductCommandHandlerExposed>>();
 
         MockSetup.SetupValidationValidResponse(_validator);
-        MockSetup.SetupRepositoryCreateValidResponse(ProductRepository, product);
+        MockSetup.SetupRepositoryCreateValidResponse(ProductRepository, _productAllData);
         MockSetup.SetupStockClientErrorResponse(_stockClient);
 
         var requestHandler = new AddProductCommandHandlerExposed

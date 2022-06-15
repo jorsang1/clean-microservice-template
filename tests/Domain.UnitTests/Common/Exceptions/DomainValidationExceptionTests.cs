@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
+﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using FluentAssertions;
@@ -23,7 +22,12 @@ public class DomainValidationExceptionTests
     [Fact]
     public void WHEN_giving_errors_THEN_the_erros_are_available()
     {
-        var errors = ValidationErrorBuilder.GetValidationErrors();
+        var errors =
+            ValidationErrorBuilder
+            .Init()
+            .WithDefaultErrorMessage()
+            .Get();
+
         var domainValidationException = new DomainValidationException(errors);
 
         domainValidationException.Should().NotBeNull();

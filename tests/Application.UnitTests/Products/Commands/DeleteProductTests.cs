@@ -1,6 +1,7 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 using CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.ExposedHandlers;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -12,6 +13,11 @@ namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Comman
 public class DeleteProductTests : ProductTestBase
 {
     private readonly ILogger<DeleteProductCommandHandlerExposed> _logger;
+    private readonly Product _productAllData =
+        ProductBuilder
+            .Init()
+            .WithAllData()
+            .Get();
 
     public DeleteProductTests()
     {
@@ -27,7 +33,10 @@ public class DeleteProductTests : ProductTestBase
             .SetupRepositoryGetByIdValidResponse
             (
                 ProductRepository,
-                ProductBuilder.GetProductEmpty()
+                ProductBuilder
+                    .Init()
+                    .WithoutData()
+                    .Get()
             );
 
         var requestHandler = new DeleteProductCommandHandlerExposed
@@ -46,11 +55,9 @@ public class DeleteProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_providing_valid_id_THEN_product_is_deleted()
     {
-        var product = ProductBuilder.GetProduct();
+        var command = new DeleteProductCommand { Id = _productAllData.Id.Value };
 
-        var command = new DeleteProductCommand { Id = product.Id.Value };
-
-        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
+        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, _productAllData);
 
         var requestHandler = new DeleteProductCommandHandlerExposed
         (
@@ -69,12 +76,11 @@ public class DeleteProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_deleting_product_and_getting_an_error_on_delete_THEN_error_is_logged()
     {
-        var product = ProductBuilder.GetProduct();
-        var command = new DeleteProductCommand { Id = product.Id.Value };
+        var command = new DeleteProductCommand { Id = _productAllData.Id.Value };
 
         var mockLogger = new Mock<ILogger<DeleteProductCommandHandlerExposed>>();
 
-        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
+        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, _productAllData);
         MockSetup.SetupRepositoryDeleteErrorResponse(ProductRepository);
 
         var requestHandler = new DeleteProductCommandHandlerExposed

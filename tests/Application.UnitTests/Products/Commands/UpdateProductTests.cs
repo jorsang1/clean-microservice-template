@@ -19,6 +19,11 @@ public class UpdateProductTests : ProductTestBase
     private readonly Mock<IDateTime> _dateService;
     private readonly ILogger<UpdateProductCommandHandler> _logger;
     private readonly Mock<IValidator<Product>> _validator;
+    private readonly Product _productAllData =
+        ProductBuilder
+            .Init()
+            .WithAllData()
+            .Get();
 
     public UpdateProductTests()
     {
@@ -42,7 +47,12 @@ public class UpdateProductTests : ProductTestBase
 
         await FluentActions
             .Invoking(() =>
-                requestHandler.Handle(ProductBuilder.GetProductWithSku().Adapt<UpdateProductCommand>(),
+                requestHandler.Handle(
+                    ProductBuilder
+                        .Init()
+                        .WithSku("sku")
+                        .Get()
+                        .Adapt<UpdateProductCommand>(),
                     CancellationToken.None))
             .Should()
             .ThrowAsync<DomainValidationException>();
@@ -51,11 +61,10 @@ public class UpdateProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_all_fields_are_filled_THEN_product_is_updated()
     {
-        var product = ProductBuilder.GetProduct();
-        var command = product.Adapt<UpdateProductCommand>();
+        var command = _productAllData.Adapt<UpdateProductCommand>();
 
         MockSetup.SetupValidationValidResponse(_validator);
-        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
+        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, _productAllData);
 
         var requestHandler = new UpdateProductCommandHandler
         (
@@ -78,8 +87,7 @@ public class UpdateProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_product_is_not_found_THEN_product_is_not_returned()
     {
-        var product = ProductBuilder.GetProductEmpty();
-        var command = product.Adapt<UpdateProductCommand>();
+        var command = _productAllData.Adapt<UpdateProductCommand>();
 
         MockSetup.SetupValidationValidResponse(_validator);
         MockSetup.SetupRepositoryGetByIdNullResponse(ProductRepository);
@@ -100,13 +108,12 @@ public class UpdateProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_updating_product_and_getting_an_error_on_update_THEN_error_is_logged()
     {
-        var product = ProductBuilder.GetProduct();
-        var command = product.Adapt<UpdateProductCommand>();
+        var command = _productAllData.Adapt<UpdateProductCommand>();
 
         var mockLogger = new Mock<ILogger<UpdateProductCommandHandlerExposed>>();
 
         MockSetup.SetupValidationValidResponse(_validator);
-        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
+        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, _productAllData);
         MockSetup.SetupRepositoryUpdateErrorResponse(ProductRepository);
 
         var requestHandler = new UpdateProductCommandHandlerExposed
