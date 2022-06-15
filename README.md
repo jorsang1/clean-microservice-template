@@ -1,5 +1,4 @@
 # Clean microservice template
-=======
 
 This is a project template to create microservices in .NET 6 based on the Clean architecture approach (also known as Onion architecture, or Hexagonal architecture, or Ports and adapters).  
 The goal is to provide a boilerplate for creating API's that enforces some good practices so it is easy to spin off new microservices but keeping a good level of quality on the solution.  
@@ -75,17 +74,17 @@ The test project is testing the domain layer.
 
 **Run Mutation Tests with Stryker.net**
 * Open terminal and run `dotnet tool restore` to install Stryker.net for the project.
-* Navigate to root folder and run the powershell `StrykerRunAll.ps1`
+* Navigate to root folder and run the powershell `.\RunAllSteps.ps1`
 
-**Run the solution using docker**  
-The solution has a `Dockerfile` ready to be used.  
-Make sure you have WSL (Windows Subsystem for Linux) version 2 up and running with docker installed.  
-The you just need to go to the path of the solution a build the image with the following command:   
-`docker build -t your-image-name -f ./src/Api/Dockerfile ./src`   
-And then you can run it by doing:   
-`docker run -ti --rm -p 8080:80 your-image-name`   
+**Run the solution using docker compose**  
+The solution has a `Dockerfile` and it is ready to be used with docker compose.  
+  
+If you work with only WSL (Windows Subsystem for Linux) version 2 with docker installed.  
+Then you just need to go to the path of the solution and run the following command:   
+`docker compose up`   
 The API should be available on [localhost:8080](http://localhost:8080)
-
+  
+If you are using 'Docker Desktop' then you need to enable the build on the `docker-compose` project by editing the properties on the solution and going to 'Configuration properties > Configuration' and checking the project.
 
 ## How to contribute
 Everyone should be able to create a 'Pull Request' with a suggested change.
