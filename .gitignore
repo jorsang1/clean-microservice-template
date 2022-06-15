@@ -363,3 +363,6 @@ FodyWeavers.xsd
 
 # Jetbrains 
 .idea/
+
+# Stryker (Mutation tests results)
+Stryker.Test
