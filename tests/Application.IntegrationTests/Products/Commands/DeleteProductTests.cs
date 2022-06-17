@@ -1,8 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 using FluentAssertions;
-using Mapster;
 using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.IntegrationTests.Products.Commands;
