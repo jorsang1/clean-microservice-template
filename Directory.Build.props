@@ -13,6 +13,7 @@
     <ItemGroup>
         <InternalsVisibleTo Include="$(AssemblyName).UnitTests"/>
         <InternalsVisibleTo Include="$(AssemblyName).IntegrationTests"/>
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" /> <!-- Needed by Moq -->
     </ItemGroup>
 
   <ItemGroup>
