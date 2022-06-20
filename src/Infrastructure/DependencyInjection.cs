@@ -12,12 +12,13 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfigurationSection configuration)
     {
+        services.Configure<StockClientConfiguration>(configuration.GetSection("StockClientConfiguration"));
+
         services.AddSingleton<IDateTime, DateTimeService>();
         services.AddSingleton<IProductRepository, ProductRepository>();
-        services.AddSingleton<IStockClient>(provider
-            => new StockClient(
-                    configuration.GetSection("StockClientConfiguration").Get<StockClientConfiguration>()
-                ));
+        services.AddTransient<IStockClient, StockClient>();
+
+        services.AddHttpClient<StockClient>();
 
         return services;
     }

@@ -2,29 +2,30 @@
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Configuration;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Models;
+using Microsoft.Extensions.Options;
 
 namespace CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient;
 
-
 internal class StockClient : IStockClient
 {
-    private readonly static HttpClient HttpClient = new();
+    private readonly HttpClient _httpClient;
 
-    public StockClient(StockClientConfiguration configuration)
+    public StockClient(HttpClient httpClient, IOptions<StockClientConfiguration> configuration)
     {
-        if (string.IsNullOrEmpty(configuration.BaseUrl))
-            throw new ArgumentNullException(nameof(configuration.BaseUrl), "Base url for the stock client not provided in the configuration.");
+        _httpClient = httpClient;
 
-        HttpClient.BaseAddress = new Uri(configuration.BaseUrl);
-        HttpClient.DefaultRequestHeaders.Add("Authorization", "PrivateKey " + configuration.Secret);
+        if (string.IsNullOrEmpty(configuration.Value.BaseUrl))
+            throw new ArgumentNullException(nameof(configuration.Value.BaseUrl), "Base url for the stock client not provided in the configuration.");
+
+        _httpClient.BaseAddress = new(configuration.Value.BaseUrl);
+        _httpClient.DefaultRequestHeaders.Add("Authorization", $"PrivateKey {configuration.Value.Secret}");
     }
 
     public async Task UpdateStock(Guid productId, int unitsChange)
     {
-        var url = HttpClient.BaseAddress + "/stock-update/";
+        var url = $"{_httpClient.BaseAddress}/stock-update/";
         var request = new UpdateStockRequest(productId, unitsChange);
         var requestContent = new StringContent(JsonSerializer.Serialize(request));
-        await HttpClient.PostAsync(url, requestContent);
+        await _httpClient.PostAsync(url, requestContent);
     }
-
 }
