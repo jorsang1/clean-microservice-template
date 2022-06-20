@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
+﻿using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using FluentAssertions;
 using FluentValidation.Results;
 using Xunit;

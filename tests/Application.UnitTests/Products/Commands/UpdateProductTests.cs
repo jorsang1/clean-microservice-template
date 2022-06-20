@@ -1,7 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
-using CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.ExposedHandlers;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentAssertions;
@@ -103,13 +102,13 @@ public class UpdateProductTests : ProductTestBase
         var product = ProductBuilder.GetProduct();
         var command = product.Adapt<UpdateProductCommand>();
 
-        var mockLogger = new Mock<ILogger<UpdateProductCommandHandlerExposed>>();
+        var mockLogger = new Mock<ILogger<UpdateProductCommandHandler>>();
 
         MockSetup.SetupValidationValidResponse(_validator);
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
         MockSetup.SetupRepositoryUpdateErrorResponse(ProductRepository);
 
-        var requestHandler = new UpdateProductCommandHandlerExposed
+        var requestHandler = new UpdateProductCommandHandler
         (
             ProductRepository.Object,
             _dateService.Object,

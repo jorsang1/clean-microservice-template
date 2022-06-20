@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using CleanCompanyName.DDDMicroservice.Application.Pipelines;
 using CleanCompanyName.DDDMicroservice.Application.Common.Mappers;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanCompanyName.DDDMicroservice.Application;
