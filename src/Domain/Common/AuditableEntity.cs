@@ -1,9 +1,23 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Domain.Common;
 
-public abstract class AuditableEntity
+public abstract record AuditableEntity
 {
-    public DateTimeOffset CreatedOn { get; set; }
-    public Guid? CreatedBy { get; set; }
-    public DateTimeOffset? LastModifiedOn { get; set; }
-    public Guid? LastModifiedBy { get; set; }
+    public DateTimeOffset CreatedOn { get; }
+    public Guid CreatedBy { get; }
+    public DateTimeOffset? LastModifiedOn { get; private set; }
+    public Guid? LastModifiedBy { get; private set; }
+
+    protected AuditableEntity(Guid createdBy)
+    {
+        CreatedOn = CommonDateTime.Now;
+        CreatedBy = createdBy;
+        LastModifiedOn = CommonDateTime.Now;
+        LastModifiedBy = createdBy;
+    }
+
+    public void ModifiedBy(Guid lastModifiedBy)
+    {
+        LastModifiedOn = CommonDateTime.Now;
+        LastModifiedBy = lastModifiedBy;
+    }
 }

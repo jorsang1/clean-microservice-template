@@ -29,21 +29,22 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
 
     public async Task<ProductDto?> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var productToUpdate = request.Adapt<Product>();
+        var product = await _productRepository.GetById(request.Id);
+
+        if (product is null || product.Id.Value == Guid.Empty)
+            return null;
+
+        var productToUpdate = request
+            .BuildAdapter()
+            .AddParameters("user", product.CreatedBy)
+            .AdaptToType<Product>();
 
         var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
 
-        var product = await _productRepository.GetById(productToUpdate.Id.Value);
-
-        if (product is null || product.Id.Value == Guid.Empty)
-            return null;
-
-        productToUpdate.CreatedOn = product.CreatedOn;
-        productToUpdate.CreatedBy = product.CreatedBy;
-        UpdateAuditableInformation(productToUpdate);
+        product.ModifiedBy(Guid.NewGuid()); //TODO: Add identity service.
 
         try
         {
@@ -55,13 +56,5 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
         }
 
         return productToUpdate.Adapt<ProductDto>();
-        //Shall we maybe query the DB to make sure the operation is done??
-        //return Task.FromResult(_productRepository.GetById(productToUpdate.Id).MapToDto());
-    }
-
-    private void UpdateAuditableInformation(Product productToAdd)
-    {
-        productToAdd.LastModifiedOn = _dateService.Now;
-        productToAdd.LastModifiedBy = Guid.Empty;
     }
 }

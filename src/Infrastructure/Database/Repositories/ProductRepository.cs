@@ -6,9 +6,9 @@ namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
 
 internal class ProductRepository : IProductRepository
 {
-    private static readonly List<Product> Products = new()
+    private static readonly List<ProductModel> Products = new()
     {
-        new Product(Guid.NewGuid(), "SKU code", "The title", "Prod description", 23.5M, DateTime.Now, Guid.NewGuid(), DateTime.Now, Guid.NewGuid())
+        new ProductModel(Guid.NewGuid(), "SKU code", "The title", "Prod description", 23.5M, DateTime.Now, Guid.NewGuid(), DateTime.Now, Guid.NewGuid())
     };
 
     public async Task<Domain.Entities.Products.Product?> GetById(Guid id)
@@ -29,14 +29,14 @@ internal class ProductRepository : IProductRepository
 
     public async Task<Domain.Entities.Products.Product> Create(Domain.Entities.Products.Product product)
     {
-        Products.Add(product.Adapt<Product>());
+        Products.Add(product.Adapt<ProductModel>());
         return Products.Last().Adapt<Domain.Entities.Products.Product>();
     }
 
     public async Task Update(Domain.Entities.Products.Product product)
     {
         Products.Remove(Products.First(p => p.Id == product.Id.Value));
-        Products.Add(product.Adapt<Product>());
+        Products.Add(product.Adapt<ProductModel>());
     }
 
     public async Task Delete(Domain.Entities.Products.Product product)
