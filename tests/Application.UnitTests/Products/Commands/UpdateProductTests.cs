@@ -3,27 +3,28 @@ using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
-using FluentAssertions;
 using FluentValidation;
 using Mapster;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
-using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Commands;
 
 public class UpdateProductTests : ProductTestBase
 {
-    private readonly Mock<IDateTime> _dateService;
-    private readonly ILogger<UpdateProductCommandHandler> _logger;
-    private readonly Mock<IValidator<Product>> _validator;
+    private readonly Mock<IDateTime> _dateService = new();
+    private readonly Mock<ILogger<UpdateProductCommandHandler>> _logger = new();
+    private readonly Mock<IValidator<Product>> _validator = new();
+    private readonly UpdateProductCommandHandler _sut;
 
     public UpdateProductTests()
     {
-        _dateService = new Mock<IDateTime>();
-        _logger = new NullLogger<UpdateProductCommandHandler>();
-        _validator = new Mock<IValidator<Product>>();
+        _sut = new UpdateProductCommandHandler
+        (
+            ProductRepository.Object,
+            _dateService.Object,
+            _logger.Object,
+            _validator.Object
+        );
     }
 
     [Fact]
@@ -31,17 +32,9 @@ public class UpdateProductTests : ProductTestBase
     {
         MockSetup.SetupValidationErrorResponse(_validator);
 
-        var requestHandler = new UpdateProductCommandHandler
-        (
-            ProductRepository.Object,
-            _dateService.Object,
-            _logger,
-            _validator.Object
-        );
-
         await FluentActions
             .Invoking(() =>
-                requestHandler.Handle(ProductBuilder.GetProductWithSku().Adapt<UpdateProductCommand>(),
+                _sut.Handle(ProductBuilder.GetProductWithSku().Adapt<UpdateProductCommand>(),
                     CancellationToken.None))
             .Should()
             .ThrowAsync<DomainValidationException>();
@@ -52,19 +45,10 @@ public class UpdateProductTests : ProductTestBase
     {
         var product = ProductBuilder.GetProduct();
         var command = product.Adapt<UpdateProductCommand>();
-
         MockSetup.SetupValidationValidResponse(_validator);
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
 
-        var requestHandler = new UpdateProductCommandHandler
-        (
-            ProductRepository.Object,
-            _dateService.Object,
-            _logger,
-            _validator.Object
-        );
-
-        var result = await requestHandler.Handle(command, CancellationToken.None);
+        var result = await _sut.Handle(command, CancellationToken.None);
 
         result.Should().NotBeNull();
 
@@ -79,19 +63,10 @@ public class UpdateProductTests : ProductTestBase
     {
         var product = ProductBuilder.GetProductEmpty();
         var command = product.Adapt<UpdateProductCommand>();
-
         MockSetup.SetupValidationValidResponse(_validator);
         MockSetup.SetupRepositoryGetByIdNullResponse(ProductRepository);
 
-        var requestHandler = new UpdateProductCommandHandler
-        (
-            ProductRepository.Object,
-            _dateService.Object,
-            _logger,
-            _validator.Object
-        );
-
-        var result = await requestHandler.Handle(command, CancellationToken.None);
+        var result = await _sut.Handle(command, CancellationToken.None);
 
         result.Should().BeNull();
     }
@@ -101,30 +76,20 @@ public class UpdateProductTests : ProductTestBase
     {
         var product = ProductBuilder.GetProduct();
         var command = product.Adapt<UpdateProductCommand>();
-
-        var mockLogger = new Mock<ILogger<UpdateProductCommandHandler>>();
-
         MockSetup.SetupValidationValidResponse(_validator);
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
         MockSetup.SetupRepositoryUpdateErrorResponse(ProductRepository);
 
-        var requestHandler = new UpdateProductCommandHandler
-        (
-            ProductRepository.Object,
-            _dateService.Object,
-            mockLogger.Object,
-            _validator.Object
-        );
+        await _sut.Handle(command, CancellationToken.None);
 
-        var result = await requestHandler.Handle(command, CancellationToken.None);
-
-        mockLogger.Verify(l => l.Log(
+        _logger.Verify(l => l.Log(
                 LogLevel.Error,
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((value, _) =>
                     value
                         .ToString()!
-                        .Contains($"Problem updating the stock of the product on the stock service for the product {command.Id}, {command.Title}")),
+                        .Contains(
+                            $"Problem updating the stock of the product on the stock service for the product {command.Id}, {command.Title}")),
                 It.IsAny<Exception>(),
                 ((Func<It.IsAnyType, Exception, string>)It.IsAny<object>())!),
             Times.Once);

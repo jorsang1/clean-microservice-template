@@ -1,28 +1,28 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 using CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.ExposedHandlers;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
-using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Commands;
 
 public class DeleteProductTests : ProductTestBase
 {
-    private readonly ILogger<DeleteProductCommandHandlerExposed> _logger;
+    private readonly Mock<ILogger<DeleteProductCommandHandlerExposed>> _logger = new();
+    private readonly DeleteProductCommandHandlerExposed _sut;
 
     public DeleteProductTests()
     {
-        _logger = new NullLogger<DeleteProductCommandHandlerExposed>();
+        _sut = new DeleteProductCommandHandlerExposed
+        (
+            ProductRepository.Object,
+            _logger.Object
+        );
     }
 
     [Fact]
     public async Task WHEN_not_providing_valid_Id_THEN_throws_not_found_exception()
     {
         var command = new DeleteProductCommand { Id = Guid.Empty };
-
         MockSetup
             .SetupRepositoryGetByIdValidResponse
             (
@@ -30,15 +30,9 @@ public class DeleteProductTests : ProductTestBase
                 ProductBuilder.GetProductEmpty()
             );
 
-        var requestHandler = new DeleteProductCommandHandlerExposed
-        (
-            ProductRepository.Object,
-            _logger
-        );
-
         await FluentActions
             .Invoking(() =>
-                requestHandler.ExposedHandle(command, new CancellationToken()))
+                _sut.ExposedHandle(command, new CancellationToken()))
             .Should()
             .ThrowAsync<KeyNotFoundException>();
     }
@@ -47,21 +41,12 @@ public class DeleteProductTests : ProductTestBase
     public async Task WHEN_providing_valid_id_THEN_product_is_deleted()
     {
         var product = ProductBuilder.GetProduct();
-
         var command = new DeleteProductCommand { Id = product.Id.Value };
-
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
-
-        var requestHandler = new DeleteProductCommandHandlerExposed
-        (
-            ProductRepository.Object,
-            _logger
-        );
-
 
         await FluentActions
             .Invoking(() =>
-                requestHandler.ExposedHandle(command, new CancellationToken()))
+                _sut.ExposedHandle(command, new CancellationToken()))
             .Should()
             .NotThrowAsync<KeyNotFoundException>();
     }
@@ -71,21 +56,12 @@ public class DeleteProductTests : ProductTestBase
     {
         var product = ProductBuilder.GetProduct();
         var command = new DeleteProductCommand { Id = product.Id.Value };
-
-        var mockLogger = new Mock<ILogger<DeleteProductCommandHandlerExposed>>();
-
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
         MockSetup.SetupRepositoryDeleteErrorResponse(ProductRepository);
 
-        var requestHandler = new DeleteProductCommandHandlerExposed
-        (
-            ProductRepository.Object,
-            mockLogger.Object
-        );
+        await _sut.ExposedHandle(command, CancellationToken.None);
 
-        await requestHandler.ExposedHandle(command, CancellationToken.None);
-
-        mockLogger.Verify(l => l.Log(
+        _logger.Verify(l => l.Log(
                 LogLevel.Error,
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((value, _) =>

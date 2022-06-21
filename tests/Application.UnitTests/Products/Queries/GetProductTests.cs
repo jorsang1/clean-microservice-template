@@ -1,23 +1,27 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
-using FluentAssertions;
-using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Queries;
 
 public class GetProductTests : ProductTestBase
 {
+    private readonly GetProductQueryHandler _sut;
+    public GetProductTests()
+    {
+        _sut = new GetProductQueryHandler
+        (
+            ProductRepository.Object
+        );
+    }
+
     [Fact]
     public async Task WHEN_not_providing_valid_Id_THEN_product_is_not_found()
     {
         var product = ProductBuilder.GetProductEmpty();
         var request = new GetProductQuery { ProductId = Guid.Empty };
-
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
 
-        var requestHandler = new GetProductQueryHandler(ProductRepository.Object);
-
-        var result = await requestHandler.Handle(request, CancellationToken.None);
+        var result = await _sut.Handle(request, CancellationToken.None);
 
         result.Should().BeNull();
     }
@@ -27,12 +31,9 @@ public class GetProductTests : ProductTestBase
     {
         var product = ProductBuilder.GetProduct();
         var request = new GetProductQuery { ProductId = product.Id.Value };
-
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
 
-        var requestHandler = new GetProductQueryHandler(ProductRepository.Object);
-
-        var result = await requestHandler.Handle(request, CancellationToken.None);
+        var result = await _sut.Handle(request, CancellationToken.None);
 
         result.Should().NotBeNull();
     }

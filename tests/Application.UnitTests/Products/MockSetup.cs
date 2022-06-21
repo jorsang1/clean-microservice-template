@@ -3,7 +3,6 @@ using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentValidation;
 using FluentValidation.Results;
-using Moq;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products;
 
