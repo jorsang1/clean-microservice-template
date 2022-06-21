@@ -1,6 +1,6 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 
-public record struct DeleteProductCommand : IRequest
+public sealed record DeleteProductCommand : IRequest
 {
     public Guid Id { get; set; }
 }

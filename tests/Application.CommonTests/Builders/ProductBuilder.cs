@@ -1,6 +1,4 @@
-﻿using CleanCompanyName.DDDMicroservice.Domain.Common;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
+﻿using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 
 namespace CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 

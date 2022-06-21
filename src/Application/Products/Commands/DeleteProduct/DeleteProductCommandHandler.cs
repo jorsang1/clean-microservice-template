@@ -23,7 +23,7 @@ internal class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCo
         if (product is null || product.Id.Value == Guid.Empty)
         {
             //TODO: Switch to a EntityDoesntExistException or similar.
-            throw new KeyNotFoundException("The product to delete doesn't exists.");
+            throw new KeyNotFoundException("The product to delete doesn't exist.");
         }
 
         try

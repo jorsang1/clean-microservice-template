@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 
-public record struct AddProductCommand
+public sealed record AddProductCommand
 (
     Guid Id,
     string Sku,
