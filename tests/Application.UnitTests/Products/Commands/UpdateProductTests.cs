@@ -1,5 +1,4 @@
-﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
-using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
+﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
@@ -11,7 +10,6 @@ namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Comman
 
 public class UpdateProductTests : ProductTestBase
 {
-    private readonly Mock<IDateTime> _dateService = new();
     private readonly Mock<ILogger<UpdateProductCommandHandler>> _logger = new();
     private readonly Mock<IValidator<Product>> _validator = new();
     private readonly UpdateProductCommandHandler _sut;

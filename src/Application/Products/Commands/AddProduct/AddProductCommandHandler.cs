@@ -29,10 +29,13 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
 
     public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
-        var productToAdd = request
-            .BuildAdapter()
-            .AddParameters("user", new Guid()) // TODO replace with proper user identity
-            .AdaptToType<Product>();
+        var productToAdd = new Product(
+            id: request.Id,
+            sku: request.Sku,
+            title: request.Title,
+            description: request.Description,
+            price: request.Price,
+            createdBy: Guid.NewGuid()); // TODO replace with proper user identity
 
         var validationResult = await _validator.ValidateAsync(productToAdd, cancellationToken);
 

@@ -10,6 +10,8 @@ namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Common.Mappers;
 public class MapperConfigTests: IClassFixture<MapperConfigSetup>
 {
     private const string TestTitle = "some title";
+    private static readonly Guid TestGuid = Guid.NewGuid();
+
 
     [Fact]
     public void WHEN_Title_is_specified_on_Product_THEN_ProductDto_should_have_Title_specified()
@@ -41,5 +43,13 @@ public class MapperConfigTests: IClassFixture<MapperConfigSetup>
 
         var result = source.Adapt<Product>();
         result.Title.Value.Should().Be(TestTitle);
+    }
+
+    [Fact]
+    public void WHEN_Id_is_specified_on_Product_THEN_ProductDto_should_have_Id_specified()
+    {
+        var source = ProductBuilder.GetProductWithId(TestGuid);
+        var result = source.Adapt<ProductDto>();
+        result.Id.Should().Be(TestGuid);
     }
 }

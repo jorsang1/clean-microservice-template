@@ -104,3 +104,5 @@ Feel free to reach out if you need to discuss anything beforehand.
 - Ubiquitous language.
   > Based on [this article](https://blog.ndepend.com/checking-ddd-ubiquitous-language-with-ndepend/), they idea could be to have a dictionary of terms and actions defined and then use those keys to check the entities, properties and methods on the domain layer on a unit test so we make sure we have a definition and our code follows what is understandable in the bounded context.
   Continuing on this idea the terms with descriptions could be also available via endpoint so it can be queried or published or whatever.
+- Apply ubiquitous language in domain.
+  > Continuing on the previous point, in the domain, for example, the object `Product` has a generic method update, could be splited in three methods: `productUpdateTitleAndDescription`, `productUpdateSku`, `productUpdatePrice`.

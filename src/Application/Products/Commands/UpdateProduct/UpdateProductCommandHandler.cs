@@ -11,40 +11,37 @@ namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateP
 internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {
     private readonly IProductRepository _productRepository;
-    private readonly IDateTime _dateService;
     private readonly ILogger _logger;
     private readonly IValidator<Product> _validator;
 
     public UpdateProductCommandHandler(
         IProductRepository productRepository,
-        IDateTime dateService,
         ILogger<UpdateProductCommandHandler> logger,
         IValidator<Product> validator)
     {
         _productRepository = productRepository;
-        _dateService = dateService;
         _logger = logger;
         _validator = validator;
     }
 
     public async Task<ProductDto?> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetById(request.Id);
+        var productToUpdate = await _productRepository.GetById(request.Id);
 
-        if (product is null || product.Id.Value == Guid.Empty)
+        if (productToUpdate is null || productToUpdate.Id.Value == Guid.Empty)
             return null;
 
-        var productToUpdate = request
-            .BuildAdapter()
-            .AddParameters("user", product.CreatedBy)
-            .AdaptToType<Product>();
+        productToUpdate.Update(
+            sku: request.Sku,
+            title: request.Title,
+            description: request.Description,
+            price: request.Price,
+            modifiedBy: Guid.NewGuid()); // TODO replace with proper user identity
 
         var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
-
-        product.ModifiedBy(Guid.NewGuid()); //TODO: Add identity service.
 
         try
         {
