@@ -3,9 +3,7 @@ using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProdu
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
-using FluentAssertions;
 using Mapster;
-using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Common.Mappers;
 

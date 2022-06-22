@@ -3,29 +3,30 @@ using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
-using FluentAssertions;
 using FluentValidation;
 using Mapster;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
-using Xunit;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Commands;
 
 public class AddProductTests : ProductTestBase
 {
-    private readonly Mock<IDateTime> _dateService;
-    private readonly ILogger<AddProductCommandHandler> _logger;
-    private readonly Mock<IStockClient> _stockClient;
-    private readonly Mock<IValidator<Product>> _validator;
+    private readonly Mock<IDateTime> _dateService = new();
+    private readonly Mock<ILogger<AddProductCommandHandler>> _logger = new();
+    private readonly Mock<IStockClient> _stockClient = new();
+    private readonly Mock<IValidator<Product>> _validator = new();
+    private readonly AddProductCommandHandler _sut;
 
     public AddProductTests()
     {
-        _dateService = new Mock<IDateTime>();
-        _stockClient = new Mock<IStockClient>();
-        _logger = new NullLogger<AddProductCommandHandler>();
-        _validator = new Mock<IValidator<Product>>();
+        _sut = new AddProductCommandHandler
+        (
+            ProductRepository.Object,
+            _dateService.Object,
+            _stockClient.Object,
+            _logger.Object,
+            _validator.Object
+        );
     }
 
     [Fact]
@@ -33,18 +34,9 @@ public class AddProductTests : ProductTestBase
     {
         MockSetup.SetupValidationErrorResponse(_validator);
 
-        var requestHandler = new AddProductCommandHandler
-        (
-            ProductRepository.Object,
-            _dateService.Object,
-            _stockClient.Object,
-            _logger,
-            _validator.Object
-        );
-
         await FluentActions
             .Invoking(() =>
-                requestHandler.Handle(ProductBuilder.GetProductEmpty().Adapt<AddProductCommand>(),
+                _sut.Handle(ProductBuilder.GetProductEmpty().Adapt<AddProductCommand>(),
                     CancellationToken.None))
             .Should()
             .ThrowAsync<DomainValidationException>();
@@ -55,18 +47,9 @@ public class AddProductTests : ProductTestBase
     {
         MockSetup.SetupValidationErrorResponse(_validator);
 
-        var requestHandler = new AddProductCommandHandler
-        (
-            ProductRepository.Object,
-            _dateService.Object,
-            _stockClient.Object,
-            _logger,
-            _validator.Object
-        );
-
         await FluentActions
             .Invoking(() =>
-                requestHandler.Handle(ProductBuilder.GetProductWithSku().Adapt<AddProductCommand>(),
+                _sut.Handle(ProductBuilder.GetProductWithSku().Adapt<AddProductCommand>(),
                     CancellationToken.None))
             .Should()
             .ThrowAsync<DomainValidationException>();
@@ -77,20 +60,10 @@ public class AddProductTests : ProductTestBase
     {
         var product = ProductBuilder.GetProduct();
         var command = product.Adapt<AddProductCommand>();
-
         MockSetup.SetupValidationValidResponse(_validator);
         MockSetup.SetupRepositoryCreateValidResponse(ProductRepository, product);
 
-        var requestHandler = new AddProductCommandHandler
-        (
-            ProductRepository.Object,
-            _dateService.Object,
-            _stockClient.Object,
-            _logger,
-            _validator.Object
-        );
-
-        var result = await requestHandler.Handle(command, CancellationToken.None);
+        var result = await _sut.Handle(command, CancellationToken.None);
 
         result.Should().NotBeNull();
         result!.Sku.Should().Be(command.Sku);
@@ -102,25 +75,13 @@ public class AddProductTests : ProductTestBase
     {
         var product = ProductBuilder.GetProduct();
         var command = product.Adapt<AddProductCommand>();
-
-        var mockLogger = new Mock<ILogger<AddProductCommandHandler>>();
-
         MockSetup.SetupValidationValidResponse(_validator);
         MockSetup.SetupRepositoryCreateValidResponse(ProductRepository, product);
         MockSetup.SetupStockClientErrorResponse(_stockClient);
 
-        var requestHandler = new AddProductCommandHandler
-        (
-            ProductRepository.Object,
-            _dateService.Object,
-            _stockClient.Object,
-            mockLogger.Object,
-            _validator.Object
-        );
+        var result = await _sut.Handle(command, CancellationToken.None);
 
-        var result = await requestHandler.Handle(command, CancellationToken.None);
-
-        mockLogger.Verify(l => l.Log(
+        _logger.Verify(l => l.Log(
             LogLevel.Error,
             It.IsAny<EventId>(),
             It.Is<It.IsAnyType>((value, _) =>
