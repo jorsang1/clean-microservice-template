@@ -13,7 +13,7 @@ namespace CleanCompanyName.DDDMicroservice.Infrastructure.UnitTests.Clients.Stoc
 public class StockClientTest
 {
     [Fact]
-    public async Task WHEN_no_problems_THEN_no_throw()
+    public async Task WHEN_called_api_works_THEN_no_throw()
     {
         var configuration = GetMockedConfiguration();
         var httpClient = GetHttpClientWithMockedMessageHandler();
@@ -28,7 +28,7 @@ public class StockClientTest
     }
 
     [Fact]
-    public async Task WHEN_problems_THEN_throws()
+    public async Task WHEN_called_api_has_problems_THEN_throws()
     {
         var configuration = GetMockedConfiguration();
         var httpClient = GetThrowingHttpClientWithMockedMessageHandler();
