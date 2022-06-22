@@ -2,8 +2,6 @@
 using CleanCompanyName.DDDMicroservice.Application.Pipelines;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
-using Mapster;
 using MediatR;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Pipelines;

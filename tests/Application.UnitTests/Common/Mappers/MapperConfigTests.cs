@@ -1,8 +1,5 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using Mapster;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Common.Mappers;

@@ -22,9 +22,6 @@ public class GetProductTests : TestBase
         var result = await SendAsync(request);
 
         result.Should().NotBeNull();
-
-        var productDto = result!.Value;
-
-        productDto.Id.Should().Be(request.ProductId);
+        result!.Id.Should().Be(request.ProductId);
     }
 }

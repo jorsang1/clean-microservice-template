@@ -6,7 +6,7 @@ public static class ProductBuilder
 {
     public static Product GetProductEmpty()
     {
-        return new Product
+        return Product.Create
         (
             id: default,
             sku: default!,
@@ -19,7 +19,7 @@ public static class ProductBuilder
 
     public static Product GetProduct()
     {
-        return new Product
+        return Product.Create
         (
             id: Guid.NewGuid(),
             sku: "sku",
@@ -33,7 +33,7 @@ public static class ProductBuilder
 
     public static Product GetProductWithId(Guid guid = new())
     {
-        return new Product
+        return Product.Create
         (
             id: guid,
             sku: default!,
@@ -46,7 +46,7 @@ public static class ProductBuilder
 
     public static Product GetProductWithSku(string sku = "sku")
     {
-        return new Product
+        return Product.Create
         (
             id: default,
             sku: sku,
@@ -59,7 +59,7 @@ public static class ProductBuilder
 
     public static Product GetProductWithTitle(string title = "Product title")
     {
-        return new Product
+        return Product.Create
         (
             id: default,
             sku: default!,
@@ -72,7 +72,7 @@ public static class ProductBuilder
 
     public static Product GetProductWithDescription(string description)
     {
-        return new Product
+        return Product.Create
         (
             id: default,
             sku: default!,
@@ -85,7 +85,7 @@ public static class ProductBuilder
 
     public static Product GetProductWithPrice(decimal price)
     {
-        return new Product
+        return Product.Create
         (
             id: default,
             sku: default!,

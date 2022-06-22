@@ -29,7 +29,7 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
 
     public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
-        var productToAdd = new Product(
+        var productToAdd = Product.Create(
             id: request.Id,
             sku: request.Sku,
             title: request.Title,

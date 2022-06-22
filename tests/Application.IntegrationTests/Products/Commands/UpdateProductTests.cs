@@ -37,11 +37,10 @@ public class UpdateProductTests : TestBase
 
         productUpdated.Should().NotBeNull();
 
-        var productUpdatedValue = productUpdated!.Value;
-        var result = await GetById(productUpdated!.Value.Id);
+        var result = await GetById(productUpdated!.Id);
 
         result.Should().NotBeNull();
-        result!.Sku.Should().Be(productUpdatedValue.Sku);
-        result.Title.Value.Should().Be(productUpdatedValue.Title);
+        result!.Sku.Should().Be(productUpdated.Sku);
+        result.Title.Value.Should().Be(productUpdated.Title);
     }
 }

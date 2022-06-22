@@ -1,11 +1,8 @@
-﻿using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
-using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
-using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
+﻿using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Common.Mappers;
 
-public static class MapperConfig
+public static class ApplicationMapperConfig
 {
     public static void AddMappingConfigs()
     {

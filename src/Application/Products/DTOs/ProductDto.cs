@@ -1,6 +1,6 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 
-public record struct ProductDto
+public sealed record ProductDto
 (
     Guid Id,
     string Sku,

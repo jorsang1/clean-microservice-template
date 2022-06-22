@@ -1,12 +1,12 @@
-﻿using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
+﻿using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
 
 namespace CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 
-public static class AddProductCommandBuilder
+public static class ProductDtoBuilder
 {
-    public static AddProductCommand GetAddProductCommandEmpty()
+    public static ProductDto GetProductDtoEmpty()
     {
-        return new AddProductCommand
+        return new ProductDto
         (
             Id: default,
             Sku: default!,
@@ -16,3 +16,4 @@ public static class AddProductCommandBuilder
         );
     }
 }
+

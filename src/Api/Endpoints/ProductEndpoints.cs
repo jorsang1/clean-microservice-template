@@ -89,7 +89,7 @@ internal class ProductEndpoints
     {
         try
         {
-            var command = new DeleteProductCommand { Id = id };
+            var command = new DeleteProductCommand(id);
             await mediator.Send(command, cancellationToken);
             return Results.NoContent();
         }

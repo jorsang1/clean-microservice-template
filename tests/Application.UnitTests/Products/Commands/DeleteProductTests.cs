@@ -22,7 +22,8 @@ public class DeleteProductTests : ProductTestBase
     [Fact]
     public async Task WHEN_not_providing_valid_Id_THEN_throws_not_found_exception()
     {
-        var command = new DeleteProductCommand { Id = Guid.Empty };
+        var command = new DeleteProductCommand(Guid.Empty);
+
         MockSetup
             .SetupRepositoryGetByIdValidResponse
             (
@@ -41,7 +42,8 @@ public class DeleteProductTests : ProductTestBase
     public async Task WHEN_providing_valid_id_THEN_product_is_deleted()
     {
         var product = ProductBuilder.GetProduct();
-        var command = new DeleteProductCommand { Id = product.Id.Value };
+        var command = new DeleteProductCommand(product.Id.Value);
+
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
 
         await FluentActions
@@ -55,7 +57,8 @@ public class DeleteProductTests : ProductTestBase
     public async Task WHEN_deleting_product_and_getting_an_error_on_delete_THEN_error_is_logged()
     {
         var product = ProductBuilder.GetProduct();
-        var command = new DeleteProductCommand { Id = product.Id.Value };
+        var command = new DeleteProductCommand(product.Id.Value);
+
         MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
         MockSetup.SetupRepositoryDeleteErrorResponse(ProductRepository);
 
