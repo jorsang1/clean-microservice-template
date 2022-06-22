@@ -1,4 +1,6 @@
-﻿namespace CleanCompanyName.DDDMicroservice.Application.Pipelines;
+﻿using System.Diagnostics;
+
+namespace CleanCompanyName.DDDMicroservice.Application.Pipelines;
 
 internal class ExceptionEnrichingPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
@@ -11,6 +13,7 @@ internal class ExceptionEnrichingPipelineBehaviour<TRequest, TResponse> : IPipel
         }
         catch (Exception ex)
         {
+            Activity.Current?.AddTag("Error", true);
             ex.Data["ActionName"] = typeof(TRequest).Name;
             throw;
         }
