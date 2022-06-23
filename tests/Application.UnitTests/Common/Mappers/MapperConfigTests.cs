@@ -1,5 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using Mapster;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Common.Mappers;
@@ -21,11 +22,7 @@ public class MapperConfigTests: IClassFixture<MapperConfigSetup>
     [Fact]
     public void WHEN_Title_is_specified_on_AddProductCommand_THEN_Product_should_have_Title_specified()
     {
-        var source = new AddProductCommand
-        {
-            Title = TestTitle
-        };
-
+        var source = AddProductCommandBuilder.GetAddProductCommandWithTitle(TestTitle);
         var result = source.Adapt<Product>();
         result.Title.Value.Should().Be(TestTitle);
     }
@@ -33,11 +30,7 @@ public class MapperConfigTests: IClassFixture<MapperConfigSetup>
     [Fact]
     public void WHEN_Title_is_specified_on_UpdateProductCommand_THEN_Product_should_have_Title_specified()
     {
-        var source = new UpdateProductCommand
-        {
-            Title = TestTitle
-        };
-
+        var source = UpdateProductCommandBuilder.GetUpdateProductCommandWithTitle(TestTitle);
         var result = source.Adapt<Product>();
         result.Title.Value.Should().Be(TestTitle);
     }

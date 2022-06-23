@@ -4,7 +4,6 @@ using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Configuration;
-using CleanCompanyName.DDDMicroservice.Infrastructure.Common.Mappers;
 
 namespace CleanCompanyName.DDDMicroservice.Infrastructure;
 
@@ -18,7 +17,6 @@ public static class DependencyInjection
         services.AddTransient<IStockClient, StockClient>();
 
         services.AddHttpClient<StockClient>();
-        InfrastructureMapperConfig.AddMappingConfigs();
 
         return services;
     }

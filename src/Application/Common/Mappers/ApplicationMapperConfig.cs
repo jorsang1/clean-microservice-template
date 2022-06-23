@@ -10,8 +10,16 @@ public static class ApplicationMapperConfig
             .ForType()
             .MapWith(productTitle => productTitle.Value);
 
+        TypeAdapterConfig<string, ProductTitle>
+            .ForType()
+            .MapWith(title => new ProductTitle(title));
+
         TypeAdapterConfig<ProductId, Guid>
             .ForType()
             .MapWith(productId => productId.Value);
+
+        TypeAdapterConfig<Guid, ProductId>
+            .ForType()
+            .MapWith(value => new ProductId(value));
     }
 }

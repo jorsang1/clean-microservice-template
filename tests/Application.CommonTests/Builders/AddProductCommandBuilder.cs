@@ -15,4 +15,12 @@ public static class AddProductCommandBuilder
             Price: default
         );
     }
+
+    public static AddProductCommand GetAddProductCommandWithTitle(string title = "AddProductCommand title")
+    {
+        return GetAddProductCommandEmpty() with
+        {
+            Title = title
+        };
+    }
 }

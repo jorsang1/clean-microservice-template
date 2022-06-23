@@ -19,7 +19,6 @@ public class UpdateProductTests : ProductTestBase
         _sut = new UpdateProductCommandHandler
         (
             ProductRepository.Object,
-            _dateService.Object,
             _logger.Object,
             _validator.Object
         );
