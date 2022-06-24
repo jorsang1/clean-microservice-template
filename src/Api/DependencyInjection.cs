@@ -1,5 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Api.Endpoints;
 using CleanCompanyName.DDDMicroservice.Api.Middleware;
+using CleanCompanyName.DDDMicroservice.Api.Telemetry;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Metrics;
@@ -25,12 +26,14 @@ internal static class DependencyInjection
 
         services.AddOpenTelemetryMetrics(options =>
             options.AddHttpClientInstrumentation()
+                .AddAspNetCoreInstrumentation()
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName).AddTelemetrySdk())
                 .AddOtlpExporter(otlpOption =>
                 {
-                    otlpOption.Endpoint = new Uri("http://agent.grafana-cloud.svc.cluster.local:4317", UriKind.Absolute);
-                    // For OTLP only gRPC works and you need to specify http:// if you don't want to use TLS.
+                    otlpOption.Endpoint = new Uri("http://your-open-collector-instance:4317", UriKind.Absolute);
                 })
+                .AddPrometheusExporter()
+                .AddMeter(ApplicationMetrics.ServiceMetricName)
         );
 
         services.AddOpenTelemetryTracing(options =>
@@ -62,6 +65,7 @@ internal static class DependencyInjection
         SwaggerEndpoints.DefineEndpoints(app);
         ProductEndpoints.DefineEndpoints(app);
 
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
         app.UseHttpLogging();
         app.UseMiddleware<RequestScopeLoggingMiddleware>();
 

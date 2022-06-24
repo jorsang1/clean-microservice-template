@@ -32,7 +32,8 @@ You can quickly take a look by exploring the [index](docs/decisions/index.md)
 
 - Observability
 >We're using [*Open Telemetry*](https://opentelemetry.io/docs/instrumentation/net/getting-started/) to add metrics and tracing instrumentation from the beginning!  
-The template is ready to output the tracing information on the console as well as to use a grafana cloud agent as a OTLP collector but you can easily change it to use Jagger or Zipkin adding a new container on the docker compose.
+The template is ready to output the tracing information on the console as well as to use a grafana cloud agent as a OTLP collector but you can easily change it to use Jagger or Zipkin adding a new container on the docker compose.  
+Metrics are exposed on the `/metrics` endpoint using the *Prometheus exporter* and there is a custom metric created to monitor how many products are being added. 
 
 - Others
 >Scope logging, strong typed ID's to avoid primitive obsession, docker compose ready, just go ahead and take a look.

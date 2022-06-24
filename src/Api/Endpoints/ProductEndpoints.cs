@@ -1,5 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Api.Contracts.Requests;
 using CleanCompanyName.DDDMicroservice.Api.Contracts.Responses;
+using CleanCompanyName.DDDMicroservice.Api.Telemetry;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
@@ -56,6 +57,7 @@ internal class ProductEndpoints
         try
         {
             var product = await mediator.Send(command, cancellationToken);
+            ApplicationMetrics.NewProductAdded();
             return Results.Ok(product.Adapt<ProductResponse>());
         }
         catch (DomainValidationException validationException)
