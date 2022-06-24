@@ -15,7 +15,7 @@ public class DeleteProductTests : TestBase
     [Fact]
     public async Task WHEN_not_providing_valid_Id_THEN_throws_not_found_exception()
     {
-        var command = new DeleteProductCommand { Id = Guid.Empty };
+        var command = new DeleteProductCommand( Guid.Empty);
 
         await FluentActions.Invoking(() => SendAsync(command))
             .Should()
@@ -28,7 +28,7 @@ public class DeleteProductTests : TestBase
         var product = ProductBuilder.GetProduct();
         await AddAsync(product);
 
-        var deleteProductCommand = new DeleteProductCommand { Id = product.Id.Value };
+        var deleteProductCommand = new DeleteProductCommand(product.Id.Value);
         await SendAsync(deleteProductCommand);
 
         var result = await GetById(product.Id.Value);

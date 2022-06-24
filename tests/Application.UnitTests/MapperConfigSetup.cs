@@ -6,6 +6,6 @@ public class MapperConfigSetup
 {
     public MapperConfigSetup()
     {
-        MapperConfig.AddMappingConfigs();
+        ApplicationMapperConfig.AddMappingConfigs();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Common.Mappers;
 
-public static class MapperConfig
+public static class ApplicationMapperConfig
 {
     public static void AddMappingConfigs()
     {

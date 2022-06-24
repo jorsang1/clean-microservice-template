@@ -1,5 +1,4 @@
-﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
-using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
+﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
@@ -11,7 +10,6 @@ namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Comman
 
 public class UpdateProductTests : ProductTestBase
 {
-    private readonly Mock<IDateTime> _dateService = new();
     private readonly Mock<ILogger<UpdateProductCommandHandler>> _logger = new();
     private readonly Mock<IValidator<Product>> _validator = new();
     private readonly UpdateProductCommandHandler _sut;
@@ -21,7 +19,6 @@ public class UpdateProductTests : ProductTestBase
         _sut = new UpdateProductCommandHandler
         (
             ProductRepository.Object,
-            _dateService.Object,
             _logger.Object,
             _validator.Object
         );
@@ -51,11 +48,8 @@ public class UpdateProductTests : ProductTestBase
         var result = await _sut.Handle(command, CancellationToken.None);
 
         result.Should().NotBeNull();
-
-        var productDto = result!.Value;
-
-        productDto!.Sku.Should().Be(command.Sku);
-        productDto.Title.Should().Be(command.Title);
+        result!.Sku.Should().Be(command.Sku);
+        result.Title.Should().Be(command.Title);
     }
 
     [Fact]

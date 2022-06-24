@@ -2,7 +2,4 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
 
-public record struct GetProductQuery : IRequest<ProductDto?>
-{
-    public Guid ProductId { get; set; }
-}
+public sealed record GetProductQuery(Guid ProductId) : IRequest<ProductDto?>;

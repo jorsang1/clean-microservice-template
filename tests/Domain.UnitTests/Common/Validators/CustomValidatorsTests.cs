@@ -1,4 +1,5 @@
-﻿using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
+﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
+using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentAssertions;
 using FluentValidation;
@@ -10,12 +11,10 @@ namespace CleanCompanyName.DDDMicroservice.Domain.UnitTests.Common.Validators;
 public class CustomValidatorsTests
 {
     private readonly InlineValidator<Product> _validator;
-    private readonly Product _validated;
 
     public CustomValidatorsTests()
     {
         _validator = new InlineValidator<Product>();
-        _validated = new Product() { Sku = string.Empty };
     }
 
     [Fact]
@@ -26,7 +25,7 @@ public class CustomValidatorsTests
             .NotEmpty()
             .WithAutomaticErrorCode(_validator);
 
-        var result = _validator.TestValidate(_validated);
+        var result = _validator.TestValidate(ProductBuilder.GetProductWithSku(string.Empty));
 
         result.Errors
             .Should()
@@ -45,7 +44,7 @@ public class CustomValidatorsTests
             .NotEmpty()
             .WithAutomaticErrorCode(new InlineValidator<Product>());
 
-        var result = _validator.TestValidate(_validated);
+        var result = _validator.TestValidate(ProductBuilder.GetProductWithSku(string.Empty));
 
         result.Errors
             .Should()
@@ -65,7 +64,7 @@ public class CustomValidatorsTests
             .NotEmpty()
             .WithHint(hint);
 
-        var result = _validator.TestValidate(_validated);
+        var result = _validator.TestValidate(ProductBuilder.GetProductWithSku(string.Empty));
 
         result.Errors
             .MapToValidationErrors()

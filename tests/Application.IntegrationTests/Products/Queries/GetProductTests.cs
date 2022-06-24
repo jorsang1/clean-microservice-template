@@ -16,15 +16,12 @@ public class GetProductTests : TestBase
     public async Task WHEN_providing_valid_id_THEN_product_is_found()
     {
         var product = ProductBuilder.GetProduct();
-        var request = new GetProductQuery { ProductId = product.Id.Value };
+        var request = new GetProductQuery(product.Id.Value);
         await AddAsync(product);
 
         var result = await SendAsync(request);
 
         result.Should().NotBeNull();
-
-        var productDto = result!.Value;
-
-        productDto.Id.Should().Be(request.ProductId);
+        result!.Id.Should().Be(request.ProductId);
     }
 }

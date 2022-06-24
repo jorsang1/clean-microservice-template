@@ -15,7 +15,7 @@ public static class DependencyInjection
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(TracingEnrichingPipelineBehaviour<,>))
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionEnrichingPipelineBehaviour<,>));
 
-        MapperConfig.AddMappingConfigs();
+        ApplicationMapperConfig.AddMappingConfigs();
 
         return services;
     }

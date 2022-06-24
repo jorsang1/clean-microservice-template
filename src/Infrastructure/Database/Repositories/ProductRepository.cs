@@ -1,45 +1,42 @@
 ﻿using Mapster;
 using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
 
 namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Repositories;
 
 internal class ProductRepository : IProductRepository
 {
-    private static readonly List<Product> Products = new()
+    private static readonly List<ProductModel> Products = new()
     {
-        new Product(Guid.NewGuid(), "SKU code", "The title", "Prod description", 23.5M, DateTime.Now, Guid.NewGuid(), DateTime.Now, Guid.NewGuid())
+        new ProductModel(Guid.NewGuid(), "SKU code", "The title", "Prod description", 23.5M, DateTime.Now, Guid.NewGuid(), DateTime.Now, Guid.NewGuid())
     };
 
-    public async Task<Domain.Entities.Products.Product?> GetById(Guid id)
+    public async Task<Product?> GetById(Guid id)
     {
         var product = Products.FirstOrDefault(p => p.Id == id);
 
-        if (product == default)
-            return null;
-
-        return product
-            .Adapt<Domain.Entities.Products.Product>();
+        return product?.Adapt<Product>();
     }
 
-    public async Task<List<Domain.Entities.Products.Product>> GetAll()
+    public async Task<List<Product>> GetAll()
     {
-        return Products.Select(p => p.Adapt<Domain.Entities.Products.Product>()).ToList();
+        return Products.Select(p => p.Adapt<Product>()).ToList();
     }
 
-    public async Task<Domain.Entities.Products.Product> Create(Domain.Entities.Products.Product product)
+    public async Task<Product> Create(Product product)
     {
-        Products.Add(product.Adapt<Product>());
-        return Products.Last().Adapt<Domain.Entities.Products.Product>();
+        Products.Add(product.Adapt<ProductModel>());
+        return Products.Last().Adapt<Product>();
     }
 
-    public async Task Update(Domain.Entities.Products.Product product)
+    public async Task Update(Product product)
     {
         Products.Remove(Products.First(p => p.Id == product.Id.Value));
-        Products.Add(product.Adapt<Product>());
+        Products.Add(product.Adapt<ProductModel>());
     }
 
-    public async Task Delete(Domain.Entities.Products.Product product)
+    public async Task Delete(Product product)
     {
         Products.Remove(Products.First(p => p.Id == product.Id.Value));
     }

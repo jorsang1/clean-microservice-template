@@ -2,7 +2,6 @@
 using CleanCompanyName.DDDMicroservice.Application.Pipelines;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
-using Mapster;
 using MediatR;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Pipelines;
@@ -15,7 +14,7 @@ public class ExceptionEnrichingTests
 
     public ExceptionEnrichingTests()
     {
-        _command = ProductBuilder.GetProduct().Adapt<AddProductCommand>();
+        _command = AddProductCommandBuilder.GetAddProductCommandEmpty();
     }
 
     [Fact]
@@ -25,7 +24,8 @@ public class ExceptionEnrichingTests
             .Setup(x => x.Invoke())
             .ThrowsAsync(new Exception());
 
-        await FluentActions.Invoking(()  =>
+        await FluentActions
+            .Invoking(()  =>
                 _sut.Handle(
                     _command,
                     CancellationToken.None,
@@ -38,12 +38,14 @@ public class ExceptionEnrichingTests
     [Fact]
     public async Task WHEN_no_error_happens_THEN_no_exception_should_be_thrown()
     {
-        var productDto = _command.Adapt<ProductDto>();
+        var productDto = ProductDtoBuilder.GetProductDtoEmpty();
+
         _handlerMock
             .Setup(x => x.Invoke())
             .ReturnsAsync(productDto);
 
-        await FluentActions.Invoking(() =>
+        await FluentActions
+            .Invoking(() =>
                 _sut.Handle(
                     _command,
                     CancellationToken.None,

@@ -15,10 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Common\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
         <ProjectReference Include="..\Application.CommonTests\Application.CommonTests.csproj" />
     </ItemGroup>

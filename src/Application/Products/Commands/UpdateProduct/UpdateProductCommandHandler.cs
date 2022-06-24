@@ -11,39 +11,37 @@ namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateP
 internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {
     private readonly IProductRepository _productRepository;
-    private readonly IDateTime _dateService;
     private readonly ILogger _logger;
     private readonly IValidator<Product> _validator;
 
     public UpdateProductCommandHandler(
         IProductRepository productRepository,
-        IDateTime dateService,
         ILogger<UpdateProductCommandHandler> logger,
         IValidator<Product> validator)
     {
         _productRepository = productRepository;
-        _dateService = dateService;
         _logger = logger;
         _validator = validator;
     }
 
     public async Task<ProductDto?> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var productToUpdate = request.Adapt<Product>();
+        var productToUpdate = await _productRepository.GetById(request.Id);
+
+        if (productToUpdate is null || productToUpdate.Id.Value == Guid.Empty)
+            return null;
+
+        productToUpdate.Update(
+            sku: request.Sku,
+            title: request.Title,
+            description: request.Description,
+            price: request.Price,
+            modifiedBy: Guid.NewGuid()); // TODO replace with proper user identity
 
         var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
-
-        var product = await _productRepository.GetById(productToUpdate.Id.Value);
-
-        if (product is null || product.Id.Value == Guid.Empty)
-            return null;
-
-        productToUpdate.CreatedOn = product.CreatedOn;
-        productToUpdate.CreatedBy = product.CreatedBy;
-        UpdateAuditableInformation(productToUpdate);
 
         try
         {
@@ -55,13 +53,5 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
         }
 
         return productToUpdate.Adapt<ProductDto>();
-        //Shall we maybe query the DB to make sure the operation is done??
-        //return Task.FromResult(_productRepository.GetById(productToUpdate.Id).MapToDto());
-    }
-
-    private void UpdateAuditableInformation(Product productToAdd)
-    {
-        productToAdd.LastModifiedOn = _dateService.Now;
-        productToAdd.LastModifiedBy = Guid.Empty;
     }
 }

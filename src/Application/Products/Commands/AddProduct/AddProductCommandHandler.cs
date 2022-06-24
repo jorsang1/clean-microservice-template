@@ -10,7 +10,6 @@ namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProd
 
 internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
 {
-    private readonly IDateTime _dateService;
     private readonly ILogger _logger;
     private readonly IProductRepository _productRepository;
     private readonly IStockClient _stockClient;
@@ -18,13 +17,11 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
 
     public AddProductCommandHandler(
         IProductRepository productRepository,
-        IDateTime dateService,
         IStockClient stockClient,
         ILogger<AddProductCommandHandler> logger,
         IValidator<Product> validator)
     {
         _productRepository = productRepository;
-        _dateService = dateService;
         _stockClient = stockClient;
         _logger = logger;
         _validator = validator;
@@ -32,14 +29,19 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
 
     public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
-        var productToAdd = request.Adapt<Product>();
+        var productToAdd = Product.Create(
+            id: request.Id,
+            sku: request.Sku,
+            title: request.Title,
+            description: request.Description,
+            price: request.Price,
+            createdBy: Guid.NewGuid()); // TODO replace with proper user identity
 
         var validationResult = await _validator.ValidateAsync(productToAdd, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
 
-        AddAuditableInformation(productToAdd);
         var product = await _productRepository.Create(productToAdd);
 
         try
@@ -52,13 +54,5 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
         }
 
         return product.Adapt<ProductDto>();
-    }
-
-    private void AddAuditableInformation(Product productToAdd)
-    {
-        productToAdd.CreatedOn = _dateService.Now;
-        productToAdd.CreatedBy = Guid.NewGuid(); //TODO: Add identity service.
-        productToAdd.LastModifiedOn = productToAdd.CreatedOn;
-        productToAdd.LastModifiedBy = productToAdd.CreatedBy;
     }
 }

@@ -19,7 +19,7 @@ internal class ProductEndpoints
         app.MapGet("/products", GetAllProducts)
             .WithName("GetAllProducts");
 
-        app.MapGet("/products/{id}", GetProduct)
+        app.MapGet("/products/{id:guid}", GetProduct)
             .WithName("GetProduct");
 
         app.MapPost("/products", AddProduct)
@@ -28,24 +28,28 @@ internal class ProductEndpoints
         app.MapPut("/products", UpdateProduct)
             .WithName("UpdateProduct");
 
-        app.MapDelete("/products/{id}", DeleteProduct)
+        app.MapDelete("/products/{id:guid}", DeleteProduct)
             .WithName("DeleteProduct");
     }
 
-    private async Task<IResult> GetAllProducts(IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
+    private static async Task<IResult> GetAllProducts(IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
     {
         logger.LogInformation("Getting all products. (Just an example on how to log inside a 'controller' if you need it)");
         var products = await mediator.Send(new GetAllProductsQuery(), cancellationToken);
         return Results.Ok(products.Adapt<List<ProductListItemResponse>>());
     }
 
-    private async Task<IResult> GetProduct(Guid id, IMediator mediator, CancellationToken cancellationToken)
+    private static async Task<IResult> GetProduct(Guid id, IMediator mediator, CancellationToken cancellationToken)
     {
-        var product = await mediator.Send(new GetProductQuery { ProductId = id }, cancellationToken);
-        return product is not null ? Results.Ok(product.Adapt<ProductResponse>()) : Results.NotFound();
+        var product = await mediator.Send(new GetProductQuery(id), cancellationToken);
+
+        return
+            product is not null
+                ? Results.Ok(product.Adapt<ProductResponse>())
+                : Results.NotFound();
     }
 
-    private async Task<IResult> AddProduct([FromBody] AddProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
+    private static async Task<IResult> AddProduct([FromBody] AddProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
     {
         var command = request.Adapt<AddProductCommand>();
 
@@ -61,14 +65,18 @@ internal class ProductEndpoints
         }
     }
 
-    private async Task<IResult> UpdateProduct([FromBody] UpdateProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
+    private static async Task<IResult> UpdateProduct([FromBody] UpdateProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
     {
         var command = request.Adapt<UpdateProductCommand>();
 
         try
         {
             var product = await mediator.Send(command, cancellationToken);
-            return product is not null ? Results.Ok(product.Adapt<ProductResponse>()) : Results.NotFound();
+
+            return
+                product is not null
+                    ? Results.Ok(product.Adapt<ProductResponse>())
+                    : Results.NotFound();
         }
         catch (DomainValidationException validationException)
         {
@@ -77,11 +85,11 @@ internal class ProductEndpoints
         }
     }
 
-    private async Task<IResult> DeleteProduct(Guid id, IMediator mediator, CancellationToken cancellationToken)
+    private static async Task<IResult> DeleteProduct(Guid id, IMediator mediator, CancellationToken cancellationToken)
     {
         try
         {
-            var command = new DeleteProductCommand { Id = id };
+            var command = new DeleteProductCommand(id);
             await mediator.Send(command, cancellationToken);
             return Results.NoContent();
         }
