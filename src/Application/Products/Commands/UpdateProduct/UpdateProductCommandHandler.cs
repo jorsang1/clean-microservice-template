@@ -36,7 +36,7 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
             title: request.Title,
             description: request.Description,
             price: request.Price,
-            modifiedBy: Guid.NewGuid()); // TODO replace with proper user identity
+            modifiedBy: request.UserId);
 
         var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
 

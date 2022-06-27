@@ -35,7 +35,7 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
             title: request.Title,
             description: request.Description,
             price: request.Price,
-            createdBy: Guid.NewGuid()); // TODO replace with proper user identity
+            createdBy: request.UserId);
 
         var validationResult = await _validator.ValidateAsync(productToAdd, cancellationToken);
 

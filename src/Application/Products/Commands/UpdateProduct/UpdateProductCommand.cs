@@ -7,5 +7,6 @@ public readonly record struct UpdateProductCommand(
         string Sku,
         string Title,
         string? Description,
-        decimal Price)
+        decimal Price,
+        Guid UserId)
     : IRequest<ProductDto?>;

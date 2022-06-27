@@ -12,7 +12,8 @@ public static class UpdateProductCommandBuilder
             Sku: default!,
             Title: default!,
             Description: default!,
-            Price: default
+            Price: default,
+            UserId: default
         );
     }
 
