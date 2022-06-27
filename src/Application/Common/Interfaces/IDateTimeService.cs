@@ -1,5 +1,5 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
-public interface IDateTime
+public interface IDateTimeService
 {
     public DateTimeOffset Now { get; }
 }

@@ -11,7 +11,7 @@ namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Comman
 
 public class UpdateProductTests : ProductTestBase
 {
-    private readonly Mock<IDateTime> _dateService = new();
+    private readonly Mock<IDateTimeService> _dateTimeService = new();
     private readonly Mock<ILogger<UpdateProductCommandHandler>> _logger = new();
     private readonly Mock<IValidator<Product>> _validator = new();
     private readonly UpdateProductCommandHandler _sut;
@@ -21,7 +21,7 @@ public class UpdateProductTests : ProductTestBase
         _sut = new UpdateProductCommandHandler
         (
             ProductRepository.Object,
-            _dateService.Object,
+            _dateTimeService.Object,
             _logger.Object,
             _validator.Object
         );
@@ -53,7 +53,7 @@ public class UpdateProductTests : ProductTestBase
         result.Should().NotBeNull();
         var productDto = result!.Value;
 
-        productDto!.Sku.Should().Be(command.Sku);
+        productDto.Sku.Should().Be(command.Sku);
         productDto.Title.Should().Be(command.Title);
     }
 

@@ -11,7 +11,7 @@ namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Products.Comman
 
 public class AddProductTests : ProductTestBase
 {
-    private readonly Mock<IDateTime> _dateService = new();
+    private readonly Mock<IDateTimeService> _dateTimeService = new();
     private readonly Mock<ILogger<AddProductCommandHandler>> _logger = new();
     private readonly Mock<IStockClient> _stockClient = new();
     private readonly Mock<IValidator<Product>> _validator = new();
@@ -22,7 +22,7 @@ public class AddProductTests : ProductTestBase
         _sut = new AddProductCommandHandler
         (
             ProductRepository.Object,
-            _dateService.Object,
+            _dateTimeService.Object,
             _stockClient.Object,
             _logger.Object,
             _validator.Object
@@ -66,7 +66,7 @@ public class AddProductTests : ProductTestBase
         var result = await _sut.Handle(command, CancellationToken.None);
 
         result.Should().NotBeNull();
-        result!.Sku.Should().Be(command.Sku);
+        result.Sku.Should().Be(command.Sku);
         result.Title.Should().Be(command.Title);
     }
 

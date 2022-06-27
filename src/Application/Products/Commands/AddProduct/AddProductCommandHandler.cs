@@ -12,19 +12,19 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
 {
     private readonly ILogger _logger;
     private readonly IProductRepository _productRepository;
-    private readonly IDateTime _dateService;
+    private readonly IDateTimeService _dateTimeService;
     private readonly IStockClient _stockClient;
     private readonly IValidator<Product> _validator;
 
     public AddProductCommandHandler(
         IProductRepository productRepository,
-        IDateTime dateService,
+        IDateTimeService dateTimeService,
         IStockClient stockClient,
         ILogger<AddProductCommandHandler> logger,
         IValidator<Product> validator)
     {
         _productRepository = productRepository;
-        _dateService = dateService;
+        _dateTimeService = dateTimeService;
         _stockClient = stockClient;
         _logger = logger;
         _validator = validator;
@@ -38,7 +38,7 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
             title: request.Title,
             description: request.Description,
             price: request.Price,
-            createdOn: _dateService.Now,
+            createdOn: _dateTimeService.Now,
             createdBy: request.UserId);
 
         var validationResult = await _validator.ValidateAsync(productToAdd, cancellationToken);
