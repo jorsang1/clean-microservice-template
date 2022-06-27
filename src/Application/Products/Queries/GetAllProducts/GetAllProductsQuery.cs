@@ -2,4 +2,4 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 
-public readonly record struct GetAllProductsQuery : IRequest<List<ProductDto>>;
+public readonly record struct GetAllProductsQuery : IRequest<List<ProductListItemDto>>;
