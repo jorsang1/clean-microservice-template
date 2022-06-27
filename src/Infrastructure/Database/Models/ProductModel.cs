@@ -1,6 +1,6 @@
 ﻿namespace CleanCompanyName.DDDMicroservice.Infrastructure.Database.Models;
 
-internal sealed record ProductModel(
+internal readonly record struct ProductModel(
     Guid Id,
     string Sku,
     string Title,

@@ -48,8 +48,10 @@ public class UpdateProductTests : ProductTestBase
         var result = await _sut.Handle(command, CancellationToken.None);
 
         result.Should().NotBeNull();
-        result!.Sku.Should().Be(command.Sku);
-        result.Title.Should().Be(command.Title);
+        var productDto = result!.Value;
+
+        productDto!.Sku.Should().Be(command.Sku);
+        productDto.Title.Should().Be(command.Title);
     }
 
     [Fact]

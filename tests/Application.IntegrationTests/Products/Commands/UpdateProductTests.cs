@@ -36,11 +36,11 @@ public class UpdateProductTests : TestBase
         var productUpdated = await SendAsync(command);
 
         productUpdated.Should().NotBeNull();
-
-        var result = await GetById(productUpdated!.Id);
+        var productUpdatedValue = productUpdated!.Value;
+        var result = await GetById(productUpdated!.Value.Id);
 
         result.Should().NotBeNull();
-        result!.Sku.Should().Be(productUpdated.Sku);
-        result.Title.Value.Should().Be(productUpdated.Title);
+        result!.Sku.Should().Be(productUpdatedValue.Sku);
+        result.Title.Value.Should().Be(productUpdatedValue.Title);
     }
 }
