@@ -13,6 +13,7 @@ public static class ProductBuilder
             title: default!,
             description: default!,
             price: default,
+            createdOn: default,
             createdBy: default
         );
     }
@@ -26,6 +27,7 @@ public static class ProductBuilder
             title: "title",
             description: "Description",
             price: 5,
+            createdOn: DateTimeOffset.Now,
             createdBy: Guid.NewGuid()
             
         );
@@ -40,6 +42,7 @@ public static class ProductBuilder
             title: default!,
             description: default!,
             price: default,
+            createdOn: default,
             createdBy: default
         );
     }
@@ -53,6 +56,7 @@ public static class ProductBuilder
             title: default!,
             description: default!,
             price: default,
+            createdOn: default,
             createdBy: default
         );
     }
@@ -66,6 +70,7 @@ public static class ProductBuilder
             title: title,
             description: default!,
             price: default,
+            createdOn: default,
             createdBy: default
         );
     }
@@ -79,6 +84,7 @@ public static class ProductBuilder
             title: default!,
             description: description,
             price: default,
+            createdOn: default,
             createdBy: default
         );
     }
@@ -92,6 +98,7 @@ public static class ProductBuilder
             title: default!,
             description: default!,
             price: price,
+            createdOn: default,
             createdBy: default
         );
     }

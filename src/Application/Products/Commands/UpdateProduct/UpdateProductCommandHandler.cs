@@ -11,15 +11,18 @@ namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateP
 internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
 {
     private readonly IProductRepository _productRepository;
+    private readonly IDateTime _dateService;
     private readonly ILogger _logger;
     private readonly IValidator<Product> _validator;
 
     public UpdateProductCommandHandler(
         IProductRepository productRepository,
+        IDateTime dateService,
         ILogger<UpdateProductCommandHandler> logger,
         IValidator<Product> validator)
     {
         _productRepository = productRepository;
+        _dateService = dateService;
         _logger = logger;
         _validator = validator;
     }
@@ -36,6 +39,7 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
             title: request.Title,
             description: request.Description,
             price: request.Price,
+            modifiedOn: _dateService.Now,
             modifiedBy: request.UserId);
 
         var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
