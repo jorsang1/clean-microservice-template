@@ -31,6 +31,7 @@ public sealed record Product(
         string title,
         string? description,
         decimal price,
+        DateTimeOffset createdOn,
         Guid createdBy)
     {
         return new Product(
@@ -39,9 +40,9 @@ public sealed record Product(
             Title: new ProductTitle(title),
             Description: description,
             Price: price,
-            CreatedOn: CommonDateTime.Now,
+            CreatedOn: createdOn,
             CreatedBy: createdBy,
-            LastModifiedOn: CommonDateTime.Now,
+            LastModifiedOn: createdOn,
             LastModifiedBy: createdBy);
     }
 
@@ -50,12 +51,15 @@ public sealed record Product(
         string title,
         string? description,
         decimal price,
+        DateTimeOffset modifiedOn,
         Guid modifiedBy)
     {
         Sku = sku;
         Title = new ProductTitle(title);
         Description = description;
         Price = price;
-        base.ModifiedBy(modifiedBy);
+        base.ModifiedBy(
+            lastModifiedOn: modifiedOn,
+            modifiedBy: modifiedBy);
     }
 }

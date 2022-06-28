@@ -52,7 +52,13 @@ internal class ProductEndpoints
 
     private static async Task<IResult> AddProduct([FromBody] AddProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
     {
-        var command = request.Adapt<AddProductCommand>();
+        var command = new AddProductCommand(
+            Id: request.Id,
+            Sku: request.Sku,
+            Title: request.Sku,
+            Description: request.Description,
+            Price: request.Price,
+            UserId: Guid.NewGuid());  // TODO replace with proper user identity
 
         try
         {
@@ -69,7 +75,13 @@ internal class ProductEndpoints
 
     private static async Task<IResult> UpdateProduct([FromBody] UpdateProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
     {
-        var command = request.Adapt<UpdateProductCommand>();
+        var command = new UpdateProductCommand(
+            Id: request.Id,
+            Sku: request.Sku,
+            Title: request.Sku,
+            Description: request.Description,
+            Price: request.Price,
+            UserId: Guid.NewGuid());  // TODO replace with proper user identity
 
         try
         {

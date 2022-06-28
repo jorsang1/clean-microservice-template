@@ -2,10 +2,11 @@
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
-public sealed record UpdateProductCommand(
+public readonly record struct UpdateProductCommand(
         Guid Id,
         string Sku,
         string Title,
         string? Description,
-        decimal Price)
+        decimal Price,
+        Guid UserId)
     : IRequest<ProductDto?>;

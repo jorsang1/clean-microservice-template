@@ -9,9 +9,9 @@ public abstract record AuditableEntity(
     public DateTimeOffset LastModifiedOn { get; private set; } = LastModifiedOn;
     public Guid LastModifiedBy { get; private set; } = LastModifiedBy;
 
-    protected void ModifiedBy(Guid modifiedBy)
+    protected void ModifiedBy(DateTimeOffset lastModifiedOn, Guid modifiedBy)
     {
-        LastModifiedOn = CommonDateTime.Now;
+        LastModifiedOn = lastModifiedOn;
         LastModifiedBy = modifiedBy;
     }
 }

@@ -16,7 +16,7 @@ internal class ProductRepository : IProductRepository
     {
         var product = Products.FirstOrDefault(p => p.Id == id);
 
-        return product?.Adapt<Product>();
+        return product == default ? null : product.Adapt<Product>();
     }
 
     public async Task<List<Product>> GetAll()

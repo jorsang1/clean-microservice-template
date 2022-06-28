@@ -1,4 +1,5 @@
 ﻿using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 
 namespace CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 
@@ -6,93 +7,116 @@ public static class ProductBuilder
 {
     public static Product GetProductEmpty()
     {
-        return Product.Create
+        return new Product
         (
-            id: default,
-            sku: default!,
-            title: default!,
-            description: default!,
-            price: default,
-            createdBy: default
+            Id: default,
+            Sku: default!,
+            Title: default!,
+            Description: default!,
+            Price: default,
+            CreatedOn: default,
+            CreatedBy: default,
+            LastModifiedOn: default,
+            LastModifiedBy: default
         );
     }
 
     public static Product GetProduct()
     {
-        return Product.Create
+        var createdBy = Guid.NewGuid();
+        var createdOn = DateTimeOffset.Now;
+
+        return new Product
         (
-            id: Guid.NewGuid(),
-            sku: "sku",
-            title: "title",
-            description: "Description",
-            price: 5,
-            createdBy: Guid.NewGuid()
-            
+            Id: new ProductId(Guid.NewGuid()),
+            Sku: "sku",
+            Title: new ProductTitle("title"),
+            Description: "Description",
+            Price: 5,
+            CreatedOn: createdOn,
+            CreatedBy: createdBy,
+            LastModifiedOn: createdOn,
+            LastModifiedBy: createdBy
         );
     }
 
     public static Product GetProductWithId(Guid guid = new())
     {
-        return Product.Create
+        return new Product
         (
-            id: guid,
-            sku: default!,
-            title: default!,
-            description: default!,
-            price: default,
-            createdBy: default
+            Id: new ProductId(guid),
+            Sku: default!,
+            Title: default!,
+            Description: default!,
+            Price: default,
+            CreatedOn: default,
+            CreatedBy: default,
+            LastModifiedOn: default,
+            LastModifiedBy: default
         );
     }
 
     public static Product GetProductWithSku(string sku = "sku")
     {
-        return Product.Create
+        return new Product
         (
-            id: default,
-            sku: sku,
-            title: default!,
-            description: default!,
-            price: default,
-            createdBy: default
+            Id: default,
+            Sku: sku,
+            Title: default!,
+            Description: default!,
+            Price: default,
+            CreatedOn: default,
+            CreatedBy: default,
+            LastModifiedOn: default,
+            LastModifiedBy: default
         );
     }
 
     public static Product GetProductWithTitle(string title = "Product title")
     {
-        return Product.Create
+        return new Product
         (
-            id: default,
-            sku: default!,
-            title: title,
-            description: default!,
-            price: default,
-            createdBy: default
+            Id: default,
+            Sku: default!,
+            Title: new ProductTitle(title),
+            Description: default!,
+            Price: default,
+            CreatedOn: default,
+            CreatedBy: default,
+            LastModifiedOn: default,
+            LastModifiedBy: default
         );
     }
 
     public static Product GetProductWithDescription(string description)
     {
-        return Product.Create
+        return new Product
         (
-            id: default,
-            sku: default!,
-            title: default!,
-            description: description,
-            price: default,
-            createdBy: default
+            Id: default,
+            Sku: default!,
+            Title: default!,
+            Description: description,
+            Price: default,
+            CreatedOn: default,
+            CreatedBy: default,
+            LastModifiedOn: default,
+            LastModifiedBy: default
         );
     }
 
     public static Product GetProductWithPrice(decimal price)
     {
-        return Product.Create
+        return new Product
         (
-            id: default,
-            sku: default!,
-            title: default!,
-            description: default!,
-            price: price,
-            createdBy: default
+            Id: default,
+            Sku: default!,
+            Title: default!,
+            Description: default!,
+            Price: price,
+            CreatedOn: default,
+            CreatedBy: default,
+            LastModifiedOn: default,
+            LastModifiedBy: default
         );
     }
 }
