@@ -1,0 +1,11 @@
+{
+  "stryker-config": {
+    "mutate": [
+      "!**/Database/**",
+      "!**/DependencyInjection.cs"
+    ],
+    "ignore-mutations": [
+      "string"
+    ]
+  }
+}

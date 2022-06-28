@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Jordi Sánchez García",
+  "classifications": [ "API", "Microservice", "DDD", "CleanArchitecture", "CQRS" ],
+  "identity": "Jorsang1.CleanMicroserviceAPITemplate.CSharp",
+  "shortName": "cleandddapi",
+  "name": "Clean microservice DDD API template",
+  "description": "Template for creating a new API using clean architecture, DDD, and CQRS among other cool stuff.",
+  "sourceName": "CleanMicroserviceTemplate",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "symbols": {
+    "companyNameInNamespace": {
+      "type": "parameter",
+      "defaultValue": "YourCompany",
+      "replaces": "CleanCompanyName"
+    },
+    "productNameInNamespace": {
+      "type": "parameter",
+      "defaultValue": "YourProductName",
+      "replaces": "DDDMicroservice"
+    },
+    "productDockerImageName": {
+      "type": "parameter",
+      "defaultValue": "your-clean-api",
+      "replaces": "clean-api-template"
+    }
+  },
+  "preferNameDirectory": true
+}
