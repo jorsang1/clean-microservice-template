@@ -27,18 +27,18 @@ public class UpdateProductTests : ProductTestBase
         );
     }
 
-    [Fact]
-    public async Task WHEN_few_fields_are_filled_THEN_throws_validation_exception()
-    {
-        MockSetup.SetupValidationErrorResponse(_validator);
-
-        await FluentActions
-            .Invoking(() =>
-                _sut.Handle(ProductBuilder.GetProductWithSku().Adapt<UpdateProductCommand>(),
-                    CancellationToken.None))
-            .Should()
-            .ThrowAsync<DomainValidationException>();
-    }
+    // [Fact]
+    // public async Task WHEN_few_fields_are_filled_THEN_throws_validation_exception()
+    // {
+    //     MockSetup.SetupValidationErrorResponse(_validator);
+    //
+    //     await FluentActions
+    //         .Invoking(() =>
+    //             _sut.Handle(ProductBuilder.GetProductWithSku().Adapt<UpdateProductCommand>(),
+    //                 CancellationToken.None))
+    //         .Should()
+    //         .ThrowAsync<DomainValidationException>();
+    // }
 
     [Fact]
     public async Task WHEN_all_fields_are_filled_THEN_product_is_updated()
