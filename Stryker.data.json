@@ -1,0 +1,22 @@
+{
+  "solutionPath": "CleanMicroserviceTemplate.sln",
+  "jsonReportsPath": "Stryker.Test\\Output\\",
+  "projectsToTest": [
+    {
+      "csProjPath":"src\\Infrastructure\\Infrastructure.csproj",
+      "testPath":"tests\\Infrastructure.UnitTests\\"
+    },
+    {
+      "csProjPath":"src\\Application\\Application.csproj",
+      "testPath":"tests\\Application.IntegrationTests\\"
+    },
+    {
+      "csProjPath":"src\\Application\\Application.csproj",
+      "testPath":"tests\\Application.UnitTests\\"
+    },
+    {
+      "csProjPath":"src\\Domain\\Domain.csproj",
+      "testPath":"tests\\Domain.UnitTests\\"
+    }
+  ]
+}
