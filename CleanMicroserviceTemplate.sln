@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		Stryker.data.json = Stryker.data.json
 		.template.config\template.json = .template.config\template.json
+		CleanMicroserviceTemplate.csproj = CleanMicroserviceTemplate.csproj
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Contracts", "src\Api.Contracts\Api.Contracts.csproj", "{029F77E8-3164-46FA-B0BD-B211DF8CFC2F}"

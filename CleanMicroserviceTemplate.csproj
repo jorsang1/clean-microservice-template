@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageType>Template</PackageType>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>Jorsang1.CleanMicroserviceAPITemplate.CSharp</PackageId>
+    <Title>Clean microservice DDD API template</Title>
+    <Authors>Jorsang1</Authors>
+    <Description>Template for creating a new API using clean architecture, DDD, and CQRS among other cool stuff.</Description>
+    <PackageTags>dotnet-new;templates;api;microservices;ddd;clean-architecture;cqrs</PackageTags>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageProjectUrl>https://github.com/jorsang1/clean-microservice-template</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jorsang1/clean-microservice-template</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="**\*" Exclude="**\bin\**;**\obj\**" />
+    <Compile Remove="**\*" />
+  </ItemGroup>
+
+</Project>
