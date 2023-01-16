@@ -1,9 +1,14 @@
 # Clean microservice template
+[![Build](https://github.com/jorsang1/clean-microservice-template/actions/workflows/publish.yml/badge.svg)](https://github.com/jorsang1/clean-microservice-template/actions/workflows/publish.yml)
+[![Nuget](https://img.shields.io/nuget/v/CleanMicroserviceTemplate?label=NuGet)](https://www.nuget.org/packages/CleanMicroserviceTemplate)
+[![Nuget](https://img.shields.io/nuget/dt/CleanMicroserviceTemplate?label=Downloads)](https://www.nuget.org/packages/CleanMicroserviceTemplate)
 
 This is a project template to create microservices in .NET 6 based on the Clean architecture approach (also known as Onion architecture, or Hexagonal architecture, or Ports and adapters).  
 The goal is to provide a boilerplate for creating API's that enforces some good practices so it is easy to spin off new microservices but keeping a good level of quality on the solution.  
 The solution is heavily inspired by the templated created by Jason Taylor.
 
+
+Create a new project based on this template by clicking the above **Use this template** button or by installing and running the associated NuGet package (see Getting Started for full details).
 
 ## Features
 
@@ -47,6 +52,7 @@ Main folders:
 This layer is organized with a first level of folders containing each "entity" and then another level with a folder for the queries, and a folder for the commands, and then the next level is another folder for the specific Query or Command where you can find everything related to this operation.  
 That's the same convention as in the Jason Clean Architecture template, but in this case I've preferred to keep one file per class approach instead of having the Query and the handler in the same file.
 * Api => The API is generated using the new minimal api approach as the microservice shouldn't be that big.
+* Api.Contracts => The API requests and responses.
 * Infrastructure => Only the database layer is implemented using an in memory repository.
 
 
@@ -66,10 +72,28 @@ The test project is testing the application layer with mocked dependencies.
   The test project is testing the infrastructure layer.
 
 
-### Runing the project
+## Getting Started
 
-**Build Solution**
-* Build => Build Solution
+T get started you can install the [NuGet package](https://www.nuget.org/packages/CleanMicroserviceTemplate) and run `dotnet new ca-sln`:
+
+1. Install the latest [.NET 7 SDK](https://dotnet.microsoft.com/download/dotnet/7.0)
+2. Run `dotnet new install CleanMicroserviceTemplate` to install the project template
+3. Create a folder for your solution and cd into it (the template will use it as project name)
+4. Run `dotnet new cleandddapi --help` to checkout the options
+5. Run `dotnet new cleandddapi -c "CompanyName" -p "ProductName" -pr "my-docker-image"` to create your new project.
+
+Now, you can either navigate to `src/Api` and launch the project using `dotnet run` and browse the API on something like: 'https://localhost:7157/swagger/index.html'...   
+...or you can directly run `docker compose up` and browse 'http://localhost:8080/swagger/index.html'
+
+### The project
+
+The project is an Api to do a basic CRUD over 'products' for an e-commerce.  
+
+The CRUD commands implemented with MediatR updates the stock for the products which is supposed to be in another service.  
+Instead of using 'events' as it should normally 'be done' in this template we are showing to do it in the old-fashion-coupled way with http calls.  
+
+
+### Running the tests
 
 **Run Tests**
 * Test => Windows => Test Explorer => Run All
@@ -92,6 +116,10 @@ Then you just need to go to the path of the solution and run the following comma
 The API should be available on [localhost:8080](http://localhost:8080)
 
 If you are using 'Docker Desktop' then you need to enable the build on the `docker-compose` project by editing the properties on the solution and going to 'Configuration properties > Configuration' and checking the project.
+
+## Support
+
+If you are having issues, please let us know in [GitHub issues](https://github.com/jorsang1/clean-microservice-template/issues/new/choose).
 
 ## How to contribute
 Everyone should be able to create a 'Pull Request' with a suggested change.  

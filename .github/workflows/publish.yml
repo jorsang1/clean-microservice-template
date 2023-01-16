@@ -1,19 +1,24 @@
-name: publish to nuget
+name: CI-CD
+
 on:
   push:
     branches:
-      - main # Default release branch, may also be named 'master' or 'develop'
+      - main
+
 jobs:
   publish:
     name: build, pack & publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 6.0.x
+      - name: Build
+        run: dotnet build CleanMicroserviceTemplate.sln
+      - name: Test
+        run: dotnet test CleanMicroserviceTemplate.sln --no-build --verbosity normal
 
       # Publish
       - name: publish on version change
@@ -30,7 +35,7 @@ jobs:
           # BUILD_PLATFORM: x64
 
           # NuGet package id, used for version detection & defaults to project name
-          PACKAGE_NAME: Jorsang1.CleanMicroserviceAPITemplate.CSharp
+          PACKAGE_NAME: CleanMicroserviceTemplate
 
           # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
           VERSION_FILE_PATH: Directory.Build.props
