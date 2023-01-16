@@ -3,7 +3,7 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0.0</PackageVersion>
-    <PackageId>Jorsang1.CleanMicroserviceAPITemplate.CSharp</PackageId>
+    <PackageId>CleanMicroserviceTemplate</PackageId>
     <Title>Clean microservice DDD API template</Title>
     <Authors>Jorsang1</Authors>
     <Description>Template for creating a new API using clean architecture, DDD, and CQRS among other cool stuff.</Description>
