@@ -6,7 +6,6 @@ using CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProdu
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetAllProducts;
 using CleanCompanyName.DDDMicroservice.Application.Products.Queries.GetProduct;
-using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -60,17 +59,11 @@ internal class ProductEndpoints
             Price: request.Price,
             UserId: Guid.NewGuid());  // TODO replace with proper user identity
 
-        try
-        {
-            var product = await mediator.Send(command, cancellationToken);
-            ApplicationMetrics.NewProductAdded();
-            return Results.Ok(product.Adapt<ProductResponse>());
-        }
-        catch (DomainValidationException validationException)
-        {
-            logger.LogInformation( "{ErrorMessage} {Errors}", validationException.Message, validationException.Errors);
-            return Results.BadRequest(validationException.Errors);
-        }
+        var addProductResult = await mediator.Send(command, cancellationToken);
+
+        return addProductResult.ToHttpResult(
+            mapping: obj => obj.Adapt<ProductResponse>(),
+            actionWhenSuccess: ApplicationMetrics.NewProductAdded);
     }
 
     private static async Task<IResult> UpdateProduct([FromBody] UpdateProductRequest request, IMediator mediator, ILogger<ProductEndpoints> logger, CancellationToken cancellationToken)
@@ -83,33 +76,15 @@ internal class ProductEndpoints
             Price: request.Price,
             UserId: Guid.NewGuid());  // TODO replace with proper user identity
 
-        try
-        {
-            var product = await mediator.Send(command, cancellationToken);
+        var updateProductResult = await mediator.Send(command, cancellationToken);
 
-            return
-                product is not null
-                    ? Results.Ok(product.Adapt<ProductResponse>())
-                    : Results.NotFound();
-        }
-        catch (DomainValidationException validationException)
-        {
-            logger.LogInformation("{ErrorMessage} {Errors}", validationException.Message, validationException.Errors);
-            return Results.BadRequest(validationException.Errors);
-        }
+        return updateProductResult.ToHttpResult(mapping: obj => obj.Adapt<ProductResponse>());
     }
 
     private static async Task<IResult> DeleteProduct(Guid id, IMediator mediator, CancellationToken cancellationToken)
     {
-        try
-        {
-            var command = new DeleteProductCommand(id);
-            await mediator.Send(command, cancellationToken);
-            return Results.NoContent();
-        }
-        catch (KeyNotFoundException)
-        {
-            return Results.NotFound();
-        }
+        var command = new DeleteProductCommand(id);
+        var deleteProductResult = await mediator.Send(command, cancellationToken);
+        return deleteProductResult.ToHttpResult();
     }
 }

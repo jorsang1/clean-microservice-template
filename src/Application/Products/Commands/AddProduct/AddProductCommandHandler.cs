@@ -1,14 +1,15 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Application.Common.Mappers;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
-using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
+using FluentResults;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 
-internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
+internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Result<ProductDto>>
 {
     private readonly ILogger _logger;
     private readonly IProductRepository _productRepository;
@@ -30,7 +31,7 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
         _validator = validator;
     }
 
-    public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ProductDto>> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
         var productToAdd = Product.Create(
             id: request.Id,
@@ -44,7 +45,11 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Pro
         var validationResult = await _validator.ValidateAsync(productToAdd, cancellationToken);
 
         if (!validationResult.IsValid)
-            throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
+        {
+            _logger.LogInformation("Product requested to add is invalid. Errors: {Errors}", validationResult.Errors);
+            var errors = validationResult.Errors.MapToValidationErrors().MapToFluentErrors();
+            return Result.Fail(errors);
+        }
 
         var product = await _productRepository.Create(productToAdd);
 

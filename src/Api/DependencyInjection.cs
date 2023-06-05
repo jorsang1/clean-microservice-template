@@ -24,7 +24,7 @@ internal static class DependencyInjection
             httpLogging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
         });
 
-        services.AddOpenTelemetryMetrics(options =>
+        services.AddOpenTelemetry().WithMetrics(options =>
             options.AddHttpClientInstrumentation()
                 .AddAspNetCoreInstrumentation()
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName).AddTelemetrySdk())
@@ -34,9 +34,8 @@ internal static class DependencyInjection
                 })
                 .AddPrometheusExporter()
                 .AddMeter(ApplicationMetrics.ServiceMetricName)
-        );
-
-        services.AddOpenTelemetryTracing(options =>
+        )
+            .WithTracing(options =>
             options
                 .AddSource(ServiceName)
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName).AddTelemetrySdk())
@@ -67,7 +66,7 @@ internal static class DependencyInjection
 
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
         app.UseHttpLogging();
-        app.UseMiddleware<RequestScopeLoggingMiddleware>();
+        app.UseMiddleware<ErrorHandlerMiddleware>();
 
         return app;
     }

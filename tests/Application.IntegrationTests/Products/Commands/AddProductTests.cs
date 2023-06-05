@@ -1,6 +1,5 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
-using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using FluentAssertions;
 using Mapster;
 using Xunit;
@@ -15,21 +14,29 @@ public class AddProductTests : TestBase
     }
 
     [Fact]
-    public async Task WHEN_no_fields_are_filled_THEN_throws_validation_exception()
+    public async Task WHEN_no_fields_are_filled_THEN_result_should_contain_the_error()
     {
-        await FluentActions.Invoking(() =>
-            SendAsync(ProductBuilder.GetProductEmpty().Adapt<AddProductCommand>()))
-            .Should()
-            .ThrowAsync<DomainValidationException>();
+        var command = ProductBuilder.GetProductEmpty().Adapt<AddProductCommand>();
+
+        var result = await SendAsync(command);
+
+        result.Should().NotBeNull();
+        result.IsSuccess.Should().BeFalse();
+        result.Errors.First().Message.Should().Be("'Id Value' must not be empty.");
+        //TODO: Add more tests or asserts
     }
 
     [Fact]
-    public async Task WHEN_only_Sku_is_filled_THEN_throws_validation_exception()
+    public async Task WHEN_only_Sku_is_filled_THEN_result_should_contain_the_error()
     {
-        await FluentActions.Invoking(() =>
-            SendAsync(ProductBuilder.GetProductWithSku().Adapt<AddProductCommand>()))
-            .Should()
-            .ThrowAsync<DomainValidationException>();
+        var command = ProductBuilder.GetProductWithSku().Adapt<AddProductCommand>();
+
+        var result = await SendAsync(command);
+
+        result.Should().NotBeNull();
+        result.IsSuccess.Should().BeFalse();
+        result.Errors.First().Message.Should().Be("'Id Value' must not be empty.");
+        //TODO: Add more tests or asserts
     }
 
     [Fact]
@@ -37,12 +44,11 @@ public class AddProductTests : TestBase
     {
         var command = ProductBuilder.GetProduct().Adapt<AddProductCommand>();
 
-        var productCreated = await SendAsync(command);
+        var result = await SendAsync(command);
 
-        //var result = await GetById(productCreated.Id);
-
-        productCreated.Should().NotBeNull();
-        productCreated!.Sku.Should().Be(command.Sku);
-        productCreated.Title.Should().Be(command.Title);
+        result.Should().NotBeNull();
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Sku.Should().Be(command.Sku);
+        result.Value.Title.Should().Be(command.Title);
     }
 }

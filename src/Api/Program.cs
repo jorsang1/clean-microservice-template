@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+AddLoggingFromConfiguration(builder);
 
 // Add services to the container.
 builder.Services.AddApi();
@@ -20,7 +19,6 @@ builder.Services.AddInfrastructure(builder.Configuration.GetSection("Infrastruct
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
 
 
@@ -32,3 +30,21 @@ app.Logger.LogInformation("Starting CleanMicroserviceTemplate...");
 app.UseApi();
 app.UseHttpsRedirection();
 app.Run();
+
+static void AddLoggingFromConfiguration(WebApplicationBuilder builder)
+{
+    var isJsonConsoleLoggingEnabled = builder.Configuration.GetValue<bool>("Logging:JsonConsoleLoggingEnabled");
+    builder.Logging.ClearProviders();
+    if (isJsonConsoleLoggingEnabled)
+    {
+        builder.Logging.AddJsonConsole(
+            options =>
+            {
+                options.IncludeScopes     = true;
+                options.TimestampFormat   = "hh:mm:ss";
+                options.JsonWriterOptions = new JsonWriterOptions { Indented = false };
+            });
+    }
+    else
+        builder.Logging.AddConsole();
+}

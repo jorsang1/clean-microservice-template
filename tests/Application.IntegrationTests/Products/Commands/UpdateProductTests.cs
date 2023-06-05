@@ -1,5 +1,7 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
+using CleanCompanyName.DDDMicroservice.Domain.Entities.Products.ValueObjects;
 using FluentAssertions;
 using Mapster;
 using Xunit;
@@ -19,9 +21,11 @@ public class UpdateProductTests : TestBase
         var product = ProductBuilder.GetProduct();
         var command = product.Adapt<UpdateProductCommand>();
 
-        var productUpdated = await SendAsync(command);
+        var productUpdatedResult = await SendAsync(command);
 
-        productUpdated.Should().BeNull();
+        productUpdatedResult.IsSuccess.Should().BeFalse();
+        productUpdatedResult.Errors.First().Message.Should().Be("Id not found.");
+        //TODO: Add more tests or asserts
     }
 
 
@@ -43,4 +47,24 @@ public class UpdateProductTests : TestBase
         result!.Sku.Should().Be(productUpdatedValue.Sku);
         result.Title.Value.Should().Be(productUpdatedValue.Title);
     }
+
+    [Fact]
+    public async Task WHEN_few_fields_are_filled_THEN_returns_validation_error()
+    {
+        var product = ProductBuilder.GetProduct();
+
+        await AddAsync(product);
+
+        var updatedProduct = new Product(product.Id, string.Empty, new ProductTitle(string.Empty), product.Description, product.Price, product.CreatedOn,
+            product.CreatedBy, product.LastModifiedOn, product.LastModifiedBy);
+        var command = updatedProduct.Adapt<UpdateProductCommand>();
+        var productUpdatedResult = await SendAsync(command);
+
+        productUpdatedResult.Should().NotBeNull();
+        productUpdatedResult!.IsSuccess.Should().BeFalse();
+        productUpdatedResult!.Errors.Should().NotBeEmpty();
+        productUpdatedResult!.Errors.First().Message.Should().Be("'Sku' must not be empty.");
+        //TODO: Add more test cases or assertions
+    }
+
 }

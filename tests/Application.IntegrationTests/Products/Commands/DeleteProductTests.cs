@@ -13,13 +13,15 @@ public class DeleteProductTests : TestBase
     }
 
     [Fact]
-    public async Task WHEN_not_providing_valid_Id_THEN_throws_not_found_exception()
+    public async Task WHEN_not_providing_valid_Id_THEN_Returns_error_result()
     {
-        var command = new DeleteProductCommand( Guid.Empty);
+        var command = new DeleteProductCommand(Guid.Empty);
 
-        await FluentActions.Invoking(() => SendAsync(command))
-            .Should()
-            .ThrowAsync<KeyNotFoundException>();
+        var productDeleteResult = await SendAsync(command);
+
+        productDeleteResult.IsSuccess.Should().BeFalse();
+        productDeleteResult.Errors.First().Message.Should().Be("Id not found.");
+        //TODO: Add more tests or asserts
     }
 
     [Fact]
