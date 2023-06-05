@@ -1,9 +1,11 @@
-﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using FluentResults;
 using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.DeleteProduct;
 
-internal class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCommand>
+internal class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Result>
 {
     private readonly IProductRepository _productRepository;
     private readonly ILogger _logger;
@@ -16,23 +18,16 @@ internal class DeleteProductCommandHandler : AsyncRequestHandler<DeleteProductCo
         _logger = logger;
     }
 
-    protected override async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetById(request.Id);
+        var productToDelete = await _productRepository.GetById(request.Id);
 
-        if (product is null || product.Id.Value == Guid.Empty)
-        {
-            //TODO: Switch to a EntityDoesntExistException or similar.
-            throw new KeyNotFoundException("The product to delete doesn't exist.");
-        }
+        if (productToDelete is null || productToDelete.Id.Value == Guid.Empty)
+            return Result.Fail(new Error("Id not found.") { Metadata = { {"Status", ResultStatus.NotFound} }});
 
-        try
-        {
-            await _productRepository.Delete(product);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Problem deleting the product {Id}", request.Id);
-        }
+        await _productRepository.Delete(productToDelete);
+
+        _logger.LogInformation("Product {ProductId} deleted.", request.Id);
+        return Result.Ok();
     }
 }

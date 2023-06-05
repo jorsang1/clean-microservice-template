@@ -10,15 +10,9 @@ internal class StockClient : IStockClient
 {
     private readonly HttpClient _httpClient;
 
-    public StockClient(HttpClient httpClient, IOptions<StockClientConfiguration> configuration)
+    public StockClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
-
-        if (string.IsNullOrEmpty(configuration.Value.BaseUrl))
-            throw new ArgumentNullException(nameof(configuration.Value.BaseUrl), "Base url for the stock client not provided in the configuration.");
-
-        _httpClient.BaseAddress = new(configuration.Value.BaseUrl);
-        _httpClient.DefaultRequestHeaders.Add("Authorization", $"PrivateKey {configuration.Value.Secret}");
     }
 
     public async Task UpdateStock(Guid productId, int unitsChange)

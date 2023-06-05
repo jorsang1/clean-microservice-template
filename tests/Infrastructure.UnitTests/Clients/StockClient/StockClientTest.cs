@@ -1,6 +1,4 @@
 ﻿using System.Net;
-using CleanCompanyName.DDDMicroservice.Infrastructure.Clients.StockClient.Configuration;
-using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 
@@ -15,10 +13,9 @@ public class StockClientTest
     [Fact]
     public async Task WHEN_called_api_works_THEN_no_throw()
     {
-        var configuration = GetMockedConfiguration();
         var httpClient = GetHttpClientWithMockedMessageHandler();
 
-        var sut = new Infrastructure.Clients.StockClient.StockClient(httpClient, configuration);
+        var sut = new Infrastructure.Clients.StockClient.StockClient(httpClient);
 
         await FluentActions
             .Awaiting(() =>
@@ -30,24 +27,15 @@ public class StockClientTest
     [Fact]
     public async Task WHEN_called_api_has_problems_THEN_throws()
     {
-        var configuration = GetMockedConfiguration();
         var httpClient = GetThrowingHttpClientWithMockedMessageHandler();
 
-        var sut = new Infrastructure.Clients.StockClient.StockClient(httpClient, configuration);
+        var sut = new Infrastructure.Clients.StockClient.StockClient(httpClient);
 
         await FluentActions
             .Awaiting(() =>
                 sut.UpdateStock(Guid.Empty, 1))
             .Should()
             .ThrowAsync<Exception>();
-    }
-
-    private IOptions<StockClientConfiguration> GetMockedConfiguration()
-    {
-        var stockClientConfiguration = new StockClientConfiguration() { BaseUrl = "http://dummy.test", Secret = "dummy" };
-        var mockConfiguration = new Mock<IOptions<StockClientConfiguration>>();
-        mockConfiguration.Setup(config => config.Value).Returns(stockClientConfiguration);
-        return mockConfiguration.Object;
     }
 
     private HttpClient GetHttpClientWithMockedMessageHandler()
@@ -65,7 +53,7 @@ public class StockClientTest
                 Content = new StringContent(""),
             })
             .Verifiable();
-        return new HttpClient(handlerMock.Object);
+        return new HttpClient(handlerMock.Object) { BaseAddress = new Uri("https://somewhere.com/")};
     }
 
     private HttpClient GetThrowingHttpClientWithMockedMessageHandler()

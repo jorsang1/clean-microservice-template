@@ -1,14 +1,16 @@
-﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+﻿using CleanCompanyName.DDDMicroservice.Application.Common;
+using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
+using CleanCompanyName.DDDMicroservice.Application.Common.Mappers;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
-using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Common.Validators;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
+using FluentResults;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
-internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto?>
+internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result<ProductDto>>
 {
     private readonly IProductRepository _productRepository;
     private readonly IDateTimeService _dateTimeService;
@@ -27,12 +29,12 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
         _validator = validator;
     }
 
-    public async Task<ProductDto?> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ProductDto>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var productToUpdate = await _productRepository.GetById(request.Id);
 
         if (productToUpdate is null || productToUpdate.Id.Value == Guid.Empty)
-            return null;
+            return Result.Fail(new Error("Id not found.") { Metadata = { {"Status", ResultStatus.NotFound} }});
 
         productToUpdate.Update(
             sku: request.Sku,
@@ -45,7 +47,11 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
         var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
 
         if (!validationResult.IsValid)
-            throw new DomainValidationException(validationResult.Errors.MapToValidationErrors());
+        {
+            _logger.LogInformation("Product requested to update is invalid. Errors: {Errors}", validationResult.Errors);
+            var errors = validationResult.Errors.MapToValidationErrors().MapToFluentErrors();
+            return Result.Fail(errors);
+        }
 
         try
         {
@@ -56,6 +62,6 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
             _logger.LogError(ex, "Problem updating the stock of the product on the stock service for the product {Id}, {Title}", request.Id, request.Title);
         }
 
-        return productToUpdate.Adapt<ProductDto>();
+        return Result.Ok(productToUpdate.Adapt<ProductDto>());
     }
 }

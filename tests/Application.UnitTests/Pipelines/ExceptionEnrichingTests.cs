@@ -2,15 +2,16 @@
 using CleanCompanyName.DDDMicroservice.Application.Pipelines;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
+using FluentResults;
 using MediatR;
 
 namespace CleanCompanyName.DDDMicroservice.Application.UnitTests.Pipelines;
 
 public class ExceptionEnrichingTests
 {
-    private readonly Mock<RequestHandlerDelegate<ProductDto>> _handlerMock = new();
+    private readonly Mock<RequestHandlerDelegate<Result<ProductDto>>> _handlerMock = new();
     private readonly AddProductCommand _command;
-    private readonly ExceptionEnrichingPipelineBehaviour<AddProductCommand, ProductDto> _sut = new();
+    private readonly ExceptionEnrichingPipelineBehaviour<AddProductCommand, Result<ProductDto>> _sut = new();
 
     public ExceptionEnrichingTests()
     {
@@ -28,8 +29,8 @@ public class ExceptionEnrichingTests
             .Invoking(()  =>
                 _sut.Handle(
                     _command,
-                    CancellationToken.None,
-                    _handlerMock.Object))
+                    _handlerMock.Object,
+                    CancellationToken.None))
             .Should()
             .ThrowAsync<Exception>()
             .Where(x => x.Data.Contains("ActionName"));
@@ -48,8 +49,8 @@ public class ExceptionEnrichingTests
             .Invoking(() =>
                 _sut.Handle(
                     _command,
-                    CancellationToken.None,
-                    _handlerMock.Object))
+                    _handlerMock.Object,
+                    CancellationToken.None))
             .Should()
             .NotThrowAsync<Exception>();
     }

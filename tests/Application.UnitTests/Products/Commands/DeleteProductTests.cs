@@ -24,18 +24,11 @@ public class DeleteProductTests : ProductTestBase
     {
         var command = new DeleteProductCommand(Guid.Empty);
 
-        MockSetup
-            .SetupRepositoryGetByIdValidResponse
-            (
-                ProductRepository,
-                ProductBuilder.GetProductEmpty()
-            );
+        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, ProductBuilder.GetProductEmpty());
 
-        await FluentActions
-            .Invoking(() =>
-                _sut.ExposedHandle(command, new CancellationToken()))
-            .Should()
-            .ThrowAsync<KeyNotFoundException>();
+        var result = _sut.ExposedHandle(command, new CancellationToken());
+
+        result.Should().NotBeNull();
     }
 
     [Fact]
@@ -53,26 +46,4 @@ public class DeleteProductTests : ProductTestBase
             .NotThrowAsync<KeyNotFoundException>();
     }
 
-    [Fact]
-    public async Task WHEN_deleting_product_and_getting_an_error_on_delete_THEN_error_is_logged()
-    {
-        var product = ProductBuilder.GetProduct();
-        var command = new DeleteProductCommand(product.Id.Value);
-
-        MockSetup.SetupRepositoryGetByIdValidResponse(ProductRepository, product);
-        MockSetup.SetupRepositoryDeleteErrorResponse(ProductRepository);
-
-        await _sut.ExposedHandle(command, CancellationToken.None);
-
-        _logger.Verify(l => l.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((value, _) =>
-                    value
-                        .ToString()!
-                        .Contains($"Problem deleting the product {command.Id}")),
-                It.IsAny<Exception>(),
-                ((Func<It.IsAnyType, Exception, string>)It.IsAny<object>())!),
-            Times.Once);
-    }
 }

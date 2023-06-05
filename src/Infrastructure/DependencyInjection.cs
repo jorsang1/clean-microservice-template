@@ -16,9 +16,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IDateTimeService, DateTimeService>();
         services.AddSingleton<IProductRepository, ProductRepository>();
-        services.AddTransient<IStockClient, StockClient>();
 
-        services.AddHttpClient<StockClient>();
+        services.AddStockClientConfiguration(configuration);
 
         return services;
     }

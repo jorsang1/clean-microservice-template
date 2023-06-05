@@ -1,7 +1,6 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.Common.Interfaces;
 using CleanCompanyName.DDDMicroservice.Application.CommonTests.Builders;
 using CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
-using CleanCompanyName.DDDMicroservice.Domain.Common.Exceptions;
 using CleanCompanyName.DDDMicroservice.Domain.Entities.Products;
 using FluentValidation;
 using Mapster;
@@ -27,18 +26,20 @@ public class UpdateProductTests : ProductTestBase
         );
     }
 
-    // [Fact]
-    // public async Task WHEN_few_fields_are_filled_THEN_throws_validation_exception()
-    // {
-    //     MockSetup.SetupValidationErrorResponse(_validator);
-    //
-    //     await FluentActions
-    //         .Invoking(() =>
-    //             _sut.Handle(ProductBuilder.GetProductWithSku().Adapt<UpdateProductCommand>(),
-    //                 CancellationToken.None))
-    //         .Should()
-    //         .ThrowAsync<DomainValidationException>();
-    // }
+    [Fact]
+    public async Task WHEN_few_fields_are_filled_THEN_throws_validation_exception()
+    {
+        var product = ProductBuilder.GetProductWithSku();
+        var command = product.Adapt<UpdateProductCommand>();
+        MockSetup.SetupValidationErrorResponse(_validator);
+
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.IsSuccess.Should().BeFalse();
+        result.Errors.First().Message.Should().Be("Id not found.");
+
+    }
 
     [Fact]
     public async Task WHEN_all_fields_are_filled_THEN_product_is_updated()
@@ -67,7 +68,7 @@ public class UpdateProductTests : ProductTestBase
 
         var result = await _sut.Handle(command, CancellationToken.None);
 
-        result.Should().BeNull();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]

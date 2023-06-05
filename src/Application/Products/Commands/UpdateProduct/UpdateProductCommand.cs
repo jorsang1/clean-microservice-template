@@ -1,4 +1,5 @@
 ﻿using CleanCompanyName.DDDMicroservice.Application.Products.Dto;
+using FluentResults;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
@@ -9,4 +10,4 @@ public readonly record struct UpdateProductCommand(
         string? Description,
         decimal Price,
         Guid UserId)
-    : IRequest<ProductDto?>;
+    : IRequest<Result<ProductDto>>;
