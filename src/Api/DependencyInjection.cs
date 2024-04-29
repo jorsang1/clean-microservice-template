@@ -25,36 +25,33 @@ internal static class DependencyInjection
         });
 
         services.AddOpenTelemetry().WithMetrics(options =>
-            options.AddHttpClientInstrumentation()
-                .AddAspNetCoreInstrumentation()
-                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName).AddTelemetrySdk())
-                .AddOtlpExporter(otlpOption =>
-                {
-                    otlpOption.Endpoint = new Uri("http://your-open-collector-instance:4317", UriKind.Absolute);
-                })
-                .AddPrometheusExporter()
-                .AddMeter(ApplicationMetrics.ServiceMetricName)
-        )
+                options.AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName).AddTelemetrySdk())
+                    .AddOtlpExporter(otlpOption =>
+                    {
+                        otlpOption.Endpoint = new Uri("http://your-open-collector-instance:4317", UriKind.Absolute);
+                    })
+                    .AddPrometheusExporter()
+                    .AddMeter(ApplicationMetrics.ServiceMetricName)
+            )
             .WithTracing(options =>
-            options
-                .AddSource(ServiceName)
-                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName).AddTelemetrySdk())
-                .AddAspNetCoreInstrumentation()
-                .AddHttpClientInstrumentation()
-                // Enable the OTLP Exporter when it is ready otherwise it breaks the pipeline and you won't see any traces on the console either.
-                // .AddOtlpExporter(otlpOption =>
-                // {
-                //     otlpOption.Endpoint = new Uri("http://agent.grafana-cloud.svc.cluster.local:4317", UriKind.Absolute);
-                //     // For OTLP only gRPC works and you need to specify http:// if you don't want to use TLS.
-                // })
-                .AddConsoleExporter()
-        );
-
-        services.Configure<AspNetCoreInstrumentationOptions>(options =>
-            {
-                options.RecordException = true;
-            }
-        );
+                options
+                    .AddSource(ServiceName)
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName).AddTelemetrySdk())
+                    .AddAspNetCoreInstrumentation(instrumentationOptions =>
+                    {
+                        instrumentationOptions.RecordException = true;
+                    })
+                    .AddHttpClientInstrumentation()
+                    // Enable the OTLP Exporter when it is ready otherwise it breaks the pipeline and you won't see any traces on the console either.
+                    // .AddOtlpExporter(otlpOption =>
+                    // {
+                    //     otlpOption.Endpoint = new Uri("http://agent.grafana-cloud.svc.cluster.local:4317", UriKind.Absolute);
+                    //     // For OTLP only gRPC works and you need to specify http:// if you don't want to use TLS.
+                    // })
+                    .AddConsoleExporter()
+            );
 
         return services;
     }

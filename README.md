@@ -3,7 +3,7 @@
 [![Nuget](https://img.shields.io/nuget/v/CleanMicroserviceTemplate?label=NuGet)](https://www.nuget.org/packages/CleanMicroserviceTemplate)
 [![Nuget](https://img.shields.io/nuget/dt/CleanMicroserviceTemplate?label=Downloads)](https://www.nuget.org/packages/CleanMicroserviceTemplate)
 
-This is a project template to create microservices in .NET 6 based on the Clean architecture approach (also known as Onion architecture, or Hexagonal architecture, or Ports and adapters).  
+This is a project template to create microservices in .NET 8 based on the Clean architecture approach (also known as Onion architecture, or Hexagonal architecture, or Ports and adapters).  
 The goal is to provide a boilerplate for creating API's that enforces some good practices so it is easy to spin off new microservices but keeping a good level of quality on the solution.  
 The solution is heavily inspired by the templated created by Jason Taylor.
 
@@ -76,7 +76,7 @@ The test project is testing the application layer with mocked dependencies.
 
 T get started you can install the [NuGet package](https://www.nuget.org/packages/CleanMicroserviceTemplate) and run `dotnet new ca-sln`:
 
-1. Install the latest [.NET 7 SDK](https://dotnet.microsoft.com/download/dotnet/7.0)
+1. Install the latest [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 2. Run `dotnet new install CleanMicroserviceTemplate` to install the project template
 3. Create a folder for your solution and cd into it (the template will use it as project name)
 4. Run `dotnet new cleandddapi --help` to checkout the options

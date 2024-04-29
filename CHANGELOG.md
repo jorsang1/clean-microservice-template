@@ -13,6 +13,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en), and th
 ### Security
 -->
 
+## 2.0.0
+### Changed
+- Update to .NET 8 and upgrade all nuget packages versions.
+
 ## 1.1.0
 ### Added
 - Add `ConsoleLogging` or `JsonConsoleLogging` depending on settings. 

@@ -9,27 +9,15 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.AddProduct;
 
-internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Result<ProductDto>>
+internal class AddProductCommandHandler(
+    IProductRepository productRepository,
+    IDateTimeService dateTimeService,
+    IStockClient stockClient,
+    ILogger<AddProductCommandHandler> logger,
+    IValidator<Product> validator)
+    : IRequestHandler<AddProductCommand, Result<ProductDto>>
 {
-    private readonly ILogger _logger;
-    private readonly IProductRepository _productRepository;
-    private readonly IDateTimeService _dateTimeService;
-    private readonly IStockClient _stockClient;
-    private readonly IValidator<Product> _validator;
-
-    public AddProductCommandHandler(
-        IProductRepository productRepository,
-        IDateTimeService dateTimeService,
-        IStockClient stockClient,
-        ILogger<AddProductCommandHandler> logger,
-        IValidator<Product> validator)
-    {
-        _productRepository = productRepository;
-        _dateTimeService = dateTimeService;
-        _stockClient = stockClient;
-        _logger = logger;
-        _validator = validator;
-    }
+    private readonly ILogger _logger = logger;
 
     public async Task<Result<ProductDto>> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
@@ -39,10 +27,10 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Res
             title: request.Title,
             description: request.Description,
             price: request.Price,
-            createdOn: _dateTimeService.Now,
+            createdOn: dateTimeService.Now,
             createdBy: request.UserId);
 
-        var validationResult = await _validator.ValidateAsync(productToAdd, cancellationToken);
+        var validationResult = await validator.ValidateAsync(productToAdd, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -51,11 +39,11 @@ internal class AddProductCommandHandler : IRequestHandler<AddProductCommand, Res
             return Result.Fail(errors);
         }
 
-        var product = await _productRepository.Create(productToAdd);
+        var product = await productRepository.Create(productToAdd);
 
         try
         {
-            await _stockClient.UpdateStock(product.Id.Value, 1);
+            await stockClient.UpdateStock(product.Id.Value, 1);
         }
         catch (Exception ex)
         {

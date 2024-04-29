@@ -5,33 +5,25 @@ using Polly.CircuitBreaker;
 
 namespace CleanCompanyName.DDDMicroservice.Api.Middleware;
 
-public class ErrorHandlerMiddleware
+public class ErrorHandlerMiddleware(
+    RequestDelegate next,
+    ILogger<ErrorHandlerMiddleware> logger,
+    IConfiguration configuration)
 {
     private const string CircuitBreakerBreakDuration =
         "Infrastructure:HttpClientsResiliency:CircuitBreakerBreakDuration";
-    private readonly IConfiguration _configuration;
-    private readonly ILogger _logger;
-    private readonly RequestDelegate _next;
 
-    public ErrorHandlerMiddleware(
-        RequestDelegate next,
-        ILogger<ErrorHandlerMiddleware> logger,
-        IConfiguration configuration)
-    {
-        _next          = next;
-        _logger        = logger;
-        _configuration = configuration;
-    }
+    private readonly ILogger _logger = logger;
 
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(context, _configuration, ex, _logger);
+            await HandleExceptionAsync(context, configuration, ex, _logger);
         }
     }
 
@@ -59,7 +51,7 @@ public class ErrorHandlerMiddleware
             : GetGenericInternalErrorDetails();
 
     private static ProblemDetails GetGenericInternalErrorDetails()
-        => new ProblemDetails
+        => new()
         {
             Title = "Something went wrong processing your request",
             Detail =
@@ -68,7 +60,7 @@ public class ErrorHandlerMiddleware
         };
 
     private static ProblemDetails GetServiceUnavailableErrorDetails(IConfiguration configuration)
-        => new ProblemDetails
+        => new()
         {
             Title = "Service unavailable at the moment.",
             Detail =

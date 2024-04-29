@@ -10,28 +10,18 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanCompanyName.DDDMicroservice.Application.Products.Commands.UpdateProduct;
 
-internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result<ProductDto>>
+internal class UpdateProductCommandHandler(
+    IProductRepository productRepository,
+    IDateTimeService dateTimeService,
+    ILogger<UpdateProductCommandHandler> logger,
+    IValidator<Product> validator)
+    : IRequestHandler<UpdateProductCommand, Result<ProductDto>>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IDateTimeService _dateTimeService;
-    private readonly ILogger _logger;
-    private readonly IValidator<Product> _validator;
-
-    public UpdateProductCommandHandler(
-        IProductRepository productRepository,
-        IDateTimeService dateTimeService,
-        ILogger<UpdateProductCommandHandler> logger,
-        IValidator<Product> validator)
-    {
-        _productRepository = productRepository;
-        _dateTimeService = dateTimeService;
-        _logger = logger;
-        _validator = validator;
-    }
+    private readonly ILogger _logger = logger;
 
     public async Task<Result<ProductDto>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var productToUpdate = await _productRepository.GetById(request.Id);
+        var productToUpdate = await productRepository.GetById(request.Id);
 
         if (productToUpdate is null || productToUpdate.Id.Value == Guid.Empty)
             return Result.Fail(new Error("Id not found.") { Metadata = { {"Status", ResultStatus.NotFound} }});
@@ -41,10 +31,10 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
             title: request.Title,
             description: request.Description,
             price: request.Price,
-            modifiedOn: _dateTimeService.Now,
+            modifiedOn: dateTimeService.Now,
             modifiedBy: request.UserId);
 
-        var validationResult = await _validator.ValidateAsync(productToUpdate, cancellationToken);
+        var validationResult = await validator.ValidateAsync(productToUpdate, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -55,7 +45,7 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
 
         try
         {
-            await _productRepository.Update(productToUpdate);
+            await productRepository.Update(productToUpdate);
         }
         catch (Exception ex)
         {
